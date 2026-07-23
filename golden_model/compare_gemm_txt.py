@@ -1,19 +1,3 @@
-#!/usr/bin/env python3
-"""Compare copied FPGA/testbench GEMM output with a software GEMM.
-
-Workflow
---------
-1. Run the SystemVerilog testbench.
-2. Copy the console block(s) from MATRIX_BEGIN through MATRIX_END.
-3. Paste them into a text file named ``result_matrix.txt`` in the same
-   directory as this script.
-4. Run:
-
-       python compare_gemm_txt.py
-
-The file may contain Job 1 only, Job 2 only, or both jobs. Marker lines are
-used to identify the job. Matrix rows must contain exactly 64 signed integers.
-"""
 
 from __future__ import annotations
 
@@ -37,7 +21,7 @@ INTEGER_RE = re.compile(r"[-+]?\d+")
 
 
 def matrix_value_a(job_id: int, row: int, col: int) -> int:
-    """Exact equivalent of matrix_value_a() in the testbench."""
+
     if row >= M or col >= K:
         return 0
 
@@ -50,7 +34,7 @@ def matrix_value_a(job_id: int, row: int, col: int) -> int:
 
 
 def matrix_value_b(job_id: int, row: int, col: int) -> int:
-    """Exact equivalent of matrix_value_b() in the testbench."""
+   
     if row >= K or col >= N:
         return 0
 
@@ -63,7 +47,7 @@ def matrix_value_b(job_id: int, row: int, col: int) -> int:
 
 
 def build_input_matrices(job_id: int) -> Tuple[Matrix, Matrix]:
-    """Build A and B, including every override in init_matrices()."""
+   
     a = [[matrix_value_a(job_id, row, col) for col in range(K)] for row in range(M)]
     b = [[matrix_value_b(job_id, row, col) for col in range(N)] for row in range(K)]
 
@@ -95,7 +79,7 @@ def build_input_matrices(job_id: int) -> Tuple[Matrix, Matrix]:
 
 
 def quantize_to_int8(value: int, shift_amount: int) -> int:
-    """Apply the same rounding, shift and INT8 saturation as the testbench."""
+ 
     temp = value
     if shift_amount > 0:
         temp = (temp + (1 << (shift_amount - 1))) >> shift_amount
@@ -103,7 +87,7 @@ def quantize_to_int8(value: int, shift_amount: int) -> int:
 
 
 def software_gemm(a: Matrix, b: Matrix) -> Matrix:
-    """Compute and quantize C = A x B using software integer arithmetic."""
+    
     result: Matrix = [[0 for _ in range(N)] for _ in range(M)]
 
     for row in range(M):
@@ -117,7 +101,7 @@ def software_gemm(a: Matrix, b: Matrix) -> Matrix:
 
 
 def read_copied_matrices(path: Path) -> Dict[int, Matrix]:
-    """Read MATRIX_BEGIN/MATRIX_END blocks copied from the simulator console."""
+   
     matrices: Dict[int, Matrix] = {}
     current_job: int | None = None
     current_rows: Matrix = []
@@ -161,7 +145,7 @@ def read_copied_matrices(path: Path) -> Dict[int, Matrix]:
                 continue
 
             if current_job is None:
-                # Ignore unrelated simulator text outside copied matrix blocks.
+      
                 continue
 
             values = [int(token) for token in INTEGER_RE.findall(line)]
