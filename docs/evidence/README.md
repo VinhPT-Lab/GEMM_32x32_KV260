@@ -23,6 +23,10 @@ Chú thích dưới đây viết sẵn để dán vào báo cáo; số hình đ�
 
 **GLS trên netlist cuối.** Mô phỏng mức cổng trên netlist cuối của IP v1, unit-delay, SRAM dùng model OpenRAM. Ba kích thước 64×64×64, 8×32×544 và 16×992×32 đều PASS. Với 64×64×64, testbench báo 0 mismatch và 0 lỗi giao thức ở cả hai job. Ma trận GLS in ra cũng khớp 8192/8192 với golden model Python. GLS không có SDF nên không kiểm timing; timing được kiểm bằng STA (xem `docs/TIEN_DO_SIGNOFF.md`).
 
+## Hình làm lại cho báo cáo
+
+`docs/paper/figures/layout/row_pe_map_combined.png` thay cho hình bố trí PE trong row macro (Hình 4.4 của báo cáo). Phía trên là cả row 32 PE, đã cắt lề trắng; phía dưới là phóng to PE 0–3. Hình ghép từ `row_pe_map.png` và `row_pe_map_zoom_pe0_3.png`, không vẽ lại dữ liệu.
+
 ## Log và dữ liệu
 
 | Tệp | Nguồn |
