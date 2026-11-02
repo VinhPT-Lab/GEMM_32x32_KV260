@@ -1,0 +1,6 @@
+set sigs [list tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.clk tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tvalid tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tready tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tlast tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[7:0\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[15:8\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[23:16\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[31:24\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[255:248\]]
+gtkwave::addSignalsFromList $sigs
+gtkwave::highlightSignalsFromList [list tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[7:0\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[15:8\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[23:16\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[31:24\] tb_GEMM_top_axi_two_job_64x64_verify_copy_matrix.result_axis_tdata\[255:248\]]
+gtkwave::/Edit/Data_Format/Signed_Decimal
+gtkwave::/Edit/UnHighlight_All
+gtkwave::setZoomRangeTimes 14965000 15125000

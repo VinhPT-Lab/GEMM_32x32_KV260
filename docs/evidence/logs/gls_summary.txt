@@ -1,0 +1,3 @@
+GLS 64,64,64 exit 0 OVERALL PASS events 258 time 409 s
+GLS 8,32,544 exit 0 OVERALL PASS events 274 time 691 s
+GLS 16,992,32 exit 0 OVERALL PASS events 34 time 1510 s

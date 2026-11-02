@@ -1,0 +1,16 @@
+Input file: golden_model/result_matrix.txt (trích từ sF/gls_64_64_64/gls.log)
+Detected jobs: 1, 2
+================================================================
+JOB 1: PASS
+  Total elements : 4096
+  Match          : 4096
+  Mismatch       : 0
+----------------------------------------------------------------
+JOB 2: PASS
+  Total elements : 4096
+  Match          : 4096
+  Mismatch       : 0
+----------------------------------------------------------------
+TOTAL MATCH    : 8192
+TOTAL MISMATCH : 0
+OVERALL        : PASS

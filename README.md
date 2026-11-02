@@ -1,11 +1,33 @@
 # GEMM 32x32 INT8 trên SKY130
 link Drive dự án: https://drive.google.com/drive/u/0/folders/1rQGXBQMxBw7CRs1iQ_FK7p_eN03Ah15e
 
+## Hồ sơ cho giám khảo
+
+Quy ước phiên bản: **v0** là bản demo `core_v11`, **v1** là bản sạch đầu tiên (IP `gemm_ip`, signoff ở 50 MHz), **v2** là bản đang làm. Số liệu nộp cuộc thi là của v1.
+
+| Cần xem | Ở đâu |
+|---|---|
+| Kết quả signoff v1 (DRC, LVS, antenna, timing, công suất) | mục "Bản v1" bên dưới, `docs/TIEN_DO_SIGNOFF.md` |
+| RTL đầy đủ của bản ASIC | `rtl_asic/` (vỏ AXI ở `rtl_asic/axi/`) |
+| Testbench và script mô phỏng | `sim/` |
+| Dạng sóng RTL, log GLS, so với golden model Python | `docs/evidence/` |
+| Gói số liệu và hình của layout (IR drop, slack, mật độ, ECO) | `docs/paper/` (`SUMMARY.md`, `data/`, `figures/`) |
+| Flow OpenLane và script ECO | `openlane/`, `tools/eco/` |
+| Bản FPGA KV260 (RTL gốc, testbench gốc, golden model, tích hợp llama.cpp) | https://github.com/VinhPT-Lab/GEMM_32x32_KV260 |
+| Website giới thiệu, có layout 3D từ GDS/DEF thật | https://nguyen-ky2910.github.io/WEB_GEMM_32x32_FPGT/ |
+
+Kiểm chứng tóm tắt:
+- RTL ASIC chạy testbench gốc của bản KV260 (2 job 64×64×64): PASS, 8192/8192 phần tử khớp golden model Python (`sim/run_wave.sh`).
+- GLS trên netlist cuối của v1: 64×64×64, 8×32×544, 16×992×32 đều PASS; ở 64×64×64 có 0 mismatch và khớp golden model Python.
+- Layout v1: Magic DRC 0, LVS khớp, antenna 0, KLayout XOR 0, DRV 0.
+
+Tệp layout lớn không đưa vào git: `GEMM_top.gds` (708,7 MiB), `GEMM_top.def` (469,1 MiB), netlist `GEMM_top.nl.v` (196,5 MiB), cùng LEF, Liberty, SDC và các báo cáo DRC/LVS/STA. Tải ở thư mục `final` của v1 trên Drive (ai có link đều xem được): https://drive.google.com/drive/folders/1SNKjXqcsqroH8pAdLk6_jX4fOtAbhqEZ. GDS cuối có sha256 `87286b9408d1a706d1f47a2925317ed5ed702c0700b780edbdda0a22e8b068fa`.
+
 Bộ tăng tốc nhân ma trận INT8 32x32 kiểu weight-stationary. Bản gốc chạy trên FPGA KV260;
 repo này đưa nó ra layout trên SKY130 bằng OpenLane 1.0.2. Thiết kế được harden theo tầng:
 PE, row (32 PE), array, rồi core GemmAccelerator gồm 32 row macro và 80 SRAM OpenRAM.
 
-## Kết quả (core_v11)
+## Bản v0 (demo, core_v11)
 
 Bảng này là của run core_v11 chạy riêng, ở chu kỳ 10 ns (100 MHz). STA của run này chưa kiểm các path đi qua
 macro (SRAM, row). Khi kiểm đủ, fmax ở tt chỉ khoảng 53 MHz, nên mọi con số tính ở 100 MHz dưới đây là **giả định**
@@ -23,7 +45,7 @@ macro (SRAM, row). Khi kiểm đủ, fmax ở tt chỉ khoảng 53 MHz, nên m�
 | Công suất | tt/25°C/1,80V, giả định 100 MHz, không đạt khi kiểm đủ path qua macro: 1,53 W với activity từ VCD (mô phỏng gate-level cả core lẫn row, pha tính của ma trận 64x64x64); đo lại bằng bộ đọc VCD đã sửa lỗi alias (đợt 3): không đổi, 1529,70 mW; 2,89 W với activity mặc định của OpenSTA |
 | Hiệu suất | giả định 100 MHz, không đạt khi kiểm đủ path qua macro: đỉnh 204,8 GOPS (2 x 32 x 32 x 100 MHz), 134 GOPS/W (theo 1,53 W), 2,83 GOPS/mm² |
 
-## IP gemm_ip (core + vỏ AXI), signoff ở 50 MHz
+## Bản v1: IP gemm_ip (core + vỏ AXI), signoff ở 50 MHz
 
 IP đã signoff ở **50 MHz (chu kỳ 20 ns), TT theo lib**, trên layout ECO cuối. Chi tiết ở `docs/TIEN_DO_SIGNOFF.md`.
 
@@ -71,6 +93,8 @@ GDS nằm ở ~/OpenLane/designs/gemm_core/runs/<tag>/results/final/gds/.
 
     rtl_asic/   RTL cho ASIC (rtl_asic/axi: wrapper AXI của IP)
     sim/        so sánh với RTL FPGA, mô phỏng gate-level
+    docs/evidence/  dạng sóng RTL, log GLS, đối chiếu golden model (bản v1)
+    docs/paper/     gói số liệu và hình của layout v1
     openlane/   run_flow.sh và cấu hình từng tầng
     tools/      đọc log, kiểm tra DRC quanh macro, phân tích antenna, timing và công suất
 
