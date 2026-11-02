@@ -38,6 +38,7 @@ Chú thích dưới đây viết sẵn để dán vào báo cáo; số hình đ�
 | `logs/golden_compare_gls.txt` | Kết quả `compare_gemm_txt.py` trên ma trận GLS |
 | `wave/rtl_64x64x64.vcd` | Dạng sóng RTL (các tín hiệu ở cấp testbench) |
 | `wave/overview.tcl`, `wave/result_beats.tcl` | Script GTKWave dựng lại hai hình dạng sóng |
+| `pd_steps/` | Trích log các bước nhập thiết kế, tối ưu bố trí và tối ưu sau CTS của run `ip_v3r` |
 
 ## Tạo lại
 

@@ -1,0 +1,65 @@
+Run: OpenLane gemm_ip/runs/ip_v3r (IP gemm_ip, top GEMM_top)
+Log: logs/cts/13-cts.log, reports/cts/14-cts_sta.summary.rpt, reports/cts/14-cts_sta.skew.rpt, logs/cts/15-resizer.log, logs/cts/16-hold_fix.log
+Lệnh: grep/sed trên các file trên (bash extract_pd.sh <thư mục ra>, script nằm cạnh file này), đường dẫn tuyệt đối trong máy thay bằng ~, <run> = runs/ip_v3r, <ip_v3> = runs/ip_v3
+
+Ghi chú: bước 13-15 là log kế thừa từ ip_v3 (STA dùng SDC 10 ns của ip_v3). Bước 16 chạy trong ip_v3r với SDC dựng lại, chu kỳ 20 ns. openlane.log ghi:
+[INFO]: resume: ip_v3 -> ip_v3r (mode route)
+[INFO]: resume: post-CTS SDC at 10.0000 ns, CLOCK_PERIOD 20 ns - SDC rebuilt by ip_post_cts.sdc
+
+== CTS (logs/cts/13-cts.log) ==
+[INFO CTS-0049] Characterization buffer is: sky130_fd_sc_hd__clkbuf_16.
+[INFO CTS-0007] Net "S_AXI_ACLK" found for clock "S_AXI_ACLK".
+[INFO CTS-0010]  Clock net "S_AXI_ACLK" has 22302 sinks.
+[INFO CTS-0018]     Created 4257 clock buffers.
+[INFO CTS-0012]     Minimum number of buffers in the clock path: 21.
+[INFO CTS-0013]     Maximum number of buffers in the clock path: 22.
+[INFO CTS-0017]     Max level of the clock tree: 9.
+[INFO CTS-0098] Clock net "S_AXI_ACLK"
+[INFO CTS-0099]  Sinks 22302
+[INFO CTS-0100]  Leaf buffers 3404
+[INFO CTS-0101]  Average sink wire length 12277.14 um
+[INFO CTS-0102]  Path depth 21 - 22
+cts_report
+[INFO CTS-0003] Total number of Clock Roots: 1.
+[INFO CTS-0004] Total number of Buffers Inserted: 4257.
+[INFO CTS-0005] Total number of Clock Subnets: 4257.
+[INFO CTS-0006] Total number of Sinks: 22302.
+cts_report_end
+
+== Skew sau CTS (reports/cts/14-cts_sta.skew.rpt) ==
+report_clock_skew
+Clock S_AXI_ACLK
+Latency      CRPR       Skew
+_58116_/CLK ^
+   4.55
+_57843_/CLK ^
+   3.71     -0.06       0.77
+
+== STA sau CTS, trước resizer (reports/cts/14-cts_sta.summary.rpt, corner Typical) ==
+tns -1381.54
+wns -3.21
+report_worst_slack -max (Setup)
+worst slack -3.21
+report_worst_slack -min (Hold)
+worst slack -1.49
+
+== Resizer sau CTS, repair_timing (logs/cts/15-resizer.log) ==
+[INFO RSZ-0045] Inserted 4 buffers, 1 to split loads.
+[INFO RSZ-0041] Resized 93 instances.
+[WARNING RSZ-0062] Unable to repair all setup violations.
+[INFO RSZ-0046] Found 23694 endpoints with hold violations.
+[WARNING RSZ-0064] Unable to repair all hold checks within margin.
+[INFO RSZ-0032] Inserted 46949 hold buffers.
+[INFO]: keep_rows_clear: moved 13 cells out of the channels between the row macros (13 west into the FeatureSkew strip, 0 south into the OutputDeskew band); 5 hold buffers left in place
+Design area 40872436 u^2 54% utilization.
+(log 15-resizer không in WNS/TNS; số trước là mục STA sau CTS ở trên, số sau là dòng 'before' của bước 16)
+
+== Sửa hold trước global route (logs/cts/16-hold_fix.log, ip_v3r) ==
+Reading design constraints file at 'designs/gemm_ip/ip_post_cts.sdc'…
+gemm_hold_fix: before:   -0.315 ns  _56750_/Q -> u_axi_shell/i_weight_ready
+gemm_hold_fix: before: 1 endpoint(s) under +0.1 ns; hold wns -0.315, setup wns 3.482 (ns, Typical, macro libs, placement parasitics, period 20 ns)
+[INFO RSZ-0046] Found 1 endpoints with hold violations.
+[INFO RSZ-0032] Inserted 5 hold buffers.
+gemm_hold_fix: after: 0 endpoint(s) under +0.1 ns; hold wns 0.514, setup wns 3.482 (ns, Typical, macro libs, placement parasitics, period 20 ns)
+gemm_hold_fix: changed 5 (0 resized, 5 added, 0 removed)
+gemm_hold_fix: runtime 29 s, peak memory 3680 MB

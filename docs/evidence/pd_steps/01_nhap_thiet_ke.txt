@@ -1,0 +1,60 @@
+Run: OpenLane gemm_ip/runs/ip_v3r (IP gemm_ip, top GEMM_top)
+Log: logs/synthesis/linter.log, logs/synthesis/1-synthesis.log, reports/synthesis/1-synthesis.AREA_0.stat.rpt, config.tcl
+Lệnh: grep/sed/awk trên các file trên (bash extract_pd.sh <thư mục ra>, script nằm cạnh file này), đường dẫn tuyệt đối trong máy thay bằng ~, <run> = runs/ip_v3r, <ip_v3> = runs/ip_v3
+
+Ghi chú: ip_v3r resume từ ip_v3 ở bước route, các log bước 1-15 trong ip_v3r/logs được kế thừa từ ip_v3 (openlane.log):
+[INFO]: resume: ip_v3 -> ip_v3r (mode route)
+[INFO]: resume: post-CTS SDC at 10.0000 ns, CLOCK_PERIOD 20 ns - SDC rebuilt by ip_post_cts.sdc
+
+== Linter (logs/synthesis/linter.log) ==
+grep -c '%Error' linter.log: 0
+grep -c '%Warning' linter.log: 98
+Phân loại warning (grep -o '%Warning-[A-Z]*' | sort | uniq -c):
+      1 %Warning-PINCONNECTEMPTY
+     31 %Warning-UNDRIVEN
+      2 %Warning-UNUSEDPARAM
+     46 %Warning-UNUSEDSIGNAL
+      8 %Warning-WIDTHEXPAND
+     10 %Warning-WIDTHTRUNC
+
+== Clock period (config.tcl) ==
+set ::env(CLOCK_PERIOD) "20"
+set ::env(CLOCK_PORT) "S_AXI_ACLK"
+
+== Liberty macro nạp vào Yosys (logs/synthesis/1-synthesis.log) ==
+1. Executing Liberty frontend: designs/gemm_ip/../gemm_row/runs/row_v1/results/final/lib/ProcessingElementRow.lib
+2. Executing Liberty frontend: ~/.ciel/sky130A/libs.ref/sky130_sram_macros/lib/sky130_sram_2kbyte_1rw1r_32x512_8_TT_1p8V_25C.lib
+3. Executing Liberty frontend: designs/gemm_ip/../gemm_ip_shell/runs/ip_shell5/results/final/lib/GemmAxiShell.lib
+
+== LEF/LIB/GDS macro (config.tcl) ==
+set ::env(CELLS_LEF) "~/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd.lef ~/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef"
+set ::env(EXTRA_GDS_FILES) "designs/gemm_ip/../gemm_row/runs/row_v1/results/final/gds/ProcessingElementRow.gds ~/.ciel/sky130A/libs.ref/sky130_sram_macros/gds/sky130_sram_2kbyte_1rw1r_32x512_8.gds designs/gemm_ip/../gemm_ip_shell/runs/ip_shell5/results/final/gds/GemmAxiShell.gds"
+set ::env(EXTRA_LEFS) "designs/gemm_ip/../gemm_row/runs/row_v1/results/final/lef/ProcessingElementRow.lef designs/gemm_ip/sram_antenna.lef designs/gemm_ip/GemmAxiShell_antenna.lef"
+set ::env(EXTRA_LIBS) "designs/gemm_ip/../gemm_row/runs/row_v1/results/final/lib/ProcessingElementRow.lib ~/.ciel/sky130A/libs.ref/sky130_sram_macros/lib/sky130_sram_2kbyte_1rw1r_32x512_8_TT_1p8V_25C.lib designs/gemm_ip/../gemm_ip_shell/runs/ip_shell5/results/final/lib/GemmAxiShell.lib"
+set ::env(LIB_SYNTH_COMPLETE) "~/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib"
+set ::env(TECH_LEF) "~/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd__nom.tlef"
+
+== Yosys stat (reports/synthesis/1-synthesis.AREA_0.stat.rpt), rút gọn: bỏ từng dòng cell chuẩn ==
+79. Printing statistics.
+=== GEMM_top ===
+   Number of wires:              75076
+   Number of wire bits:          76015
+   Number of public wires:       57810
+   Number of public wire bits:   58749
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              42349
+     GemmAxiShell                    1
+     ProcessingElementRow           32
+     sky130_sram_2kbyte_1rw1r_32x512_8     80
+   Area for cell type \ProcessingElementRow is unknown!
+   Area for cell type \GemmAxiShell is unknown!
+   Chip area for module '\GEMM_top': 23438648.345600
+Số loại cell chuẩn sky130_fd_sc_hd liệt kê: 67
+5 loại cell chuẩn nhiều nhất:
+     sky130_fd_sc_hd__dfxtp_2    21331
+     sky130_fd_sc_hd__mux2_1      4546
+     sky130_fd_sc_hd__a21oi_2     1922
+     sky130_fd_sc_hd__nor2_2      1495
+     sky130_fd_sc_hd__or2_2       1347
