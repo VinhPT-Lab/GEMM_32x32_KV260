@@ -1,0 +1,5 @@
+block,hold_buffers,hold_area_um2,clock_tree_cells,clock_tree_area_um2,diodes,diode_area_um2,nand2_logic_only,nand2_plus_hold,nand2_plus_hold_clock,nand2_plus_hold_clock_diode,note
+top,47000,472321.7,4257,106527.2,37085,92801.5,249918,375750,404130,428853,"NAND2 eq = area / nand2_1 (3.7536 um2); logic only = logic, flop/latch, tie, resizer / I/O buffers, ECO buffers (static_stats.py groups); no fill/decap/tap"
+row x32,82368,823750.1,3776,90166.4,488672,1222852.8,1639381,1858837,1882859,2208640,"NAND2 eq = area / nand2_1 (3.7536 um2); logic only = logic, flop/latch, tie, resizer / I/O buffers, ECO buffers (static_stats.py groups); no fill/decap/tap"
+AXI shell,5571,52449.1,237,5570.3,7648,19138.4,10554,24527,26011,31110,"NAND2 eq = area / nand2_1 (3.7536 um2); logic only = logic, flop/latch, tie, resizer / I/O buffers, ECO buffers (static_stats.py groups); no fill/decap/tap"
+IP total,134939,1348520.9,8270,202263.9,533405,1334792.7,1899853,2259114,2313000,2668603,"NAND2 eq = area / nand2_1 (3.7536 um2); logic only = logic, flop/latch, tie, resizer / I/O buffers, ECO buffers (static_stats.py groups); no fill/decap/tap"

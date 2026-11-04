@@ -1,0 +1,4 @@
+shape,vcd_window_cycles,f_mhz,corner,rc,power_mw,internal_mw,switching_mw,leakage_mw,sram_mw,job_cycles,job_time_us,macs,energy_per_gemm_uj,pj_per_mac,gops_effective,gops_per_w,peak_gops,gops_per_w_at_peak
+64x64x64,2400..2800,50,TT 25C 1.80V,nom,800.25,573.81,223.6,2.84,224.0,1645,32.9,262144,26.328,100.43,15.936,19.91,102.4,128.0
+8x32x544,8000..8400,50,TT 25C 1.80V,nom,744.94,547.99,194.11,2.84,224.0,5330,106.6,139264,79.411,570.22,2.613,3.51,102.4,137.5
+16x992x32,15000..15400,50,TT 25C 1.80V,nom,772.69,562.52,207.33,2.84,224.0,9654,193.08,507904,149.191,293.74,5.261,6.81,102.4,132.5

@@ -1,0 +1,15 @@
+group                           cells   internal  switching    leakage   total mW   %
+SRAM (80 macro)                    80     220.93       0.23       2.84     224.00  30.1
+row: sequential                165920     179.06       8.54       0.00     187.60  25.2
+row: clock tree                  3776      32.02      98.76       0.00     130.78  17.6
+core: clock tree                 4257      36.77      30.91       0.00      67.68   9.1
+core: sequential                67941      47.90       2.51       0.00      50.41   6.8
+row: combinational             616896      19.80      29.11       0.00      48.91   6.6
+core: combinational             42333       6.08      20.69       0.00      26.77   3.6
+AXI macro: clock tree             237       1.95       1.98       0.00       3.93   0.5
+AXI macro: sequential            5908       3.27       0.50       0.00       3.77   0.5
+AXI macro: combinational         3672       0.20       0.88       0.00       1.08   0.1
+row: diode                     488672       0.00       0.00       0.00       0.00   0.0
+AXI macro: diode                 7648       0.00       0.00       0.00       0.00   0.0
+core: diode                     37085      -0.00       0.00       0.00      -0.00  -0.0
+TOTAL                         1444425     547.99     194.11       2.84     744.94   (unmatched lines 0)

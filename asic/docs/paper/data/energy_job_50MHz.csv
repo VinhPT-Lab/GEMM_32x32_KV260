@@ -1,0 +1,4 @@
+shape,f_mhz,corner,rc,activity,job_cycles,job_time_us,macs,power_mW,energy_per_gemm_uJ,pJ_per_MAC,gops,gops_per_W,sum_of_phases_uJ,peak_gops_per_W_upper,power_mW_sram_lower,energy_uJ_sram_lower,pJ_per_MAC_sram_lower,gops_per_W_sram_lower
+64x64x64,50.0,TT 25C 1.80V,nom,VCD of the whole job 2 (gate level),1645,32.9,262144,745.05,24.512,93.5,15.936,21.39,24.541,137.4,626.07,20.598,78.6,25.45
+8x32x544,50.0,TT 25C 1.80V,nom,VCD of the whole job 2 (gate level),5330,106.6,139264,751.03,80.06,574.9,2.613,3.48,80.546,136.3,622.8,66.39,476.7,4.2
+16x992x32,50.0,TT 25C 1.80V,nom,VCD of the whole job 2 (gate level),9654,193.08,507904,753.49,145.484,286.4,5.261,6.98,145.308,135.9,626.46,120.957,238.1,8.4

@@ -1,0 +1,1006 @@
+TEST START
+Testbench = tb_GEMM_top_axi_two_job_64x64_verify
+DUT = GEMM_top
+DUT reset between jobs = NO
+Array size: 32x32
+Logical matrix size: A=64x64 B=64x64 C=64x64
+Config values: shift=0 row_count=64 k_block_count=2 n_block_count=2
+Expected feature beat count = 128
+Expected weight beat count = 128
+Expected output beat count = 128
+VCD info: dumpfile wave.vcd opened for output.
+JOB_1_START cycle=12
+AXIL_WRITE_DONE job=1 addr=0x0 data=0x00000000 cycle=16
+AXIL_WRITE_DONE job=1 addr=0x4 data=0x00000040 cycle=21
+AXIL_WRITE_DONE job=1 addr=0x8 data=0x00000002 cycle=26
+AXIL_WRITE_DONE job=1 addr=0xc data=0x00000002 cycle=31
+AXIL_READ_DONE job=1 addr=0x0 data=0x04000000 cycle=36
+CONFIG_READBACK job=1 addr=0x0 raw=0x04000000 masked=0x00000000 expected=0x00000000 cycle=37
+AXIL_READ_DONE job=1 addr=0x4 data=0x00000040 cycle=41
+CONFIG_READBACK job=1 addr=0x4 raw=0x00000040 masked=0x00000040 expected=0x00000040 cycle=42
+AXIL_READ_DONE job=1 addr=0x8 data=0x00000002 cycle=46
+CONFIG_READBACK job=1 addr=0x8 raw=0x00000002 masked=0x00000002 expected=0x00000002 cycle=47
+AXIL_READ_DONE job=1 addr=0xc data=0x00000002 cycle=51
+CONFIG_READBACK job=1 addr=0xc raw=0x00000002 masked=0x00000002 expected=0x00000002 cycle=52
+AXIL_READ_DONE job=1 addr=0x0 data=0x04000000 cycle=56
+FEATURE_ACCEPT job=1 beat=1 tlast=0 tstrb=0xffffffff cycle=61
+WEIGHT_ACCEPT job=1 beat=1 tlast=0 tstrb=0xffffffff cycle=61
+FEATURE_ACCEPT job=1 beat=2 tlast=0 tstrb=0xffffffff cycle=65
+WEIGHT_ACCEPT job=1 beat=2 tlast=0 tstrb=0xffffffff cycle=67
+FEATURE_ACCEPT job=1 beat=3 tlast=0 tstrb=0xffffffff cycle=70
+WEIGHT_ACCEPT job=1 beat=3 tlast=0 tstrb=0xffffffff cycle=70
+FEATURE_ACCEPT job=1 beat=4 tlast=0 tstrb=0xffffffff cycle=72
+FEATURE_ACCEPT job=1 beat=5 tlast=0 tstrb=0xffffffff cycle=75
+WEIGHT_ACCEPT job=1 beat=4 tlast=0 tstrb=0xffffffff cycle=75
+WEIGHT_ACCEPT job=1 beat=5 tlast=0 tstrb=0xffffffff cycle=77
+FEATURE_ACCEPT job=1 beat=6 tlast=0 tstrb=0xffffffff cycle=79
+WEIGHT_ACCEPT job=1 beat=6 tlast=0 tstrb=0xffffffff cycle=81
+AXIL_READ_DONE job=1 addr=0x0 data=0x01000000 cycle=84
+FEATURE_ACCEPT job=1 beat=7 tlast=0 tstrb=0xffffffff cycle=84
+FEATURE_ACCEPT job=1 beat=8 tlast=0 tstrb=0xffffffff cycle=86
+WEIGHT_ACCEPT job=1 beat=7 tlast=0 tstrb=0xffffffff cycle=87
+FEATURE_ACCEPT job=1 beat=9 tlast=0 tstrb=0xffffffff cycle=89
+WEIGHT_ACCEPT job=1 beat=8 tlast=0 tstrb=0xffffffff cycle=90
+FEATURE_ACCEPT job=1 beat=10 tlast=0 tstrb=0xffffffff cycle=93
+WEIGHT_ACCEPT job=1 beat=9 tlast=0 tstrb=0xffffffff cycle=95
+WEIGHT_ACCEPT job=1 beat=10 tlast=0 tstrb=0xffffffff cycle=97
+FEATURE_ACCEPT job=1 beat=11 tlast=0 tstrb=0xffffffff cycle=98
+FEATURE_ACCEPT job=1 beat=12 tlast=0 tstrb=0xffffffff cycle=100
+WEIGHT_ACCEPT job=1 beat=11 tlast=0 tstrb=0xffffffff cycle=101
+FEATURE_ACCEPT job=1 beat=13 tlast=0 tstrb=0xffffffff cycle=103
+FEATURE_ACCEPT job=1 beat=14 tlast=0 tstrb=0xffffffff cycle=107
+WEIGHT_ACCEPT job=1 beat=12 tlast=0 tstrb=0xffffffff cycle=107
+WEIGHT_ACCEPT job=1 beat=13 tlast=0 tstrb=0xffffffff cycle=110
+FEATURE_ACCEPT job=1 beat=15 tlast=0 tstrb=0xffffffff cycle=112
+FEATURE_ACCEPT job=1 beat=16 tlast=0 tstrb=0xffffffff cycle=114
+WEIGHT_ACCEPT job=1 beat=14 tlast=0 tstrb=0xffffffff cycle=115
+FEATURE_ACCEPT job=1 beat=17 tlast=0 tstrb=0xffffffff cycle=117
+WEIGHT_ACCEPT job=1 beat=15 tlast=0 tstrb=0xffffffff cycle=117
+FEATURE_ACCEPT job=1 beat=18 tlast=0 tstrb=0xffffffff cycle=121
+WEIGHT_ACCEPT job=1 beat=16 tlast=0 tstrb=0xffffffff cycle=121
+FEATURE_ACCEPT job=1 beat=19 tlast=0 tstrb=0xffffffff cycle=126
+WEIGHT_ACCEPT job=1 beat=17 tlast=0 tstrb=0xffffffff cycle=127
+FEATURE_ACCEPT job=1 beat=20 tlast=0 tstrb=0xffffffff cycle=128
+WEIGHT_ACCEPT job=1 beat=18 tlast=0 tstrb=0xffffffff cycle=130
+FEATURE_ACCEPT job=1 beat=21 tlast=0 tstrb=0xffffffff cycle=131
+FEATURE_ACCEPT job=1 beat=22 tlast=0 tstrb=0xffffffff cycle=135
+WEIGHT_ACCEPT job=1 beat=19 tlast=0 tstrb=0xffffffff cycle=135
+WEIGHT_ACCEPT job=1 beat=20 tlast=0 tstrb=0xffffffff cycle=137
+FEATURE_ACCEPT job=1 beat=23 tlast=0 tstrb=0xffffffff cycle=140
+WEIGHT_ACCEPT job=1 beat=21 tlast=0 tstrb=0xffffffff cycle=141
+FEATURE_ACCEPT job=1 beat=24 tlast=0 tstrb=0xffffffff cycle=142
+FEATURE_ACCEPT job=1 beat=25 tlast=0 tstrb=0xffffffff cycle=145
+WEIGHT_ACCEPT job=1 beat=22 tlast=0 tstrb=0xffffffff cycle=147
+FEATURE_ACCEPT job=1 beat=26 tlast=0 tstrb=0xffffffff cycle=149
+WEIGHT_ACCEPT job=1 beat=23 tlast=0 tstrb=0xffffffff cycle=150
+FEATURE_ACCEPT job=1 beat=27 tlast=0 tstrb=0xffffffff cycle=154
+WEIGHT_ACCEPT job=1 beat=24 tlast=0 tstrb=0xffffffff cycle=155
+FEATURE_ACCEPT job=1 beat=28 tlast=0 tstrb=0xffffffff cycle=156
+WEIGHT_ACCEPT job=1 beat=25 tlast=0 tstrb=0xffffffff cycle=157
+FEATURE_ACCEPT job=1 beat=29 tlast=0 tstrb=0xffffffff cycle=159
+WEIGHT_ACCEPT job=1 beat=26 tlast=0 tstrb=0xffffffff cycle=161
+FEATURE_ACCEPT job=1 beat=30 tlast=0 tstrb=0xffffffff cycle=163
+WEIGHT_ACCEPT job=1 beat=27 tlast=0 tstrb=0xffffffff cycle=167
+FEATURE_ACCEPT job=1 beat=31 tlast=0 tstrb=0xffffffff cycle=168
+FEATURE_ACCEPT job=1 beat=32 tlast=0 tstrb=0xffffffff cycle=170
+WEIGHT_ACCEPT job=1 beat=28 tlast=0 tstrb=0xffffffff cycle=170
+FEATURE_ACCEPT job=1 beat=33 tlast=0 tstrb=0xffffffff cycle=173
+WEIGHT_ACCEPT job=1 beat=29 tlast=0 tstrb=0xffffffff cycle=175
+FEATURE_ACCEPT job=1 beat=34 tlast=0 tstrb=0xffffffff cycle=177
+WEIGHT_ACCEPT job=1 beat=30 tlast=0 tstrb=0xffffffff cycle=177
+WEIGHT_ACCEPT job=1 beat=31 tlast=0 tstrb=0xffffffff cycle=181
+FEATURE_ACCEPT job=1 beat=35 tlast=0 tstrb=0xffffffff cycle=182
+FEATURE_ACCEPT job=1 beat=36 tlast=0 tstrb=0xffffffff cycle=184
+FEATURE_ACCEPT job=1 beat=37 tlast=0 tstrb=0xffffffff cycle=187
+WEIGHT_ACCEPT job=1 beat=32 tlast=0 tstrb=0xffffffff cycle=187
+WEIGHT_ACCEPT job=1 beat=33 tlast=0 tstrb=0xffffffff cycle=190
+FEATURE_ACCEPT job=1 beat=38 tlast=0 tstrb=0xffffffff cycle=191
+WEIGHT_ACCEPT job=1 beat=34 tlast=0 tstrb=0xffffffff cycle=195
+FEATURE_ACCEPT job=1 beat=39 tlast=0 tstrb=0xffffffff cycle=196
+WEIGHT_ACCEPT job=1 beat=35 tlast=0 tstrb=0xffffffff cycle=197
+FEATURE_ACCEPT job=1 beat=40 tlast=0 tstrb=0xffffffff cycle=198
+FEATURE_ACCEPT job=1 beat=41 tlast=0 tstrb=0xffffffff cycle=201
+WEIGHT_ACCEPT job=1 beat=36 tlast=0 tstrb=0xffffffff cycle=201
+FEATURE_ACCEPT job=1 beat=42 tlast=0 tstrb=0xffffffff cycle=205
+WEIGHT_ACCEPT job=1 beat=37 tlast=0 tstrb=0xffffffff cycle=207
+FEATURE_ACCEPT job=1 beat=43 tlast=0 tstrb=0xffffffff cycle=210
+WEIGHT_ACCEPT job=1 beat=38 tlast=0 tstrb=0xffffffff cycle=210
+FEATURE_ACCEPT job=1 beat=44 tlast=0 tstrb=0xffffffff cycle=212
+FEATURE_ACCEPT job=1 beat=45 tlast=0 tstrb=0xffffffff cycle=215
+WEIGHT_ACCEPT job=1 beat=39 tlast=0 tstrb=0xffffffff cycle=215
+WEIGHT_ACCEPT job=1 beat=40 tlast=0 tstrb=0xffffffff cycle=217
+FEATURE_ACCEPT job=1 beat=46 tlast=0 tstrb=0xffffffff cycle=219
+WEIGHT_ACCEPT job=1 beat=41 tlast=0 tstrb=0xffffffff cycle=221
+FEATURE_ACCEPT job=1 beat=47 tlast=0 tstrb=0xffffffff cycle=224
+FEATURE_ACCEPT job=1 beat=48 tlast=0 tstrb=0xffffffff cycle=226
+WEIGHT_ACCEPT job=1 beat=42 tlast=0 tstrb=0xffffffff cycle=227
+FEATURE_ACCEPT job=1 beat=49 tlast=0 tstrb=0xffffffff cycle=229
+WEIGHT_ACCEPT job=1 beat=43 tlast=0 tstrb=0xffffffff cycle=230
+FEATURE_ACCEPT job=1 beat=50 tlast=0 tstrb=0xffffffff cycle=233
+WEIGHT_ACCEPT job=1 beat=44 tlast=0 tstrb=0xffffffff cycle=235
+WEIGHT_ACCEPT job=1 beat=45 tlast=0 tstrb=0xffffffff cycle=237
+FEATURE_ACCEPT job=1 beat=51 tlast=0 tstrb=0xffffffff cycle=238
+FEATURE_ACCEPT job=1 beat=52 tlast=0 tstrb=0xffffffff cycle=240
+WEIGHT_ACCEPT job=1 beat=46 tlast=0 tstrb=0xffffffff cycle=241
+FEATURE_ACCEPT job=1 beat=53 tlast=0 tstrb=0xffffffff cycle=243
+FEATURE_ACCEPT job=1 beat=54 tlast=0 tstrb=0xffffffff cycle=247
+WEIGHT_ACCEPT job=1 beat=47 tlast=0 tstrb=0xffffffff cycle=247
+WEIGHT_ACCEPT job=1 beat=48 tlast=0 tstrb=0xffffffff cycle=250
+FEATURE_ACCEPT job=1 beat=55 tlast=0 tstrb=0xffffffff cycle=252
+FEATURE_ACCEPT job=1 beat=56 tlast=0 tstrb=0xffffffff cycle=254
+WEIGHT_ACCEPT job=1 beat=49 tlast=0 tstrb=0xffffffff cycle=255
+FEATURE_ACCEPT job=1 beat=57 tlast=0 tstrb=0xffffffff cycle=257
+WEIGHT_ACCEPT job=1 beat=50 tlast=0 tstrb=0xffffffff cycle=257
+FEATURE_ACCEPT job=1 beat=58 tlast=0 tstrb=0xffffffff cycle=261
+WEIGHT_ACCEPT job=1 beat=51 tlast=0 tstrb=0xffffffff cycle=261
+FEATURE_ACCEPT job=1 beat=59 tlast=0 tstrb=0xffffffff cycle=266
+WEIGHT_ACCEPT job=1 beat=52 tlast=0 tstrb=0xffffffff cycle=267
+FEATURE_ACCEPT job=1 beat=60 tlast=0 tstrb=0xffffffff cycle=268
+WEIGHT_ACCEPT job=1 beat=53 tlast=0 tstrb=0xffffffff cycle=270
+FEATURE_ACCEPT job=1 beat=61 tlast=0 tstrb=0xffffffff cycle=271
+FEATURE_ACCEPT job=1 beat=62 tlast=0 tstrb=0xffffffff cycle=275
+WEIGHT_ACCEPT job=1 beat=54 tlast=0 tstrb=0xffffffff cycle=275
+WEIGHT_ACCEPT job=1 beat=55 tlast=0 tstrb=0xffffffff cycle=277
+FEATURE_ACCEPT job=1 beat=63 tlast=0 tstrb=0xffffffff cycle=280
+WEIGHT_ACCEPT job=1 beat=56 tlast=0 tstrb=0xffffffff cycle=281
+FEATURE_ACCEPT job=1 beat=64 tlast=0 tstrb=0xffffffff cycle=282
+FEATURE_ACCEPT job=1 beat=65 tlast=0 tstrb=0xffffffff cycle=285
+WEIGHT_ACCEPT job=1 beat=57 tlast=0 tstrb=0xffffffff cycle=287
+FEATURE_ACCEPT job=1 beat=66 tlast=0 tstrb=0xffffffff cycle=289
+WEIGHT_ACCEPT job=1 beat=58 tlast=0 tstrb=0xffffffff cycle=290
+FEATURE_ACCEPT job=1 beat=67 tlast=0 tstrb=0xffffffff cycle=294
+WEIGHT_ACCEPT job=1 beat=59 tlast=0 tstrb=0xffffffff cycle=295
+FEATURE_ACCEPT job=1 beat=68 tlast=0 tstrb=0xffffffff cycle=296
+WEIGHT_ACCEPT job=1 beat=60 tlast=0 tstrb=0xffffffff cycle=297
+FEATURE_ACCEPT job=1 beat=69 tlast=0 tstrb=0xffffffff cycle=299
+WEIGHT_ACCEPT job=1 beat=61 tlast=0 tstrb=0xffffffff cycle=301
+FEATURE_ACCEPT job=1 beat=70 tlast=0 tstrb=0xffffffff cycle=303
+WEIGHT_ACCEPT job=1 beat=62 tlast=0 tstrb=0xffffffff cycle=307
+FEATURE_ACCEPT job=1 beat=71 tlast=0 tstrb=0xffffffff cycle=308
+FEATURE_ACCEPT job=1 beat=72 tlast=0 tstrb=0xffffffff cycle=310
+WEIGHT_ACCEPT job=1 beat=63 tlast=0 tstrb=0xffffffff cycle=310
+FEATURE_ACCEPT job=1 beat=73 tlast=0 tstrb=0xffffffff cycle=313
+WEIGHT_ACCEPT job=1 beat=64 tlast=0 tstrb=0xffffffff cycle=315
+FEATURE_ACCEPT job=1 beat=74 tlast=0 tstrb=0xffffffff cycle=317
+WEIGHT_ACCEPT job=1 beat=65 tlast=0 tstrb=0xffffffff cycle=317
+WEIGHT_ACCEPT job=1 beat=66 tlast=0 tstrb=0xffffffff cycle=321
+FEATURE_ACCEPT job=1 beat=75 tlast=0 tstrb=0xffffffff cycle=322
+FEATURE_ACCEPT job=1 beat=76 tlast=0 tstrb=0xffffffff cycle=324
+FEATURE_ACCEPT job=1 beat=77 tlast=0 tstrb=0xffffffff cycle=327
+WEIGHT_ACCEPT job=1 beat=67 tlast=0 tstrb=0xffffffff cycle=327
+WEIGHT_ACCEPT job=1 beat=68 tlast=0 tstrb=0xffffffff cycle=330
+FEATURE_ACCEPT job=1 beat=78 tlast=0 tstrb=0xffffffff cycle=331
+WEIGHT_ACCEPT job=1 beat=69 tlast=0 tstrb=0xffffffff cycle=335
+FEATURE_ACCEPT job=1 beat=79 tlast=0 tstrb=0xffffffff cycle=336
+WEIGHT_ACCEPT job=1 beat=70 tlast=0 tstrb=0xffffffff cycle=337
+FEATURE_ACCEPT job=1 beat=80 tlast=0 tstrb=0xffffffff cycle=338
+FEATURE_ACCEPT job=1 beat=81 tlast=0 tstrb=0xffffffff cycle=341
+WEIGHT_ACCEPT job=1 beat=71 tlast=0 tstrb=0xffffffff cycle=341
+FEATURE_ACCEPT job=1 beat=82 tlast=0 tstrb=0xffffffff cycle=345
+WEIGHT_ACCEPT job=1 beat=72 tlast=0 tstrb=0xffffffff cycle=347
+FEATURE_ACCEPT job=1 beat=83 tlast=0 tstrb=0xffffffff cycle=350
+WEIGHT_ACCEPT job=1 beat=73 tlast=0 tstrb=0xffffffff cycle=350
+FEATURE_ACCEPT job=1 beat=84 tlast=0 tstrb=0xffffffff cycle=352
+FEATURE_ACCEPT job=1 beat=85 tlast=0 tstrb=0xffffffff cycle=355
+WEIGHT_ACCEPT job=1 beat=74 tlast=0 tstrb=0xffffffff cycle=355
+WEIGHT_ACCEPT job=1 beat=75 tlast=0 tstrb=0xffffffff cycle=357
+FEATURE_ACCEPT job=1 beat=86 tlast=0 tstrb=0xffffffff cycle=359
+WEIGHT_ACCEPT job=1 beat=76 tlast=0 tstrb=0xffffffff cycle=361
+FEATURE_ACCEPT job=1 beat=87 tlast=0 tstrb=0xffffffff cycle=364
+FEATURE_ACCEPT job=1 beat=88 tlast=0 tstrb=0xffffffff cycle=366
+WEIGHT_ACCEPT job=1 beat=77 tlast=0 tstrb=0xffffffff cycle=367
+FEATURE_ACCEPT job=1 beat=89 tlast=0 tstrb=0xffffffff cycle=369
+WEIGHT_ACCEPT job=1 beat=78 tlast=0 tstrb=0xffffffff cycle=370
+FEATURE_ACCEPT job=1 beat=90 tlast=0 tstrb=0xffffffff cycle=373
+WEIGHT_ACCEPT job=1 beat=79 tlast=0 tstrb=0xffffffff cycle=375
+WEIGHT_ACCEPT job=1 beat=80 tlast=0 tstrb=0xffffffff cycle=377
+FEATURE_ACCEPT job=1 beat=91 tlast=0 tstrb=0xffffffff cycle=378
+FEATURE_ACCEPT job=1 beat=92 tlast=0 tstrb=0xffffffff cycle=380
+WEIGHT_ACCEPT job=1 beat=81 tlast=0 tstrb=0xffffffff cycle=381
+FEATURE_ACCEPT job=1 beat=93 tlast=0 tstrb=0xffffffff cycle=383
+FEATURE_ACCEPT job=1 beat=94 tlast=0 tstrb=0xffffffff cycle=387
+WEIGHT_ACCEPT job=1 beat=82 tlast=0 tstrb=0xffffffff cycle=387
+WEIGHT_ACCEPT job=1 beat=83 tlast=0 tstrb=0xffffffff cycle=390
+FEATURE_ACCEPT job=1 beat=95 tlast=0 tstrb=0xffffffff cycle=392
+FEATURE_ACCEPT job=1 beat=96 tlast=0 tstrb=0xffffffff cycle=394
+WEIGHT_ACCEPT job=1 beat=84 tlast=0 tstrb=0xffffffff cycle=395
+FEATURE_ACCEPT job=1 beat=97 tlast=0 tstrb=0xffffffff cycle=397
+WEIGHT_ACCEPT job=1 beat=85 tlast=0 tstrb=0xffffffff cycle=397
+FEATURE_ACCEPT job=1 beat=98 tlast=0 tstrb=0xffffffff cycle=401
+WEIGHT_ACCEPT job=1 beat=86 tlast=0 tstrb=0xffffffff cycle=401
+FEATURE_ACCEPT job=1 beat=99 tlast=0 tstrb=0xffffffff cycle=406
+WEIGHT_ACCEPT job=1 beat=87 tlast=0 tstrb=0xffffffff cycle=407
+FEATURE_ACCEPT job=1 beat=100 tlast=0 tstrb=0xffffffff cycle=408
+WEIGHT_ACCEPT job=1 beat=88 tlast=0 tstrb=0xffffffff cycle=410
+FEATURE_ACCEPT job=1 beat=101 tlast=0 tstrb=0xffffffff cycle=411
+FEATURE_ACCEPT job=1 beat=102 tlast=0 tstrb=0xffffffff cycle=415
+WEIGHT_ACCEPT job=1 beat=89 tlast=0 tstrb=0xffffffff cycle=415
+WEIGHT_ACCEPT job=1 beat=90 tlast=0 tstrb=0xffffffff cycle=417
+FEATURE_ACCEPT job=1 beat=103 tlast=0 tstrb=0xffffffff cycle=420
+WEIGHT_ACCEPT job=1 beat=91 tlast=0 tstrb=0xffffffff cycle=421
+FEATURE_ACCEPT job=1 beat=104 tlast=0 tstrb=0xffffffff cycle=422
+FEATURE_ACCEPT job=1 beat=105 tlast=0 tstrb=0xffffffff cycle=425
+WEIGHT_ACCEPT job=1 beat=92 tlast=0 tstrb=0xffffffff cycle=427
+FEATURE_ACCEPT job=1 beat=106 tlast=0 tstrb=0xffffffff cycle=429
+WEIGHT_ACCEPT job=1 beat=93 tlast=0 tstrb=0xffffffff cycle=430
+FEATURE_ACCEPT job=1 beat=107 tlast=0 tstrb=0xffffffff cycle=434
+WEIGHT_ACCEPT job=1 beat=94 tlast=0 tstrb=0xffffffff cycle=435
+FEATURE_ACCEPT job=1 beat=108 tlast=0 tstrb=0xffffffff cycle=436
+WEIGHT_ACCEPT job=1 beat=95 tlast=0 tstrb=0xffffffff cycle=437
+FEATURE_ACCEPT job=1 beat=109 tlast=0 tstrb=0xffffffff cycle=439
+WEIGHT_ACCEPT job=1 beat=96 tlast=0 tstrb=0xffffffff cycle=441
+FEATURE_ACCEPT job=1 beat=110 tlast=0 tstrb=0xffffffff cycle=443
+WEIGHT_ACCEPT job=1 beat=97 tlast=0 tstrb=0xffffffff cycle=447
+FEATURE_ACCEPT job=1 beat=111 tlast=0 tstrb=0xffffffff cycle=448
+FEATURE_ACCEPT job=1 beat=112 tlast=0 tstrb=0xffffffff cycle=450
+WEIGHT_ACCEPT job=1 beat=98 tlast=0 tstrb=0xffffffff cycle=450
+FEATURE_ACCEPT job=1 beat=113 tlast=0 tstrb=0xffffffff cycle=453
+WEIGHT_ACCEPT job=1 beat=99 tlast=0 tstrb=0xffffffff cycle=455
+FEATURE_ACCEPT job=1 beat=114 tlast=0 tstrb=0xffffffff cycle=457
+WEIGHT_ACCEPT job=1 beat=100 tlast=0 tstrb=0xffffffff cycle=457
+WEIGHT_ACCEPT job=1 beat=101 tlast=0 tstrb=0xffffffff cycle=461
+FEATURE_ACCEPT job=1 beat=115 tlast=0 tstrb=0xffffffff cycle=462
+FEATURE_ACCEPT job=1 beat=116 tlast=0 tstrb=0xffffffff cycle=464
+FEATURE_ACCEPT job=1 beat=117 tlast=0 tstrb=0xffffffff cycle=467
+WEIGHT_ACCEPT job=1 beat=102 tlast=0 tstrb=0xffffffff cycle=467
+WEIGHT_ACCEPT job=1 beat=103 tlast=0 tstrb=0xffffffff cycle=470
+FEATURE_ACCEPT job=1 beat=118 tlast=0 tstrb=0xffffffff cycle=471
+WEIGHT_ACCEPT job=1 beat=104 tlast=0 tstrb=0xffffffff cycle=475
+FEATURE_ACCEPT job=1 beat=119 tlast=0 tstrb=0xffffffff cycle=476
+WEIGHT_ACCEPT job=1 beat=105 tlast=0 tstrb=0xffffffff cycle=477
+FEATURE_ACCEPT job=1 beat=120 tlast=0 tstrb=0xffffffff cycle=478
+FEATURE_ACCEPT job=1 beat=121 tlast=0 tstrb=0xffffffff cycle=481
+WEIGHT_ACCEPT job=1 beat=106 tlast=0 tstrb=0xffffffff cycle=481
+FEATURE_ACCEPT job=1 beat=122 tlast=0 tstrb=0xffffffff cycle=485
+WEIGHT_ACCEPT job=1 beat=107 tlast=0 tstrb=0xffffffff cycle=487
+FEATURE_ACCEPT job=1 beat=123 tlast=0 tstrb=0xffffffff cycle=490
+WEIGHT_ACCEPT job=1 beat=108 tlast=0 tstrb=0xffffffff cycle=490
+FEATURE_ACCEPT job=1 beat=124 tlast=0 tstrb=0xffffffff cycle=492
+FEATURE_ACCEPT job=1 beat=125 tlast=0 tstrb=0xffffffff cycle=495
+WEIGHT_ACCEPT job=1 beat=109 tlast=0 tstrb=0xffffffff cycle=495
+WEIGHT_ACCEPT job=1 beat=110 tlast=0 tstrb=0xffffffff cycle=497
+FEATURE_ACCEPT job=1 beat=126 tlast=0 tstrb=0xffffffff cycle=499
+WEIGHT_ACCEPT job=1 beat=111 tlast=0 tstrb=0xffffffff cycle=501
+FEATURE_ACCEPT job=1 beat=127 tlast=0 tstrb=0xffffffff cycle=504
+FEATURE_ACCEPT job=1 beat=128 tlast=1 tstrb=0xffffffff cycle=506
+WEIGHT_ACCEPT job=1 beat=112 tlast=0 tstrb=0xffffffff cycle=507
+WEIGHT_ACCEPT job=1 beat=113 tlast=0 tstrb=0xffffffff cycle=510
+WEIGHT_ACCEPT job=1 beat=114 tlast=0 tstrb=0xffffffff cycle=515
+WEIGHT_ACCEPT job=1 beat=115 tlast=0 tstrb=0xffffffff cycle=517
+WEIGHT_ACCEPT job=1 beat=116 tlast=0 tstrb=0xffffffff cycle=521
+WEIGHT_ACCEPT job=1 beat=117 tlast=0 tstrb=0xffffffff cycle=527
+WEIGHT_ACCEPT job=1 beat=118 tlast=0 tstrb=0xffffffff cycle=530
+WEIGHT_ACCEPT job=1 beat=119 tlast=0 tstrb=0xffffffff cycle=535
+WEIGHT_ACCEPT job=1 beat=120 tlast=0 tstrb=0xffffffff cycle=537
+WEIGHT_ACCEPT job=1 beat=121 tlast=0 tstrb=0xffffffff cycle=541
+WEIGHT_ACCEPT job=1 beat=122 tlast=0 tstrb=0xffffffff cycle=547
+WEIGHT_ACCEPT job=1 beat=123 tlast=0 tstrb=0xffffffff cycle=550
+WEIGHT_ACCEPT job=1 beat=124 tlast=0 tstrb=0xffffffff cycle=555
+WEIGHT_ACCEPT job=1 beat=125 tlast=0 tstrb=0xffffffff cycle=557
+WEIGHT_ACCEPT job=1 beat=126 tlast=0 tstrb=0xffffffff cycle=561
+WEIGHT_ACCEPT job=1 beat=127 tlast=0 tstrb=0xffffffff cycle=567
+WEIGHT_ACCEPT job=1 beat=128 tlast=1 tstrb=0xffffffff cycle=570
+RESULT_VALID_FIRST job=1 cycle=1491
+RESULT_ACCEPT job=1 beat=1 tlast=0 cycle=1491
+RESULT_ACCEPT job=1 beat=2 tlast=0 cycle=1493
+RESULT_ACCEPT job=1 beat=3 tlast=0 cycle=1494
+RESULT_ACCEPT job=1 beat=4 tlast=0 cycle=1495
+RESULT_ACCEPT job=1 beat=5 tlast=0 cycle=1496
+RESULT_ACCEPT job=1 beat=6 tlast=0 cycle=1498
+RESULT_ACCEPT job=1 beat=7 tlast=0 cycle=1500
+RESULT_ACCEPT job=1 beat=8 tlast=0 cycle=1501
+RESULT_ACCEPT job=1 beat=9 tlast=0 cycle=1502
+RESULT_ACCEPT job=1 beat=10 tlast=0 cycle=1503
+RESULT_ACCEPT job=1 beat=11 tlast=0 cycle=1504
+RESULT_ACCEPT job=1 beat=12 tlast=0 cycle=1505
+RESULT_ACCEPT job=1 beat=13 tlast=0 cycle=1507
+RESULT_ACCEPT job=1 beat=14 tlast=0 cycle=1509
+RESULT_ACCEPT job=1 beat=15 tlast=0 cycle=1510
+RESULT_ACCEPT job=1 beat=16 tlast=0 cycle=1511
+RESULT_ACCEPT job=1 beat=17 tlast=0 cycle=1512
+RESULT_ACCEPT job=1 beat=18 tlast=0 cycle=1514
+RESULT_ACCEPT job=1 beat=19 tlast=0 cycle=1515
+RESULT_ACCEPT job=1 beat=20 tlast=0 cycle=1516
+RESULT_ACCEPT job=1 beat=21 tlast=0 cycle=1517
+RESULT_ACCEPT job=1 beat=22 tlast=0 cycle=1518
+RESULT_ACCEPT job=1 beat=23 tlast=0 cycle=1521
+RESULT_ACCEPT job=1 beat=24 tlast=0 cycle=1522
+RESULT_ACCEPT job=1 beat=25 tlast=0 cycle=1523
+RESULT_ACCEPT job=1 beat=26 tlast=0 cycle=1524
+RESULT_ACCEPT job=1 beat=27 tlast=0 cycle=1525
+RESULT_ACCEPT job=1 beat=28 tlast=0 cycle=1526
+RESULT_ACCEPT job=1 beat=29 tlast=0 cycle=1528
+RESULT_ACCEPT job=1 beat=30 tlast=0 cycle=1529
+RESULT_ACCEPT job=1 beat=31 tlast=0 cycle=1531
+RESULT_ACCEPT job=1 beat=32 tlast=0 cycle=1532
+RESULT_ACCEPT job=1 beat=33 tlast=0 cycle=1533
+RESULT_ACCEPT job=1 beat=34 tlast=0 cycle=1535
+RESULT_ACCEPT job=1 beat=35 tlast=0 cycle=1536
+RESULT_ACCEPT job=1 beat=36 tlast=0 cycle=1537
+RESULT_ACCEPT job=1 beat=37 tlast=0 cycle=1538
+RESULT_ACCEPT job=1 beat=38 tlast=0 cycle=1539
+RESULT_ACCEPT job=1 beat=39 tlast=0 cycle=1540
+RESULT_ACCEPT job=1 beat=40 tlast=0 cycle=1542
+RESULT_ACCEPT job=1 beat=41 tlast=0 cycle=1543
+RESULT_ACCEPT job=1 beat=42 tlast=0 cycle=1544
+RESULT_ACCEPT job=1 beat=43 tlast=0 cycle=1545
+RESULT_ACCEPT job=1 beat=44 tlast=0 cycle=1546
+RESULT_ACCEPT job=1 beat=45 tlast=0 cycle=1547
+RESULT_ACCEPT job=1 beat=46 tlast=0 cycle=1549
+RESULT_ACCEPT job=1 beat=47 tlast=0 cycle=1550
+RESULT_ACCEPT job=1 beat=48 tlast=0 cycle=1551
+RESULT_ACCEPT job=1 beat=49 tlast=0 cycle=1553
+RESULT_ACCEPT job=1 beat=50 tlast=0 cycle=1554
+RESULT_ACCEPT job=1 beat=51 tlast=0 cycle=1556
+RESULT_ACCEPT job=1 beat=52 tlast=0 cycle=1557
+RESULT_ACCEPT job=1 beat=53 tlast=0 cycle=1558
+RESULT_ACCEPT job=1 beat=54 tlast=0 cycle=1559
+RESULT_ACCEPT job=1 beat=55 tlast=0 cycle=1560
+RESULT_ACCEPT job=1 beat=56 tlast=0 cycle=1561
+RESULT_ACCEPT job=1 beat=57 tlast=0 cycle=1564
+RESULT_ACCEPT job=1 beat=58 tlast=0 cycle=1565
+RESULT_ACCEPT job=1 beat=59 tlast=0 cycle=1566
+RESULT_ACCEPT job=1 beat=60 tlast=0 cycle=1567
+RESULT_ACCEPT job=1 beat=61 tlast=0 cycle=1568
+RESULT_ACCEPT job=1 beat=62 tlast=0 cycle=1570
+RESULT_ACCEPT job=1 beat=63 tlast=0 cycle=1571
+RESULT_ACCEPT job=1 beat=64 tlast=0 cycle=1572
+RESULT_ACCEPT job=1 beat=65 tlast=0 cycle=1573
+RESULT_ACCEPT job=1 beat=66 tlast=0 cycle=1575
+RESULT_ACCEPT job=1 beat=67 tlast=0 cycle=1577
+RESULT_ACCEPT job=1 beat=68 tlast=0 cycle=1578
+RESULT_ACCEPT job=1 beat=69 tlast=0 cycle=1579
+RESULT_ACCEPT job=1 beat=70 tlast=0 cycle=1580
+RESULT_ACCEPT job=1 beat=71 tlast=0 cycle=1581
+RESULT_ACCEPT job=1 beat=72 tlast=0 cycle=1582
+RESULT_ACCEPT job=1 beat=73 tlast=0 cycle=1584
+RESULT_ACCEPT job=1 beat=74 tlast=0 cycle=1586
+RESULT_ACCEPT job=1 beat=75 tlast=0 cycle=1587
+RESULT_ACCEPT job=1 beat=76 tlast=0 cycle=1588
+RESULT_ACCEPT job=1 beat=77 tlast=0 cycle=1589
+RESULT_ACCEPT job=1 beat=78 tlast=0 cycle=1591
+RESULT_ACCEPT job=1 beat=79 tlast=0 cycle=1592
+RESULT_ACCEPT job=1 beat=80 tlast=0 cycle=1593
+RESULT_ACCEPT job=1 beat=81 tlast=0 cycle=1594
+RESULT_ACCEPT job=1 beat=82 tlast=0 cycle=1595
+RESULT_ACCEPT job=1 beat=83 tlast=0 cycle=1598
+RESULT_ACCEPT job=1 beat=84 tlast=0 cycle=1599
+RESULT_ACCEPT job=1 beat=85 tlast=0 cycle=1600
+RESULT_ACCEPT job=1 beat=86 tlast=0 cycle=1601
+RESULT_ACCEPT job=1 beat=87 tlast=0 cycle=1602
+RESULT_ACCEPT job=1 beat=88 tlast=0 cycle=1603
+RESULT_ACCEPT job=1 beat=89 tlast=0 cycle=1605
+RESULT_ACCEPT job=1 beat=90 tlast=0 cycle=1606
+RESULT_ACCEPT job=1 beat=91 tlast=0 cycle=1608
+RESULT_ACCEPT job=1 beat=92 tlast=0 cycle=1609
+RESULT_ACCEPT job=1 beat=93 tlast=0 cycle=1610
+RESULT_ACCEPT job=1 beat=94 tlast=0 cycle=1612
+RESULT_ACCEPT job=1 beat=95 tlast=0 cycle=1613
+RESULT_ACCEPT job=1 beat=96 tlast=0 cycle=1614
+RESULT_ACCEPT job=1 beat=97 tlast=0 cycle=1615
+RESULT_ACCEPT job=1 beat=98 tlast=0 cycle=1616
+RESULT_ACCEPT job=1 beat=99 tlast=0 cycle=1617
+RESULT_ACCEPT job=1 beat=100 tlast=0 cycle=1619
+RESULT_ACCEPT job=1 beat=101 tlast=0 cycle=1620
+RESULT_ACCEPT job=1 beat=102 tlast=0 cycle=1621
+RESULT_ACCEPT job=1 beat=103 tlast=0 cycle=1622
+RESULT_ACCEPT job=1 beat=104 tlast=0 cycle=1623
+RESULT_ACCEPT job=1 beat=105 tlast=0 cycle=1624
+RESULT_ACCEPT job=1 beat=106 tlast=0 cycle=1626
+RESULT_ACCEPT job=1 beat=107 tlast=0 cycle=1627
+RESULT_ACCEPT job=1 beat=108 tlast=0 cycle=1628
+RESULT_ACCEPT job=1 beat=109 tlast=0 cycle=1630
+RESULT_ACCEPT job=1 beat=110 tlast=0 cycle=1631
+RESULT_ACCEPT job=1 beat=111 tlast=0 cycle=1633
+RESULT_ACCEPT job=1 beat=112 tlast=0 cycle=1634
+RESULT_ACCEPT job=1 beat=113 tlast=0 cycle=1635
+RESULT_ACCEPT job=1 beat=114 tlast=0 cycle=1636
+RESULT_ACCEPT job=1 beat=115 tlast=0 cycle=1637
+RESULT_ACCEPT job=1 beat=116 tlast=0 cycle=1638
+RESULT_ACCEPT job=1 beat=117 tlast=0 cycle=1641
+RESULT_ACCEPT job=1 beat=118 tlast=0 cycle=1642
+RESULT_ACCEPT job=1 beat=119 tlast=0 cycle=1643
+RESULT_ACCEPT job=1 beat=120 tlast=0 cycle=1644
+RESULT_ACCEPT job=1 beat=121 tlast=0 cycle=1645
+RESULT_ACCEPT job=1 beat=122 tlast=0 cycle=1647
+RESULT_ACCEPT job=1 beat=123 tlast=0 cycle=1648
+RESULT_ACCEPT job=1 beat=124 tlast=0 cycle=1649
+RESULT_ACCEPT job=1 beat=125 tlast=0 cycle=1650
+RESULT_ACCEPT job=1 beat=126 tlast=0 cycle=1652
+RESULT_ACCEPT job=1 beat=127 tlast=0 cycle=1654
+RESULT_ACCEPT job=1 beat=128 tlast=1 cycle=1655
+AXIL_READ_DONE job=1 addr=0x0 data=0x06000000 cycle=1709
+AXIL_WRITE_DONE job=1 addr=0x0 data=0x00010000 cycle=1714
+AXIL_READ_DONE job=1 addr=0x0 data=0x04000000 cycle=1722
+
+MATRIX_BEGIN JOB=1 ROWS=64 COLS=64
+127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -122 127 -128 127 -128 127 -122 127 -128 127 -128 127 -122 127 -128 127 -128 127 -122 127 -128 -128 -128 127 -122 127 -128 -128 -128 127 -122 127 -128 -128 -128 -128 -106
+-128 -128 -59 127 -128 127 -128 127 -128 127 -128 127 -128 -50 -128 127 -128 127 -128 -50 -128 127 -128 127 -128 -50 -128 -128 -128 127 -128 -50 -128 -128 21 127 -128 -50 -128 -128 21 -128 -128 -50 -128 -128 21 -128 127 -50 -128 -128 21 -128 127 -128 -128 -128 21 -128 127 -128 127 -128
+-79 127 127 -128 127 -128 127 -128 57 -128 127 -128 127 -128 57 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -128 -128 57 -128 127 -128 127 -128 57 -128 127 -128 127 -128 57 -128 -67 -128 127 -128 57 -128 -67 -36 127 -128 57 -128 -67 -36 -128 -128
+127 -128 -128 -128 -128 -48 -128 -128 21 -128 -128 -50 -128 127 21 -128 -128 -50 -128 127 -128 -128 -128 -50 -128 127 -128 127 -128 -50 -128 127 127 127 -128 -50 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 -4 -128 127 -128 70 -42 127 -128 127 -128 86 -42 -128 -128 127 -128 86 -42 -128 127 127 -128 86 -42 -128 127 -128 -128 86 -42 -128 127 -128 127 86 -42 -128 127 -128 127 -128 -42 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128
+127 -128 124 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -103 127 -128 127 -128 127 -103 -128 -128 127 -128 127 -103 -128 127 127 -128 127 -103 -128 127 -128 -128
+127 -128 127 22 -128 127 -128 -128 -128 -14 -128 127 -128 127 -128 -14 -128 127 -128 127 -128 -14 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 58 -128 127 -128 127 -128 58 127 127 -128 127 -128 58 127 -128 -128 127 -128 58 127 -128 127 127
+-128 127 127 3 -50 -114 127 127 -128 75 -43 -128 127 -128 -128 75 -43 -128 127 -128 127 75 -43 -128 127 -128 127 -128 -43 -128 127 -128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -88 -128 127 -128 127 -128 -88 -51 127 -128 127 -128 -88 -51 -128 -128
+127 -128 -128 -103 127 -128 -42 -128 127 -128 127 -128 -42 86 127 -128 127 -128 -42 86 -128 -128 127 -128 -42 86 -128 127 127 -128 -42 86 127 127 -128 -128 -42 86 -128 127 -128 127 -42 86 -128 127 -128 127 -128 86 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 -128 -59 127 -128 127 -128 127 -128 127 -128 127 -128 -50 -128 127 -128 127 -128 -50 -128 127 -128 127 -128 -50 -128 -128 -128 127 -128 -50 -128 -128 21 127 -128 -50 -128 -128 21 -128 -128 -50 -128 -128 21 -128 127 -50 -128 -128 21 -128 127 -128 -128 -128 21 -128 127 -128 127 -128
+-108 -128 -36 -76 127 -128 127 18 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -122 127 -128 127 -128 127 -122 -128 -128 127 -128 127 -122 -128 98 127 -128 127 -122 -128 98 -128 -128
+127 -128 127 -37 -128 127 -128 -128 -126 -49 -128 127 -128 127 -126 -49 -128 127 -128 127 -128 -49 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 127 -128 127 -128 -33 -128 127 -128 127 -128 -45 -128 -128 -128 127 -128 -45 -128 -128 56 127 -128 -45 -128 -128 56 -128 -128 -45 -128 -128 127 -128 127 -45 -128 -128 56 -128 127 -128 -128 -128 56 -128 127 -128 127 -128 56 -128 127 -128 127 -128 56 -128 127 -128 127 -128 127 -128
+127 -128 124 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -103 127 -128 127 -128 127 -103 -128 -128 127 -128 127 -103 -128 127 127 -128 127 -103 -128 127 -128 -128
+127 -128 127 22 -128 127 -128 -128 -128 -14 -128 127 -128 127 -128 -14 -128 127 -128 127 -128 -14 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 58 -128 127 -128 127 -128 58 127 127 -128 127 -128 58 127 -128 -128 127 -128 58 127 -128 127 127
+-128 -128 -128 127 54 -128 127 127 -128 88 -44 -128 127 -128 -128 88 -44 -128 127 -128 127 88 -44 -128 127 -128 127 -128 -44 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -62 -128
+127 127 127 -128 127 -128 45 -128 127 -128 127 -128 45 -128 127 -128 127 -128 45 -128 -128 -128 127 -128 45 -128 -128 -44 127 -128 45 -128 -128 -44 -128 -128 45 -128 -128 -44 -128 127 45 -128 -128 -44 -128 127 -128 -128 -128 -44 -128 127 -128 127 -128 -44 -128 127 -128 127 -128 -56
+-79 127 -128 127 -128 127 -128 -53 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 99 -128 127 -128 127 127 99 -6 127 -128 127 -128 99 -6 -80 -128 127 -128 99 -6 -80 127 127 -128 99 -6 -80 127 -128 -128 99 -6 -80 127 -128 127 105
+-108 -128 -36 -76 127 -128 127 18 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -122 127 -128 127 -128 127 -122 -128 -128 127 -128 127 -122 -128 98 127 -128 127 -122 -128 98 -128 -128
+127 -128 127 -37 -128 127 -128 -128 -126 -49 -128 127 -128 127 -126 -49 -128 127 -128 127 -128 -49 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 65 -128 127 -128 127 -128 65 -59 127 -128 127 -128 65 -59 -128 -128 127 -128 65 -128 -128 127 127 -128 65 -59 -128 127 -128 -128 65 -59 -128 127 -128 127 65 -59 -128 127 -128 127 -128 -59 -128 127 -128 127 -128 127 -128
+66 127 127 -128 127 -128 127 -105 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -128 -128 127 -128 127 -128 -128 -67 127 -128 127 -128 -128 -67 -128 -128 127 -128 -128 -67 -128 127 127 -128 -128 -67 -128 127 -128 -128 -128 -67 -128 127 -128 127 -128 -67 -128 127 -128 127 -128 -75
+-50 127 -128 0 -128 127 -128 -92 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 127 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -9 -128 127 -128 127 -128 -9 -128 127
+-128 -128 -128 127 54 -128 127 127 -128 88 -44 -128 127 -128 -128 88 -44 -128 127 -128 127 88 -44 -128 127 -128 127 -128 -44 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -62 -128
+127 127 127 -128 127 -128 45 -128 127 -128 127 -128 45 -128 127 -128 127 -128 45 -128 -128 -128 127 -128 45 -128 -128 -44 127 -128 45 -128 -128 -44 -128 -128 45 -128 -128 -44 -128 127 45 -128 -128 -44 -128 127 -128 -128 -128 -44 -128 127 -128 127 -128 -44 -128 127 -128 127 -128 -56
+-128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -92 -128 127 -128 127 -128 -92 127 127 -128 127 -128 -92 127 -128 -128 127 -128 -92 127 -128 127 122
+-128 127 127 -127 -128 -128 127 127 -128 -67 -128 -128 127 -128 -128 -67 -128 -128 127 -128 127 -67 -128 -128 127 -128 127 -128 -128 -128 127 -128 -128 -128 127 -128 127 -128 127 -128 127 -105 127 -128 127 -128 127 -105 53 -128 127 -128 127 -105 53 87 127 -128 127 -105 53 87 -128 -128
+127 -128 -128 -128 -10 65 -128 -128 127 -128 -59 65 -128 127 127 -128 -59 65 -128 127 -128 -128 -59 65 -128 127 -128 127 -59 65 -128 127 127 127 -128 65 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 34 -128 127 -128 127 -128 34 -128 127
+-128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 65 -128 127 -128 127 -128 65 -59 127 -128 127 -128 65 -59 -128 -128 127 -128 65 -128 -128 127 127 -128 65 -59 -128 127 -128 -128 65 -59 -128 127 -128 127 65 -59 -128 127 -128 127 -128 -59 -128 127 -128 127 -128 127 -128
+66 127 127 -128 127 -128 127 -105 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -128 -128 127 -128 127 -128 -128 -67 127 -128 127 -128 -128 -67 -128 -128 127 -128 -128 -67 -128 127 127 -128 -128 -67 -128 127 -128 -128 -128 -67 -128 127 -128 127 -128 -67 -128 127 -128 127 -128 -75
+127 -128 127 123 -128 127 -128 -80 -6 99 -128 127 -128 127 -6 99 -128 127 -128 127 -128 99 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -53 -128 127 -128 127 -128 -53 83 127 -128 127 -128 -53 83 -128 -128 127 -128 -53 83 -128 127 127
+-128 127 127 -128 -128 -128 45 127 -128 -44 -128 -128 45 -128 -128 -44 -128 -128 45 -128 127 -44 -128 -128 45 -128 127 -128 -128 -128 45 -128 -128 -128 127 -128 45 -128 127 -128 127 -128 45 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 86 -128
+127 -128 -128 -34 -128 -5 -128 -128 -128 -128 -128 -1 -128 127 -128 -128 -128 -1 -128 127 -128 -128 -128 -1 -128 127 -128 127 -128 -1 -128 127 -128 127 -128 -1 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -92 -128 127 -128 127 -128 -92 127 127 -128 127 -128 -92 127 -128 -128 127 -128 -92 127 -128 127 122
+-128 127 127 -127 -128 -128 127 127 -128 -67 -128 -128 127 -128 -128 -67 -128 -128 127 -128 127 -67 -128 -128 127 -128 127 -128 -128 -128 127 -128 -128 -128 127 -128 127 -128 127 -128 127 -105 127 -128 127 -128 127 -105 53 -128 127 -128 127 -105 53 87 127 -128 127 -105 53 87 -128 -128
+127 -128 127 -128 7 -128 -128 -128 127 -128 56 -128 -128 -45 127 -128 56 -128 -128 -45 -128 -128 56 -128 -128 -45 -128 127 56 -128 -128 -45 -128 127 -128 -128 -128 -45 -128 127 -128 127 -128 -45 -128 127 -128 127 -128 -45 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -43 127
+-128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -49 -128 127 -128 127 127 -49 -126 127 -128 127 -128 -49 -126 -128 -128 127 -128 -49 -126 -128 127 127 -128 -49 -126 -128 127 -128 -128 -49 -126 -128 127 -128 127 -45
+-128 -128 -128 -128 127 -128 127 -122 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 18 127 -128 127 -128 127 18 -128 -128 127 -128 127 18 -128 127 127 -128 127 18 -128 127 -128 -128
+127 -128 127 123 -128 127 -128 -80 -6 99 -128 127 -128 127 -6 99 -128 127 -128 127 -128 99 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -53 -128 127 -128 127 -128 -53 83 127 -128 127 -128 -53 83 -128 -128 127 -128 -53 83 -128 127 127
+-128 127 127 -128 -128 -128 45 127 -128 -44 -128 -128 45 -128 -128 -44 -128 -128 45 -128 127 -44 -128 -128 45 -128 127 -128 -128 -128 45 -128 -128 -128 127 -128 45 -128 127 -128 127 -128 45 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 86 -128
+-50 127 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -43 -128 127 -128 127 -128 -43 75 127 -128 127 -128 -128 75 -128 -128 127 -128 -43 75 -128 127 127 -128 -43 75 -128 127 -128 -128 -43 75 -128 127 -128 127 -43 75 -128 127 -128 127 -128 65
+66 127 -128 127 -128 127 -128 58 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -14 -128 127 -128 127 127 -14 -128 127 -128 127 -128 -14 -128 -128 -128 127 -128 -14 -128 -128 -10 127 -128 -14 -128 -128 -10 -128 -128 -14 -128 -128 -10 -128 127 -6
+-128 -128 -58 -128 127 -128 127 -103 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 55 -128 127 -128 127 -128 55 -128 127 -128 127 -128 55 -128 -128 -128
+127 -128 127 -128 7 -128 -128 -128 127 -128 56 -128 -128 -45 127 -128 56 -128 -128 -45 -128 -128 56 -128 -128 -45 -128 127 56 -128 -128 -45 -128 127 -128 -128 -128 -45 -128 127 -128 127 -128 -45 -128 127 -128 127 -128 -45 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -43 127
+-128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -49 -128 127 -128 127 127 -49 -126 127 -128 127 -128 -49 -126 -128 -128 127 -128 -49 -126 -128 127 127 -128 -49 -126 -128 127 -128 -128 -49 -126 -128 127 -128 127 -45
+-79 127 127 -128 127 -128 127 -128 57 -128 127 -128 127 -128 57 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -128 -128 57 -128 127 -128 127 -128 57 -128 127 -128 127 -128 57 -128 -67 -128 127 -128 57 -128 -67 -36 127 -128 57 -128 -67 -36 -128 -128
+127 -128 -128 -128 -128 -48 -128 -128 21 -128 -128 -50 -128 127 21 -128 -128 -50 -128 127 -128 -128 -128 -50 -128 127 -128 127 -128 -50 -128 127 127 127 -128 -50 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 -4 -128 127 -128 70 -42 127 -128 127 -128 86 -42 -128 -128 127 -128 86 -42 -128 127 127 -128 86 -42 -128 127 -128 -128 86 -42 -128 127 -128 127 86 -42 -128 127 -128 127 -128 -42 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128
+-50 127 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -43 -128 127 -128 127 -128 -43 75 127 -128 127 -128 -128 75 -128 -128 127 -128 -43 75 -128 127 127 -128 -43 75 -128 127 -128 -128 -43 75 -128 127 -128 127 -43 75 -128 127 -128 127 -128 65
+66 127 -128 127 -128 127 -128 58 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -14 -128 127 -128 127 127 -14 -128 127 -128 127 -128 -14 -128 -128 -128 127 -128 -14 -128 -128 -10 127 -128 -14 -128 -128 -10 -128 -128 -14 -128 -128 -10 -128 127 -6
+-128 127 127 3 -50 -114 127 127 -128 75 -43 -128 127 -128 -128 75 -43 -128 127 -128 127 75 -43 -128 127 -128 127 -128 -43 -128 127 -128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -88 -128 127 -128 127 -128 -88 -51 127 -128 127 -128 -88 -51 -128 -128
+127 -128 -128 -103 127 -128 -42 -128 127 -128 127 -128 -42 86 127 -128 127 -128 -42 86 -128 -128 127 -128 -42 86 -128 127 127 -128 -42 86 127 127 -128 -128 -42 86 -128 127 -128 127 -42 86 -128 127 -128 127 -128 86 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 -128 -59 127 -128 127 -128 127 -128 127 -128 127 -128 -50 -128 127 -128 127 -128 -50 -128 127 -128 127 -128 -50 -128 -128 -128 127 -128 -50 -128 -128 21 127 -128 -50 -128 -128 21 -128 -128 -50 -128 -128 21 -128 127 -50 -128 -128 21 -128 127 -128 -128 -128 21 -128 127 -128 127 -128
+-79 127 127 -128 127 -128 127 -128 57 -128 127 -128 127 -128 57 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -128 -128 57 -128 127 -128 127 -128 57 -128 127 -128 127 -128 57 -128 -67 -128 127 -128 57 -128 -67 -36 127 -128 57 -128 -67 -36 -128 -128
+127 -128 -128 -128 -128 -48 -128 -128 21 -128 -128 -50 -128 127 21 -128 -128 -50 -128 127 -128 -128 -128 -50 -128 127 -128 127 -128 -50 -128 127 127 127 -128 -50 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 127 -128 127 -128 -33 -128 127 -128 127 -128 -45 -128 -128 -128 127 -128 -45 -128 -128 56 127 -128 -45 -128 -128 56 -128 -128 -45 -128 -128 127 -128 127 -45 -128 -128 56 -128 127 -128 -128 -128 56 -128 127 -128 127 -128 56 -128 127 -128 127 -128 56 -128 127 -128 127 -128 127 -128
+127 -128 124 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -103 127 -128 127 -128 127 -103 -128 -128 127 -128 127 -103 -128 127 127 -128 127 -103 -128 127 -128 -128
+127 -128 127 22 -128 127 -128 -128 -128 -14 -128 127 -128 127 -128 -14 -128 127 -128 127 -128 -14 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 58 -128 127 -128 127 -128 58 127 127 -128 127 -128 58 127 -128 -128 127 -128 58 127 -128 127 127
+-128 127 127 3 -50 -114 127 127 -128 75 -43 -128 127 -128 -128 75 -43 -128 127 -128 127 75 -43 -128 127 -128 127 -128 -43 -128 127 -128 -128 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 -88 -128 127 -128 127 -128 -88 -51 127 -128 127 -128 -88 -51 -128 -128
+127 -128 -128 -103 127 -128 -42 -128 127 -128 127 -128 -42 86 127 -128 127 -128 -42 86 -128 -128 127 -128 -42 86 -128 127 127 -128 -42 86 127 127 -128 -128 -42 86 -128 127 -128 127 -42 86 -128 127 -128 127 -128 86 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-79 127 -128 127 -128 127 -128 -53 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 99 -128 127 -128 127 127 99 -6 127 -128 127 -128 99 -6 -80 -128 127 -128 99 -6 -80 127 127 -128 99 -6 -80 127 -128 -128 99 -6 -80 127 -128 127 105
+-108 -128 -36 -76 127 -128 127 18 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -122 127 -128 127 -128 127 -122 -128 -128 127 -128 127 -122 -128 98 127 -128 127 -122 -128 98 -128 -128
+127 -128 127 -37 -128 127 -128 -128 -126 -49 -128 127 -128 127 -126 -49 -128 127 -128 127 -128 -49 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127 -128 127
+-128 127 -128 127 -128 -33 -128 127 -128 127 -128 -45 -128 -128 -128 127 -128 -45 -128 -128 56 127 -128 -45 -128 -128 56 -128 -128 -45 -128 -128 127 -128 127 -45 -128 -128 56 -128 127 -128 -128 -128 56 -128 127 -128 127 -128 56 -128 127 -128 127 -128 56 -128 127 -128 127 -128 127 -128
+MATRIX_END JOB=1
+
+JOB_ID = 1
+AXI-Lite readback SHIFT = 0x04000000
+AXI-Lite readback FL = 0x00000040
+AXI-Lite readback FWBN = 0x00000002
+AXI-Lite readback WWBN = 0x00000002
+Feature accepted beats = 128
+Expected feature beats = 128
+Weight accepted beats = 128
+Expected weight beats = 128
+Result first valid cycle = 1491
+Result accepted beats = 128
+Expected result beats = 128
+Mismatch count = 0
+Protocol error count = 0
+TLAST check = PASS
+Output all zero check = PASS
+Busy observed = 1
+Done observed = 1
+Clear done observed = 1
+PASS
+JOB_1_END cycle=1733
+NO_DUT_RESET_BETWEEN_JOBS cycle=1733
+JOB_2_START cycle=1738
+AXIL_WRITE_DONE job=2 addr=0x0 data=0x00000000 cycle=1742
+AXIL_WRITE_DONE job=2 addr=0x4 data=0x00000040 cycle=1747
+AXIL_WRITE_DONE job=2 addr=0x8 data=0x00000002 cycle=1752
+AXIL_WRITE_DONE job=2 addr=0xc data=0x00000002 cycle=1757
+AXIL_READ_DONE job=2 addr=0x0 data=0x04000000 cycle=1762
+CONFIG_READBACK job=2 addr=0x0 raw=0x04000000 masked=0x00000000 expected=0x00000000 cycle=1763
+AXIL_READ_DONE job=2 addr=0x4 data=0x00000040 cycle=1767
+CONFIG_READBACK job=2 addr=0x4 raw=0x00000040 masked=0x00000040 expected=0x00000040 cycle=1768
+AXIL_READ_DONE job=2 addr=0x8 data=0x00000002 cycle=1772
+CONFIG_READBACK job=2 addr=0x8 raw=0x00000002 masked=0x00000002 expected=0x00000002 cycle=1773
+AXIL_READ_DONE job=2 addr=0xc data=0x00000002 cycle=1777
+CONFIG_READBACK job=2 addr=0xc raw=0x00000002 masked=0x00000002 expected=0x00000002 cycle=1778
+AXIL_READ_DONE job=2 addr=0x0 data=0x04000000 cycle=1782
+FEATURE_ACCEPT job=2 beat=1 tlast=0 tstrb=0xffffffff cycle=1788
+WEIGHT_ACCEPT job=2 beat=1 tlast=0 tstrb=0xffffffff cycle=1788
+FEATURE_ACCEPT job=2 beat=2 tlast=0 tstrb=0xffffffff cycle=1790
+WEIGHT_ACCEPT job=2 beat=2 tlast=0 tstrb=0xffffffff cycle=1791
+FEATURE_ACCEPT job=2 beat=3 tlast=0 tstrb=0xffffffff cycle=1794
+FEATURE_ACCEPT job=2 beat=4 tlast=0 tstrb=0xffffffff cycle=1796
+WEIGHT_ACCEPT job=2 beat=3 tlast=0 tstrb=0xffffffff cycle=1797
+FEATURE_ACCEPT job=2 beat=5 tlast=0 tstrb=0xffffffff cycle=1800
+WEIGHT_ACCEPT job=2 beat=4 tlast=0 tstrb=0xffffffff cycle=1801
+FEATURE_ACCEPT job=2 beat=6 tlast=0 tstrb=0xffffffff cycle=1802
+WEIGHT_ACCEPT job=2 beat=5 tlast=0 tstrb=0xffffffff cycle=1803
+FEATURE_ACCEPT job=2 beat=7 tlast=0 tstrb=0xffffffff cycle=1806
+FEATURE_ACCEPT job=2 beat=8 tlast=0 tstrb=0xffffffff cycle=1808
+WEIGHT_ACCEPT job=2 beat=6 tlast=0 tstrb=0xffffffff cycle=1808
+AXIL_READ_DONE job=2 addr=0x0 data=0x01000000 cycle=1810
+WEIGHT_ACCEPT job=2 beat=7 tlast=0 tstrb=0xffffffff cycle=1811
+FEATURE_ACCEPT job=2 beat=9 tlast=0 tstrb=0xffffffff cycle=1812
+FEATURE_ACCEPT job=2 beat=10 tlast=0 tstrb=0xffffffff cycle=1814
+WEIGHT_ACCEPT job=2 beat=8 tlast=0 tstrb=0xffffffff cycle=1817
+FEATURE_ACCEPT job=2 beat=11 tlast=0 tstrb=0xffffffff cycle=1818
+FEATURE_ACCEPT job=2 beat=12 tlast=0 tstrb=0xffffffff cycle=1820
+WEIGHT_ACCEPT job=2 beat=9 tlast=0 tstrb=0xffffffff cycle=1821
+WEIGHT_ACCEPT job=2 beat=10 tlast=0 tstrb=0xffffffff cycle=1823
+FEATURE_ACCEPT job=2 beat=13 tlast=0 tstrb=0xffffffff cycle=1824
+FEATURE_ACCEPT job=2 beat=14 tlast=0 tstrb=0xffffffff cycle=1826
+WEIGHT_ACCEPT job=2 beat=11 tlast=0 tstrb=0xffffffff cycle=1828
+FEATURE_ACCEPT job=2 beat=15 tlast=0 tstrb=0xffffffff cycle=1830
+WEIGHT_ACCEPT job=2 beat=12 tlast=0 tstrb=0xffffffff cycle=1831
+FEATURE_ACCEPT job=2 beat=16 tlast=0 tstrb=0xffffffff cycle=1832
+FEATURE_ACCEPT job=2 beat=17 tlast=0 tstrb=0xffffffff cycle=1836
+WEIGHT_ACCEPT job=2 beat=13 tlast=0 tstrb=0xffffffff cycle=1837
+FEATURE_ACCEPT job=2 beat=18 tlast=0 tstrb=0xffffffff cycle=1838
+WEIGHT_ACCEPT job=2 beat=14 tlast=0 tstrb=0xffffffff cycle=1841
+FEATURE_ACCEPT job=2 beat=19 tlast=0 tstrb=0xffffffff cycle=1842
+WEIGHT_ACCEPT job=2 beat=15 tlast=0 tstrb=0xffffffff cycle=1843
+FEATURE_ACCEPT job=2 beat=20 tlast=0 tstrb=0xffffffff cycle=1844
+FEATURE_ACCEPT job=2 beat=21 tlast=0 tstrb=0xffffffff cycle=1848
+WEIGHT_ACCEPT job=2 beat=16 tlast=0 tstrb=0xffffffff cycle=1848
+FEATURE_ACCEPT job=2 beat=22 tlast=0 tstrb=0xffffffff cycle=1850
+WEIGHT_ACCEPT job=2 beat=17 tlast=0 tstrb=0xffffffff cycle=1851
+FEATURE_ACCEPT job=2 beat=23 tlast=0 tstrb=0xffffffff cycle=1854
+FEATURE_ACCEPT job=2 beat=24 tlast=0 tstrb=0xffffffff cycle=1856
+WEIGHT_ACCEPT job=2 beat=18 tlast=0 tstrb=0xffffffff cycle=1857
+FEATURE_ACCEPT job=2 beat=25 tlast=0 tstrb=0xffffffff cycle=1860
+WEIGHT_ACCEPT job=2 beat=19 tlast=0 tstrb=0xffffffff cycle=1861
+FEATURE_ACCEPT job=2 beat=26 tlast=0 tstrb=0xffffffff cycle=1862
+WEIGHT_ACCEPT job=2 beat=20 tlast=0 tstrb=0xffffffff cycle=1863
+FEATURE_ACCEPT job=2 beat=27 tlast=0 tstrb=0xffffffff cycle=1866
+FEATURE_ACCEPT job=2 beat=28 tlast=0 tstrb=0xffffffff cycle=1868
+WEIGHT_ACCEPT job=2 beat=21 tlast=0 tstrb=0xffffffff cycle=1868
+WEIGHT_ACCEPT job=2 beat=22 tlast=0 tstrb=0xffffffff cycle=1871
+FEATURE_ACCEPT job=2 beat=29 tlast=0 tstrb=0xffffffff cycle=1872
+FEATURE_ACCEPT job=2 beat=30 tlast=0 tstrb=0xffffffff cycle=1874
+WEIGHT_ACCEPT job=2 beat=23 tlast=0 tstrb=0xffffffff cycle=1877
+FEATURE_ACCEPT job=2 beat=31 tlast=0 tstrb=0xffffffff cycle=1878
+FEATURE_ACCEPT job=2 beat=32 tlast=0 tstrb=0xffffffff cycle=1880
+WEIGHT_ACCEPT job=2 beat=24 tlast=0 tstrb=0xffffffff cycle=1881
+WEIGHT_ACCEPT job=2 beat=25 tlast=0 tstrb=0xffffffff cycle=1883
+FEATURE_ACCEPT job=2 beat=33 tlast=0 tstrb=0xffffffff cycle=1884
+FEATURE_ACCEPT job=2 beat=34 tlast=0 tstrb=0xffffffff cycle=1886
+WEIGHT_ACCEPT job=2 beat=26 tlast=0 tstrb=0xffffffff cycle=1888
+FEATURE_ACCEPT job=2 beat=35 tlast=0 tstrb=0xffffffff cycle=1890
+WEIGHT_ACCEPT job=2 beat=27 tlast=0 tstrb=0xffffffff cycle=1891
+FEATURE_ACCEPT job=2 beat=36 tlast=0 tstrb=0xffffffff cycle=1892
+FEATURE_ACCEPT job=2 beat=37 tlast=0 tstrb=0xffffffff cycle=1896
+WEIGHT_ACCEPT job=2 beat=28 tlast=0 tstrb=0xffffffff cycle=1897
+FEATURE_ACCEPT job=2 beat=38 tlast=0 tstrb=0xffffffff cycle=1898
+WEIGHT_ACCEPT job=2 beat=29 tlast=0 tstrb=0xffffffff cycle=1901
+FEATURE_ACCEPT job=2 beat=39 tlast=0 tstrb=0xffffffff cycle=1902
+WEIGHT_ACCEPT job=2 beat=30 tlast=0 tstrb=0xffffffff cycle=1903
+FEATURE_ACCEPT job=2 beat=40 tlast=0 tstrb=0xffffffff cycle=1904
+FEATURE_ACCEPT job=2 beat=41 tlast=0 tstrb=0xffffffff cycle=1908
+WEIGHT_ACCEPT job=2 beat=31 tlast=0 tstrb=0xffffffff cycle=1908
+FEATURE_ACCEPT job=2 beat=42 tlast=0 tstrb=0xffffffff cycle=1910
+WEIGHT_ACCEPT job=2 beat=32 tlast=0 tstrb=0xffffffff cycle=1911
+FEATURE_ACCEPT job=2 beat=43 tlast=0 tstrb=0xffffffff cycle=1914
+FEATURE_ACCEPT job=2 beat=44 tlast=0 tstrb=0xffffffff cycle=1916
+WEIGHT_ACCEPT job=2 beat=33 tlast=0 tstrb=0xffffffff cycle=1917
+FEATURE_ACCEPT job=2 beat=45 tlast=0 tstrb=0xffffffff cycle=1920
+WEIGHT_ACCEPT job=2 beat=34 tlast=0 tstrb=0xffffffff cycle=1921
+FEATURE_ACCEPT job=2 beat=46 tlast=0 tstrb=0xffffffff cycle=1922
+WEIGHT_ACCEPT job=2 beat=35 tlast=0 tstrb=0xffffffff cycle=1923
+FEATURE_ACCEPT job=2 beat=47 tlast=0 tstrb=0xffffffff cycle=1926
+FEATURE_ACCEPT job=2 beat=48 tlast=0 tstrb=0xffffffff cycle=1928
+WEIGHT_ACCEPT job=2 beat=36 tlast=0 tstrb=0xffffffff cycle=1928
+WEIGHT_ACCEPT job=2 beat=37 tlast=0 tstrb=0xffffffff cycle=1931
+FEATURE_ACCEPT job=2 beat=49 tlast=0 tstrb=0xffffffff cycle=1932
+FEATURE_ACCEPT job=2 beat=50 tlast=0 tstrb=0xffffffff cycle=1934
+WEIGHT_ACCEPT job=2 beat=38 tlast=0 tstrb=0xffffffff cycle=1937
+FEATURE_ACCEPT job=2 beat=51 tlast=0 tstrb=0xffffffff cycle=1938
+FEATURE_ACCEPT job=2 beat=52 tlast=0 tstrb=0xffffffff cycle=1940
+WEIGHT_ACCEPT job=2 beat=39 tlast=0 tstrb=0xffffffff cycle=1941
+WEIGHT_ACCEPT job=2 beat=40 tlast=0 tstrb=0xffffffff cycle=1943
+FEATURE_ACCEPT job=2 beat=53 tlast=0 tstrb=0xffffffff cycle=1944
+FEATURE_ACCEPT job=2 beat=54 tlast=0 tstrb=0xffffffff cycle=1946
+WEIGHT_ACCEPT job=2 beat=41 tlast=0 tstrb=0xffffffff cycle=1948
+FEATURE_ACCEPT job=2 beat=55 tlast=0 tstrb=0xffffffff cycle=1950
+WEIGHT_ACCEPT job=2 beat=42 tlast=0 tstrb=0xffffffff cycle=1951
+FEATURE_ACCEPT job=2 beat=56 tlast=0 tstrb=0xffffffff cycle=1952
+FEATURE_ACCEPT job=2 beat=57 tlast=0 tstrb=0xffffffff cycle=1956
+WEIGHT_ACCEPT job=2 beat=43 tlast=0 tstrb=0xffffffff cycle=1957
+FEATURE_ACCEPT job=2 beat=58 tlast=0 tstrb=0xffffffff cycle=1958
+WEIGHT_ACCEPT job=2 beat=44 tlast=0 tstrb=0xffffffff cycle=1961
+FEATURE_ACCEPT job=2 beat=59 tlast=0 tstrb=0xffffffff cycle=1962
+WEIGHT_ACCEPT job=2 beat=45 tlast=0 tstrb=0xffffffff cycle=1963
+FEATURE_ACCEPT job=2 beat=60 tlast=0 tstrb=0xffffffff cycle=1964
+FEATURE_ACCEPT job=2 beat=61 tlast=0 tstrb=0xffffffff cycle=1968
+WEIGHT_ACCEPT job=2 beat=46 tlast=0 tstrb=0xffffffff cycle=1968
+FEATURE_ACCEPT job=2 beat=62 tlast=0 tstrb=0xffffffff cycle=1970
+WEIGHT_ACCEPT job=2 beat=47 tlast=0 tstrb=0xffffffff cycle=1971
+FEATURE_ACCEPT job=2 beat=63 tlast=0 tstrb=0xffffffff cycle=1974
+FEATURE_ACCEPT job=2 beat=64 tlast=0 tstrb=0xffffffff cycle=1976
+WEIGHT_ACCEPT job=2 beat=48 tlast=0 tstrb=0xffffffff cycle=1977
+FEATURE_ACCEPT job=2 beat=65 tlast=0 tstrb=0xffffffff cycle=1980
+WEIGHT_ACCEPT job=2 beat=49 tlast=0 tstrb=0xffffffff cycle=1981
+FEATURE_ACCEPT job=2 beat=66 tlast=0 tstrb=0xffffffff cycle=1982
+WEIGHT_ACCEPT job=2 beat=50 tlast=0 tstrb=0xffffffff cycle=1983
+FEATURE_ACCEPT job=2 beat=67 tlast=0 tstrb=0xffffffff cycle=1986
+FEATURE_ACCEPT job=2 beat=68 tlast=0 tstrb=0xffffffff cycle=1988
+WEIGHT_ACCEPT job=2 beat=51 tlast=0 tstrb=0xffffffff cycle=1988
+WEIGHT_ACCEPT job=2 beat=52 tlast=0 tstrb=0xffffffff cycle=1991
+FEATURE_ACCEPT job=2 beat=69 tlast=0 tstrb=0xffffffff cycle=1992
+FEATURE_ACCEPT job=2 beat=70 tlast=0 tstrb=0xffffffff cycle=1994
+WEIGHT_ACCEPT job=2 beat=53 tlast=0 tstrb=0xffffffff cycle=1997
+FEATURE_ACCEPT job=2 beat=71 tlast=0 tstrb=0xffffffff cycle=1998
+FEATURE_ACCEPT job=2 beat=72 tlast=0 tstrb=0xffffffff cycle=2000
+WEIGHT_ACCEPT job=2 beat=54 tlast=0 tstrb=0xffffffff cycle=2001
+WEIGHT_ACCEPT job=2 beat=55 tlast=0 tstrb=0xffffffff cycle=2003
+FEATURE_ACCEPT job=2 beat=73 tlast=0 tstrb=0xffffffff cycle=2004
+FEATURE_ACCEPT job=2 beat=74 tlast=0 tstrb=0xffffffff cycle=2006
+WEIGHT_ACCEPT job=2 beat=56 tlast=0 tstrb=0xffffffff cycle=2008
+FEATURE_ACCEPT job=2 beat=75 tlast=0 tstrb=0xffffffff cycle=2010
+WEIGHT_ACCEPT job=2 beat=57 tlast=0 tstrb=0xffffffff cycle=2011
+FEATURE_ACCEPT job=2 beat=76 tlast=0 tstrb=0xffffffff cycle=2012
+FEATURE_ACCEPT job=2 beat=77 tlast=0 tstrb=0xffffffff cycle=2016
+WEIGHT_ACCEPT job=2 beat=58 tlast=0 tstrb=0xffffffff cycle=2017
+FEATURE_ACCEPT job=2 beat=78 tlast=0 tstrb=0xffffffff cycle=2018
+WEIGHT_ACCEPT job=2 beat=59 tlast=0 tstrb=0xffffffff cycle=2021
+FEATURE_ACCEPT job=2 beat=79 tlast=0 tstrb=0xffffffff cycle=2022
+WEIGHT_ACCEPT job=2 beat=60 tlast=0 tstrb=0xffffffff cycle=2023
+FEATURE_ACCEPT job=2 beat=80 tlast=0 tstrb=0xffffffff cycle=2024
+FEATURE_ACCEPT job=2 beat=81 tlast=0 tstrb=0xffffffff cycle=2028
+WEIGHT_ACCEPT job=2 beat=61 tlast=0 tstrb=0xffffffff cycle=2028
+FEATURE_ACCEPT job=2 beat=82 tlast=0 tstrb=0xffffffff cycle=2030
+WEIGHT_ACCEPT job=2 beat=62 tlast=0 tstrb=0xffffffff cycle=2031
+FEATURE_ACCEPT job=2 beat=83 tlast=0 tstrb=0xffffffff cycle=2034
+FEATURE_ACCEPT job=2 beat=84 tlast=0 tstrb=0xffffffff cycle=2036
+WEIGHT_ACCEPT job=2 beat=63 tlast=0 tstrb=0xffffffff cycle=2037
+FEATURE_ACCEPT job=2 beat=85 tlast=0 tstrb=0xffffffff cycle=2040
+WEIGHT_ACCEPT job=2 beat=64 tlast=0 tstrb=0xffffffff cycle=2041
+FEATURE_ACCEPT job=2 beat=86 tlast=0 tstrb=0xffffffff cycle=2042
+WEIGHT_ACCEPT job=2 beat=65 tlast=0 tstrb=0xffffffff cycle=2043
+FEATURE_ACCEPT job=2 beat=87 tlast=0 tstrb=0xffffffff cycle=2046
+FEATURE_ACCEPT job=2 beat=88 tlast=0 tstrb=0xffffffff cycle=2048
+WEIGHT_ACCEPT job=2 beat=66 tlast=0 tstrb=0xffffffff cycle=2048
+WEIGHT_ACCEPT job=2 beat=67 tlast=0 tstrb=0xffffffff cycle=2051
+FEATURE_ACCEPT job=2 beat=89 tlast=0 tstrb=0xffffffff cycle=2052
+FEATURE_ACCEPT job=2 beat=90 tlast=0 tstrb=0xffffffff cycle=2054
+WEIGHT_ACCEPT job=2 beat=68 tlast=0 tstrb=0xffffffff cycle=2057
+FEATURE_ACCEPT job=2 beat=91 tlast=0 tstrb=0xffffffff cycle=2058
+FEATURE_ACCEPT job=2 beat=92 tlast=0 tstrb=0xffffffff cycle=2060
+WEIGHT_ACCEPT job=2 beat=69 tlast=0 tstrb=0xffffffff cycle=2061
+WEIGHT_ACCEPT job=2 beat=70 tlast=0 tstrb=0xffffffff cycle=2063
+FEATURE_ACCEPT job=2 beat=93 tlast=0 tstrb=0xffffffff cycle=2064
+FEATURE_ACCEPT job=2 beat=94 tlast=0 tstrb=0xffffffff cycle=2066
+WEIGHT_ACCEPT job=2 beat=71 tlast=0 tstrb=0xffffffff cycle=2068
+FEATURE_ACCEPT job=2 beat=95 tlast=0 tstrb=0xffffffff cycle=2070
+WEIGHT_ACCEPT job=2 beat=72 tlast=0 tstrb=0xffffffff cycle=2071
+FEATURE_ACCEPT job=2 beat=96 tlast=0 tstrb=0xffffffff cycle=2072
+FEATURE_ACCEPT job=2 beat=97 tlast=0 tstrb=0xffffffff cycle=2076
+WEIGHT_ACCEPT job=2 beat=73 tlast=0 tstrb=0xffffffff cycle=2077
+FEATURE_ACCEPT job=2 beat=98 tlast=0 tstrb=0xffffffff cycle=2078
+WEIGHT_ACCEPT job=2 beat=74 tlast=0 tstrb=0xffffffff cycle=2081
+FEATURE_ACCEPT job=2 beat=99 tlast=0 tstrb=0xffffffff cycle=2082
+WEIGHT_ACCEPT job=2 beat=75 tlast=0 tstrb=0xffffffff cycle=2083
+FEATURE_ACCEPT job=2 beat=100 tlast=0 tstrb=0xffffffff cycle=2084
+FEATURE_ACCEPT job=2 beat=101 tlast=0 tstrb=0xffffffff cycle=2088
+WEIGHT_ACCEPT job=2 beat=76 tlast=0 tstrb=0xffffffff cycle=2088
+FEATURE_ACCEPT job=2 beat=102 tlast=0 tstrb=0xffffffff cycle=2090
+WEIGHT_ACCEPT job=2 beat=77 tlast=0 tstrb=0xffffffff cycle=2091
+FEATURE_ACCEPT job=2 beat=103 tlast=0 tstrb=0xffffffff cycle=2094
+FEATURE_ACCEPT job=2 beat=104 tlast=0 tstrb=0xffffffff cycle=2096
+WEIGHT_ACCEPT job=2 beat=78 tlast=0 tstrb=0xffffffff cycle=2097
+FEATURE_ACCEPT job=2 beat=105 tlast=0 tstrb=0xffffffff cycle=2100
+WEIGHT_ACCEPT job=2 beat=79 tlast=0 tstrb=0xffffffff cycle=2101
+FEATURE_ACCEPT job=2 beat=106 tlast=0 tstrb=0xffffffff cycle=2102
+WEIGHT_ACCEPT job=2 beat=80 tlast=0 tstrb=0xffffffff cycle=2103
+FEATURE_ACCEPT job=2 beat=107 tlast=0 tstrb=0xffffffff cycle=2106
+FEATURE_ACCEPT job=2 beat=108 tlast=0 tstrb=0xffffffff cycle=2108
+WEIGHT_ACCEPT job=2 beat=81 tlast=0 tstrb=0xffffffff cycle=2108
+WEIGHT_ACCEPT job=2 beat=82 tlast=0 tstrb=0xffffffff cycle=2111
+FEATURE_ACCEPT job=2 beat=109 tlast=0 tstrb=0xffffffff cycle=2112
+FEATURE_ACCEPT job=2 beat=110 tlast=0 tstrb=0xffffffff cycle=2114
+WEIGHT_ACCEPT job=2 beat=83 tlast=0 tstrb=0xffffffff cycle=2117
+FEATURE_ACCEPT job=2 beat=111 tlast=0 tstrb=0xffffffff cycle=2118
+FEATURE_ACCEPT job=2 beat=112 tlast=0 tstrb=0xffffffff cycle=2120
+WEIGHT_ACCEPT job=2 beat=84 tlast=0 tstrb=0xffffffff cycle=2121
+WEIGHT_ACCEPT job=2 beat=85 tlast=0 tstrb=0xffffffff cycle=2123
+FEATURE_ACCEPT job=2 beat=113 tlast=0 tstrb=0xffffffff cycle=2124
+FEATURE_ACCEPT job=2 beat=114 tlast=0 tstrb=0xffffffff cycle=2126
+WEIGHT_ACCEPT job=2 beat=86 tlast=0 tstrb=0xffffffff cycle=2128
+FEATURE_ACCEPT job=2 beat=115 tlast=0 tstrb=0xffffffff cycle=2130
+WEIGHT_ACCEPT job=2 beat=87 tlast=0 tstrb=0xffffffff cycle=2131
+FEATURE_ACCEPT job=2 beat=116 tlast=0 tstrb=0xffffffff cycle=2132
+FEATURE_ACCEPT job=2 beat=117 tlast=0 tstrb=0xffffffff cycle=2136
+WEIGHT_ACCEPT job=2 beat=88 tlast=0 tstrb=0xffffffff cycle=2137
+FEATURE_ACCEPT job=2 beat=118 tlast=0 tstrb=0xffffffff cycle=2138
+WEIGHT_ACCEPT job=2 beat=89 tlast=0 tstrb=0xffffffff cycle=2141
+FEATURE_ACCEPT job=2 beat=119 tlast=0 tstrb=0xffffffff cycle=2142
+WEIGHT_ACCEPT job=2 beat=90 tlast=0 tstrb=0xffffffff cycle=2143
+FEATURE_ACCEPT job=2 beat=120 tlast=0 tstrb=0xffffffff cycle=2144
+FEATURE_ACCEPT job=2 beat=121 tlast=0 tstrb=0xffffffff cycle=2148
+WEIGHT_ACCEPT job=2 beat=91 tlast=0 tstrb=0xffffffff cycle=2148
+FEATURE_ACCEPT job=2 beat=122 tlast=0 tstrb=0xffffffff cycle=2150
+WEIGHT_ACCEPT job=2 beat=92 tlast=0 tstrb=0xffffffff cycle=2151
+FEATURE_ACCEPT job=2 beat=123 tlast=0 tstrb=0xffffffff cycle=2154
+FEATURE_ACCEPT job=2 beat=124 tlast=0 tstrb=0xffffffff cycle=2156
+WEIGHT_ACCEPT job=2 beat=93 tlast=0 tstrb=0xffffffff cycle=2157
+FEATURE_ACCEPT job=2 beat=125 tlast=0 tstrb=0xffffffff cycle=2160
+WEIGHT_ACCEPT job=2 beat=94 tlast=0 tstrb=0xffffffff cycle=2161
+FEATURE_ACCEPT job=2 beat=126 tlast=0 tstrb=0xffffffff cycle=2162
+WEIGHT_ACCEPT job=2 beat=95 tlast=0 tstrb=0xffffffff cycle=2163
+FEATURE_ACCEPT job=2 beat=127 tlast=0 tstrb=0xffffffff cycle=2166
+FEATURE_ACCEPT job=2 beat=128 tlast=1 tstrb=0xffffffff cycle=2168
+WEIGHT_ACCEPT job=2 beat=96 tlast=0 tstrb=0xffffffff cycle=2168
+WEIGHT_ACCEPT job=2 beat=97 tlast=0 tstrb=0xffffffff cycle=2171
+WEIGHT_ACCEPT job=2 beat=98 tlast=0 tstrb=0xffffffff cycle=2177
+WEIGHT_ACCEPT job=2 beat=99 tlast=0 tstrb=0xffffffff cycle=2181
+WEIGHT_ACCEPT job=2 beat=100 tlast=0 tstrb=0xffffffff cycle=2183
+WEIGHT_ACCEPT job=2 beat=101 tlast=0 tstrb=0xffffffff cycle=2188
+WEIGHT_ACCEPT job=2 beat=102 tlast=0 tstrb=0xffffffff cycle=2191
+WEIGHT_ACCEPT job=2 beat=103 tlast=0 tstrb=0xffffffff cycle=2197
+WEIGHT_ACCEPT job=2 beat=104 tlast=0 tstrb=0xffffffff cycle=2201
+WEIGHT_ACCEPT job=2 beat=105 tlast=0 tstrb=0xffffffff cycle=2203
+WEIGHT_ACCEPT job=2 beat=106 tlast=0 tstrb=0xffffffff cycle=2208
+WEIGHT_ACCEPT job=2 beat=107 tlast=0 tstrb=0xffffffff cycle=2211
+WEIGHT_ACCEPT job=2 beat=108 tlast=0 tstrb=0xffffffff cycle=2217
+WEIGHT_ACCEPT job=2 beat=109 tlast=0 tstrb=0xffffffff cycle=2221
+WEIGHT_ACCEPT job=2 beat=110 tlast=0 tstrb=0xffffffff cycle=2223
+WEIGHT_ACCEPT job=2 beat=111 tlast=0 tstrb=0xffffffff cycle=2228
+WEIGHT_ACCEPT job=2 beat=112 tlast=0 tstrb=0xffffffff cycle=2231
+WEIGHT_ACCEPT job=2 beat=113 tlast=0 tstrb=0xffffffff cycle=2237
+WEIGHT_ACCEPT job=2 beat=114 tlast=0 tstrb=0xffffffff cycle=2241
+WEIGHT_ACCEPT job=2 beat=115 tlast=0 tstrb=0xffffffff cycle=2243
+WEIGHT_ACCEPT job=2 beat=116 tlast=0 tstrb=0xffffffff cycle=2248
+WEIGHT_ACCEPT job=2 beat=117 tlast=0 tstrb=0xffffffff cycle=2251
+WEIGHT_ACCEPT job=2 beat=118 tlast=0 tstrb=0xffffffff cycle=2257
+WEIGHT_ACCEPT job=2 beat=119 tlast=0 tstrb=0xffffffff cycle=2261
+WEIGHT_ACCEPT job=2 beat=120 tlast=0 tstrb=0xffffffff cycle=2263
+WEIGHT_ACCEPT job=2 beat=121 tlast=0 tstrb=0xffffffff cycle=2268
+WEIGHT_ACCEPT job=2 beat=122 tlast=0 tstrb=0xffffffff cycle=2271
+WEIGHT_ACCEPT job=2 beat=123 tlast=0 tstrb=0xffffffff cycle=2277
+WEIGHT_ACCEPT job=2 beat=124 tlast=0 tstrb=0xffffffff cycle=2281
+WEIGHT_ACCEPT job=2 beat=125 tlast=0 tstrb=0xffffffff cycle=2283
+WEIGHT_ACCEPT job=2 beat=126 tlast=0 tstrb=0xffffffff cycle=2288
+WEIGHT_ACCEPT job=2 beat=127 tlast=0 tstrb=0xffffffff cycle=2291
+WEIGHT_ACCEPT job=2 beat=128 tlast=1 tstrb=0xffffffff cycle=2297
+RESULT_VALID_FIRST job=2 cycle=3218
+RESULT_ACCEPT job=2 beat=1 tlast=0 cycle=3220
+RESULT_ACCEPT job=2 beat=2 tlast=0 cycle=3221
+RESULT_ACCEPT job=2 beat=3 tlast=0 cycle=3222
+RESULT_ACCEPT job=2 beat=4 tlast=0 cycle=3223
+RESULT_ACCEPT job=2 beat=5 tlast=0 cycle=3224
+RESULT_ACCEPT job=2 beat=6 tlast=0 cycle=3226
+RESULT_ACCEPT job=2 beat=7 tlast=0 cycle=3227
+RESULT_ACCEPT job=2 beat=8 tlast=0 cycle=3228
+RESULT_ACCEPT job=2 beat=9 tlast=0 cycle=3229
+RESULT_ACCEPT job=2 beat=10 tlast=0 cycle=3231
+RESULT_ACCEPT job=2 beat=11 tlast=0 cycle=3233
+RESULT_ACCEPT job=2 beat=12 tlast=0 cycle=3234
+RESULT_ACCEPT job=2 beat=13 tlast=0 cycle=3235
+RESULT_ACCEPT job=2 beat=14 tlast=0 cycle=3236
+RESULT_ACCEPT job=2 beat=15 tlast=0 cycle=3237
+RESULT_ACCEPT job=2 beat=16 tlast=0 cycle=3238
+RESULT_ACCEPT job=2 beat=17 tlast=0 cycle=3240
+RESULT_ACCEPT job=2 beat=18 tlast=0 cycle=3242
+RESULT_ACCEPT job=2 beat=19 tlast=0 cycle=3243
+RESULT_ACCEPT job=2 beat=20 tlast=0 cycle=3244
+RESULT_ACCEPT job=2 beat=21 tlast=0 cycle=3245
+RESULT_ACCEPT job=2 beat=22 tlast=0 cycle=3247
+RESULT_ACCEPT job=2 beat=23 tlast=0 cycle=3248
+RESULT_ACCEPT job=2 beat=24 tlast=0 cycle=3249
+RESULT_ACCEPT job=2 beat=25 tlast=0 cycle=3250
+RESULT_ACCEPT job=2 beat=26 tlast=0 cycle=3251
+RESULT_ACCEPT job=2 beat=27 tlast=0 cycle=3254
+RESULT_ACCEPT job=2 beat=28 tlast=0 cycle=3255
+RESULT_ACCEPT job=2 beat=29 tlast=0 cycle=3256
+RESULT_ACCEPT job=2 beat=30 tlast=0 cycle=3257
+RESULT_ACCEPT job=2 beat=31 tlast=0 cycle=3258
+RESULT_ACCEPT job=2 beat=32 tlast=0 cycle=3259
+RESULT_ACCEPT job=2 beat=33 tlast=0 cycle=3261
+RESULT_ACCEPT job=2 beat=34 tlast=0 cycle=3262
+RESULT_ACCEPT job=2 beat=35 tlast=0 cycle=3264
+RESULT_ACCEPT job=2 beat=36 tlast=0 cycle=3265
+RESULT_ACCEPT job=2 beat=37 tlast=0 cycle=3266
+RESULT_ACCEPT job=2 beat=38 tlast=0 cycle=3268
+RESULT_ACCEPT job=2 beat=39 tlast=0 cycle=3269
+RESULT_ACCEPT job=2 beat=40 tlast=0 cycle=3270
+RESULT_ACCEPT job=2 beat=41 tlast=0 cycle=3271
+RESULT_ACCEPT job=2 beat=42 tlast=0 cycle=3272
+RESULT_ACCEPT job=2 beat=43 tlast=0 cycle=3273
+RESULT_ACCEPT job=2 beat=44 tlast=0 cycle=3275
+RESULT_ACCEPT job=2 beat=45 tlast=0 cycle=3276
+RESULT_ACCEPT job=2 beat=46 tlast=0 cycle=3277
+RESULT_ACCEPT job=2 beat=47 tlast=0 cycle=3278
+RESULT_ACCEPT job=2 beat=48 tlast=0 cycle=3279
+RESULT_ACCEPT job=2 beat=49 tlast=0 cycle=3280
+RESULT_ACCEPT job=2 beat=50 tlast=0 cycle=3282
+RESULT_ACCEPT job=2 beat=51 tlast=0 cycle=3283
+RESULT_ACCEPT job=2 beat=52 tlast=0 cycle=3284
+RESULT_ACCEPT job=2 beat=53 tlast=0 cycle=3286
+RESULT_ACCEPT job=2 beat=54 tlast=0 cycle=3287
+RESULT_ACCEPT job=2 beat=55 tlast=0 cycle=3289
+RESULT_ACCEPT job=2 beat=56 tlast=0 cycle=3290
+RESULT_ACCEPT job=2 beat=57 tlast=0 cycle=3291
+RESULT_ACCEPT job=2 beat=58 tlast=0 cycle=3292
+RESULT_ACCEPT job=2 beat=59 tlast=0 cycle=3293
+RESULT_ACCEPT job=2 beat=60 tlast=0 cycle=3294
+RESULT_ACCEPT job=2 beat=61 tlast=0 cycle=3297
+RESULT_ACCEPT job=2 beat=62 tlast=0 cycle=3298
+RESULT_ACCEPT job=2 beat=63 tlast=0 cycle=3299
+RESULT_ACCEPT job=2 beat=64 tlast=0 cycle=3300
+RESULT_ACCEPT job=2 beat=65 tlast=0 cycle=3301
+RESULT_ACCEPT job=2 beat=66 tlast=0 cycle=3303
+RESULT_ACCEPT job=2 beat=67 tlast=0 cycle=3304
+RESULT_ACCEPT job=2 beat=68 tlast=0 cycle=3305
+RESULT_ACCEPT job=2 beat=69 tlast=0 cycle=3306
+RESULT_ACCEPT job=2 beat=70 tlast=0 cycle=3308
+RESULT_ACCEPT job=2 beat=71 tlast=0 cycle=3310
+RESULT_ACCEPT job=2 beat=72 tlast=0 cycle=3311
+RESULT_ACCEPT job=2 beat=73 tlast=0 cycle=3312
+RESULT_ACCEPT job=2 beat=74 tlast=0 cycle=3313
+RESULT_ACCEPT job=2 beat=75 tlast=0 cycle=3314
+RESULT_ACCEPT job=2 beat=76 tlast=0 cycle=3315
+RESULT_ACCEPT job=2 beat=77 tlast=0 cycle=3317
+RESULT_ACCEPT job=2 beat=78 tlast=0 cycle=3319
+RESULT_ACCEPT job=2 beat=79 tlast=0 cycle=3320
+RESULT_ACCEPT job=2 beat=80 tlast=0 cycle=3321
+RESULT_ACCEPT job=2 beat=81 tlast=0 cycle=3322
+RESULT_ACCEPT job=2 beat=82 tlast=0 cycle=3324
+RESULT_ACCEPT job=2 beat=83 tlast=0 cycle=3325
+RESULT_ACCEPT job=2 beat=84 tlast=0 cycle=3326
+RESULT_ACCEPT job=2 beat=85 tlast=0 cycle=3327
+RESULT_ACCEPT job=2 beat=86 tlast=0 cycle=3328
+RESULT_ACCEPT job=2 beat=87 tlast=0 cycle=3331
+RESULT_ACCEPT job=2 beat=88 tlast=0 cycle=3332
+RESULT_ACCEPT job=2 beat=89 tlast=0 cycle=3333
+RESULT_ACCEPT job=2 beat=90 tlast=0 cycle=3334
+RESULT_ACCEPT job=2 beat=91 tlast=0 cycle=3335
+RESULT_ACCEPT job=2 beat=92 tlast=0 cycle=3336
+RESULT_ACCEPT job=2 beat=93 tlast=0 cycle=3338
+RESULT_ACCEPT job=2 beat=94 tlast=0 cycle=3339
+RESULT_ACCEPT job=2 beat=95 tlast=0 cycle=3341
+RESULT_ACCEPT job=2 beat=96 tlast=0 cycle=3342
+RESULT_ACCEPT job=2 beat=97 tlast=0 cycle=3343
+RESULT_ACCEPT job=2 beat=98 tlast=0 cycle=3345
+RESULT_ACCEPT job=2 beat=99 tlast=0 cycle=3346
+RESULT_ACCEPT job=2 beat=100 tlast=0 cycle=3347
+RESULT_ACCEPT job=2 beat=101 tlast=0 cycle=3348
+RESULT_ACCEPT job=2 beat=102 tlast=0 cycle=3349
+RESULT_ACCEPT job=2 beat=103 tlast=0 cycle=3350
+RESULT_ACCEPT job=2 beat=104 tlast=0 cycle=3352
+RESULT_ACCEPT job=2 beat=105 tlast=0 cycle=3353
+RESULT_ACCEPT job=2 beat=106 tlast=0 cycle=3354
+RESULT_ACCEPT job=2 beat=107 tlast=0 cycle=3355
+RESULT_ACCEPT job=2 beat=108 tlast=0 cycle=3356
+RESULT_ACCEPT job=2 beat=109 tlast=0 cycle=3357
+RESULT_ACCEPT job=2 beat=110 tlast=0 cycle=3359
+RESULT_ACCEPT job=2 beat=111 tlast=0 cycle=3360
+RESULT_ACCEPT job=2 beat=112 tlast=0 cycle=3361
+RESULT_ACCEPT job=2 beat=113 tlast=0 cycle=3363
+RESULT_ACCEPT job=2 beat=114 tlast=0 cycle=3364
+RESULT_ACCEPT job=2 beat=115 tlast=0 cycle=3366
+RESULT_ACCEPT job=2 beat=116 tlast=0 cycle=3367
+RESULT_ACCEPT job=2 beat=117 tlast=0 cycle=3368
+RESULT_ACCEPT job=2 beat=118 tlast=0 cycle=3369
+RESULT_ACCEPT job=2 beat=119 tlast=0 cycle=3370
+RESULT_ACCEPT job=2 beat=120 tlast=0 cycle=3371
+RESULT_ACCEPT job=2 beat=121 tlast=0 cycle=3374
+RESULT_ACCEPT job=2 beat=122 tlast=0 cycle=3375
+RESULT_ACCEPT job=2 beat=123 tlast=0 cycle=3376
+RESULT_ACCEPT job=2 beat=124 tlast=0 cycle=3377
+RESULT_ACCEPT job=2 beat=125 tlast=0 cycle=3378
+RESULT_ACCEPT job=2 beat=126 tlast=0 cycle=3380
+RESULT_ACCEPT job=2 beat=127 tlast=0 cycle=3381
+RESULT_ACCEPT job=2 beat=128 tlast=1 cycle=3382
+AXIL_READ_DONE job=2 addr=0x0 data=0x06000000 cycle=3436
+AXIL_WRITE_DONE job=2 addr=0x0 data=0x00010000 cycle=3441
+AXIL_READ_DONE job=2 addr=0x0 data=0x04000000 cycle=3449
+
+MATRIX_BEGIN JOB=2 ROWS=64 COLS=64
+14 8 0 14 -4 -5 -7 4 6 -8 -2 -6 16 0 1 -16 -8 -1 6 12 2 -6 -6 2 0 6 -1 -8 -16 3 4 16 -6 -2 7 0 4 -7 -5 0 14 5 0 -10 -14 0 0 14 -4 -3 -7 4 6 -8 -4 -6 16 0 1 -12 -8 -1 6 12
+10 7 -2 -6 -14 2 3 -16 0 -3 8 8 2 -6 -4 -2 12 6 -1 0 -12 1 4 16 -2 -4 -8 6 4 8 0 -4 14 5 2 -14 -10 0 5 10 0 0 -7 4 10 7 -2 -6 16 2 3 -16 0 -1 8 8 2 -6 -6 -2 12 6 -1 0
+-4 -3 8 0 6 -8 -4 -2 16 4 1 -12 -12 -1 0 12 -2 -4 -6 2 8 8 -3 -8 -16 0 2 -14 -6 -2 7 10 0 -7 -5 0 0 7 0 -10 -14 2 3 14 -4 -3 8 0 6 -8 -4 -2 12 4 1 -12 -12 1 0 12 -2 -4 -8 2
+16 4 3 -16 -8 -1 6 8 2 0 -6 2 12 6 -1 -8 -16 1 4 16 0 -2 -8 6 4 -7 -5 -4 14 5 0 0 -10 0 5 14 -4 -5 -7 4 6 -8 0 -6 16 4 1 -16 -8 -1 6 12 2 0 -6 2 8 6 -1 -8 -16 3 4 16
+2 -8 -4 -2 0 6 1 -12 -12 1 4 12 -2 -4 -8 0 8 8 -3 -4 14 3 2 -14 -10 0 0 10 0 -5 -7 0 10 7 -2 -6 -14 0 3 -16 -8 -3 8 8 2 -6 -4 -2 0 6 -1 -12 -12 1 4 16 -2 -4 -8 0 4 8 -3 -4
+-8 -1 6 12 -2 -6 -6 2 8 8 0 -8 -16 3 2 16 -6 -2 7 10 4 0 -5 0 10 5 0 -10 -14 2 5 14 0 -3 8 4 6 -8 -4 -2 16 4 1 0 -12 -1 6 12 -2 -4 -6 2 8 8 0 -8 -16 3 2 -14 -6 -2 7 10
+12 6 -1 -8 -12 0 4 16 -6 -4 -8 6 4 -7 -3 -4 0 5 0 -14 -10 0 5 14 0 -5 -7 0 6 7 -2 -6 16 4 3 -16 -8 -1 0 8 2 -6 -6 2 12 6 -1 -8 -16 0 4 16 -6 -2 -8 6 4 -7 -5 -4 0 5 0 -10
+0 -4 -8 2 8 8 -3 -4 -16 3 2 0 -10 -2 7 10 0 -5 -5 0 10 7 0 -10 -14 2 3 -16 -4 -3 8 8 2 0 -4 -2 12 6 1 -12 -12 1 4 12 0 -4 -8 6 8 8 -3 -4 14 3 2 0 -10 0 7 10 0 -5 -7 0
+-16 3 4 16 -6 -2 0 6 4 -7 -5 0 14 5 0 -10 -14 0 5 14 -4 -3 -7 4 6 -8 -4 -6 0 4 1 -12 -8 -1 6 12 -2 -6 -6 0 8 8 -1 -8 -16 3 2 16 -6 -2 0 10 4 -7 -5 0 10 5 0 -10 -14 0 5 14
+4 0 -3 -4 14 5 2 -14 -10 0 5 10 0 -5 -7 4 10 7 -2 -6 16 2 3 0 -8 -1 8 8 2 -6 -6 -2 12 6 0 -8 -12 1 4 16 -6 -4 -8 6 4 0 -3 -4 14 5 0 -14 -10 0 5 14 0 -5 -7 4 6 7 -2 -6
+-6 -2 7 10 0 -7 -5 0 10 7 0 -10 -14 2 3 14 -4 -3 0 8 6 -8 -4 -2 12 4 1 -12 -12 0 6 12 -2 -4 -8 2 8 8 -3 -4 0 3 2 -14 -10 -2 7 10 0 -5 -5 0 10 7 -2 -10 -14 2 3 -16 -4 -3 0 8
+14 5 0 -10 -10 0 5 14 -4 -5 -7 4 6 0 -2 -6 16 4 1 -16 -8 -1 6 12 0 -6 -6 2 8 6 -1 -8 -16 3 4 0 -6 -2 7 6 4 -7 -5 0 14 5 0 -10 -14 0 5 14 -4 -3 -7 4 6 0 -4 -6 16 4 1 -12
+0 -5 -7 0 10 7 -2 -6 0 2 3 -16 -8 -3 8 8 2 -6 -4 0 12 6 -1 -12 -12 1 4 16 -2 -4 0 6 4 8 -3 -4 14 5 2 -14 -10 0 5 10 0 -5 -7 4 10 7 -2 -6 0 2 3 -16 -8 -1 8 8 2 -6 -6 0
+-14 2 5 0 -4 -3 8 4 6 -8 -4 -2 16 4 0 -12 -12 -1 6 12 -2 -4 -6 2 8 0 -3 -8 -16 3 2 -14 -6 -2 7 10 0 -7 -5 0 10 7 0 -10 -14 2 3 0 -4 -3 8 8 6 -8 -4 -2 12 4 0 -12 -12 1 6 12
+6 7 -2 -6 16 4 3 -16 -8 0 6 8 2 -6 -6 2 12 6 -1 -8 0 1 4 16 -6 -2 -8 6 4 -7 -5 0 14 5 0 -10 -10 0 5 14 -4 -5 0 4 6 -8 -2 -6 16 4 1 -16 -8 0 6 12 2 -6 -6 2 8 6 -1 -8
+-4 -3 8 8 0 -8 -4 -2 12 6 1 -12 -12 1 4 0 -2 -4 -8 6 8 8 -3 -4 14 3 0 -14 -10 0 7 10 0 -5 -7 0 10 0 -2 -6 -14 2 3 -16 -8 -3 8 8 0 -6 -4 -2 12 6 -1 -12 -12 1 4 0 -2 -4 -8 6
+16 4 1 -12 -8 -1 6 12 -2 -6 0 2 8 8 -1 -8 -16 3 2 16 -6 0 7 10 4 -7 -5 0 10 5 0 -10 0 2 5 14 -4 -3 8 4 6 -8 -4 0 16 4 1 -12 -12 -1 6 12 -2 -4 0 2 8 8 -3 -8 -16 3 2 -14
+2 -6 -6 -2 12 0 -1 -8 -12 1 4 16 -6 -4 -8 6 0 -7 -3 -4 14 5 0 -14 -10 0 5 0 0 -5 -7 4 6 7 -2 -6 16 4 0 -16 -8 -1 6 8 2 -6 -6 2 12 0 -1 -8 -16 1 4 16 -6 -2 -8 6 0 -7 -5 -4
+0 1 6 12 -2 -4 -8 2 8 8 -3 0 -16 3 2 -14 -10 -2 7 10 0 -5 0 0 10 7 -2 -10 -14 2 3 -16 -4 0 8 8 2 -8 -4 -2 12 6 1 -12 0 1 4 12 -2 -4 -8 6 8 8 -3 0 14 3 2 -14 -10 0 7 10
+8 6 -1 -8 -16 3 0 16 -6 -2 7 6 4 -7 -5 0 14 0 0 -10 -14 0 5 14 -4 -3 -7 4 0 -8 -4 -6 16 4 1 -12 -8 -1 6 0 -2 -6 -6 2 8 8 -1 -8 -16 3 0 16 -6 -2 7 10 4 -7 -5 0 10 0 0 -10
+-2 0 -8 6 4 8 -3 -4 14 5 2 -14 0 0 5 10 0 -5 -7 4 10 7 -2 0 16 2 3 -16 -8 -1 8 8 2 -6 0 -2 12 6 -1 -8 -12 1 4 16 -6 0 -8 6 4 -7 -3 -4 14 5 0 -14 0 0 5 14 0 -5 -7 4
+-16 3 2 -14 -6 -2 7 0 0 -7 -5 0 10 7 0 -10 -14 2 0 14 -4 -3 8 8 6 -8 -4 -2 12 0 1 -12 -12 1 6 12 -2 -4 -8 2 0 8 -3 -4 -16 3 2 -14 -10 -2 7 0 0 -5 -5 0 10 7 -2 -10 -14 2 0 -16
+4 -7 0 -4 14 5 0 -10 -10 0 5 14 -4 0 -7 4 6 -8 -2 -6 16 4 1 -16 0 -1 6 12 2 -6 -6 2 8 6 -1 0 -16 3 4 16 -6 -2 7 6 4 -7 0 0 14 5 0 -10 -14 0 5 14 -4 0 -7 4 6 -8 -4 -6
+-10 0 7 10 0 -5 -7 0 0 7 -2 -6 -14 2 3 -16 -8 -3 8 0 2 -6 -4 -2 12 6 -1 -12 -12 1 0 16 -2 -4 -8 6 4 8 -3 -4 14 0 2 -14 -10 0 5 10 0 -5 -7 4 0 7 -2 -6 16 2 3 -16 -8 -1 8 0
+10 5 0 0 -14 2 5 14 -4 -3 8 4 6 -8 0 -2 16 4 1 -12 -12 -1 6 12 -2 0 -6 2 8 8 -3 -8 -16 3 2 -14 0 -2 7 10 0 -7 -5 0 10 7 0 0 -14 2 3 14 -4 -3 8 8 6 -8 0 -2 12 4 1 -12
+0 -5 -7 4 6 7 -2 -6 16 0 3 -16 -8 -1 6 8 2 -6 -6 2 0 6 -1 -8 -16 1 4 16 -6 -2 -8 0 4 -7 -5 -4 14 5 0 -10 -10 0 0 14 -4 -5 -7 4 6 -8 -2 -6 16 0 1 -16 -8 -1 6 12 2 -6 -6 2
+-14 2 3 -16 0 -3 8 8 2 -8 -4 -2 12 6 1 0 -12 1 4 12 -2 -4 -8 6 8 8 0 -4 14 3 2 -14 -10 0 7 10 0 0 -7 0 10 7 -2 -6 -14 2 3 -16 0 -3 8 8 2 -6 -4 -2 12 6 -1 0 -12 1 4 16
+6 -8 -4 -6 16 4 1 -12 -8 -1 0 12 -2 -6 -6 2 8 8 -1 -8 -16 0 2 16 -6 -2 7 10 4 -7 -5 0 0 5 0 -10 -14 2 5 14 -4 -3 8 0 6 -8 -4 -2 16 4 1 -12 -12 -1 0 12 -2 -4 -6 2 8 8 -3 -8
+-8 -1 8 8 2 0 -6 -2 12 6 -1 -8 -12 1 4 16 0 -4 -8 6 4 -7 -3 -4 14 5 0 0 -10 0 5 14 0 -5 -7 4 6 7 0 -6 16 4 3 -16 -8 -1 6 8 2 0 -6 2 12 6 -1 -8 -16 1 4 16 0 -2 -8 6
+0 4 1 -12 -12 1 6 12 -2 -4 -8 0 8 8 -3 -4 -16 3 2 -14 -10 -2 0 10 0 -5 -5 0 10 7 -2 -10 -14 0 3 -16 -4 -3 8 8 2 -8 -4 -2 0 6 1 -12 -12 1 4 12 -2 -4 -8 0 8 8 -3 -4 14 3 2 -14
+2 -6 -6 2 8 6 0 -8 -16 3 4 16 -6 -2 7 6 4 0 -5 0 14 5 0 -10 -14 0 5 14 0 -3 -7 4 6 -8 -4 -6 16 4 1 0 -8 -1 6 12 -2 -6 -6 2 8 8 0 -8 -16 3 2 16 -6 -2 7 10 4 0 -5 0
+-12 0 4 16 -2 -4 -8 6 4 8 -3 -4 0 5 2 -14 -10 0 5 10 0 -5 -7 0 10 7 -2 -6 16 2 3 -16 -8 -1 0 8 2 -6 -6 -2 12 6 -1 -8 -12 0 4 16 -6 -4 -8 6 4 -7 -3 -4 0 5 0 -14 -10 0 5 14
+8 8 -3 -8 -16 3 2 0 -6 -2 7 10 0 -7 -5 0 10 7 0 -10 -14 2 3 14 -4 -3 8 8 6 0 -4 -2 0 4 1 -12 -12 1 6 12 0 -4 -8 2 8 8 -3 -4 -16 3 2 0 -10 -2 7 10 0 -5 -5 0 10 7 0 -10
+-6 -2 0 6 4 -7 -5 -4 14 5 0 -10 -10 0 5 14 -4 -5 -7 4 6 -8 -2 -6 0 4 1 -16 -8 -1 6 12 2 -6 -6 0 8 6 -1 -8 -16 3 4 16 -6 -2 0 6 4 -7 -5 0 14 5 0 -10 -14 0 5 14 -4 -3 -7 4
+14 3 2 -14 -10 0 7 10 0 -5 -7 0 10 7 -2 -6 -14 2 3 0 -8 -3 8 8 2 -6 -4 -2 12 6 0 -12 -12 1 4 16 -2 -4 -8 6 4 0 -3 -4 14 5 2 -14 -10 0 5 10 0 -5 -7 4 10 7 -2 -6 16 2 3 0
+4 -7 -5 0 10 5 0 -10 -14 2 5 14 -4 -3 0 4 6 -8 -4 -2 16 4 1 -12 -12 0 6 12 -2 -4 -6 2 8 8 -3 -8 0 3 2 -14 -6 -2 7 10 0 -7 -5 0 10 7 0 -10 -14 2 3 14 -4 -3 0 8 6 -8 -4 -2
+-10 0 5 14 0 -5 -7 4 6 0 -2 -6 16 4 3 -16 -8 -1 6 8 0 -6 -6 2 12 6 -1 -8 -16 1 4 0 -6 -2 -8 6 4 -7 -5 -4 14 5 0 -10 -10 0 5 14 -4 -5 -7 4 6 0 -2 -6 16 4 1 -16 -8 -1 6 12
+10 7 -2 -10 0 2 3 -16 -4 -3 8 8 2 -8 -4 0 12 6 1 -12 -12 1 4 12 -2 -4 0 6 8 8 -3 -4 14 3 2 -14 -10 0 7 10 0 -5 -7 0 10 7 -2 -6 0 2 3 -16 -8 -3 8 8 2 -6 -4 0 12 6 -1 -12
+-4 -3 -7 4 6 -8 -4 -6 16 4 0 -12 -8 -1 6 12 -2 -6 -6 2 8 0 -1 -8 -16 3 2 16 -6 -2 7 10 0 -7 -5 0 10 5 0 -10 -14 2 5 0 -4 -3 8 4 6 -8 -4 -2 16 4 0 -12 -12 -1 6 12 -2 -4 -6 2
+16 2 3 -16 -8 0 8 8 2 -6 -6 -2 12 6 -1 -8 0 1 4 16 -6 -4 -8 6 4 -7 -3 0 14 5 0 -14 -10 0 5 14 0 -5 0 4 6 7 -2 -6 16 4 3 -16 -8 0 6 8 2 -6 -6 2 12 6 -1 -8 0 1 4 16
+0 -8 -4 -2 12 4 1 -12 -12 1 6 0 -2 -4 -8 2 8 8 -3 -4 -16 3 0 -14 -10 -2 7 10 0 -5 -5 0 10 0 -2 -10 -14 2 3 -16 -4 -3 8 8 0 -8 -4 -2 12 6 1 -12 -12 1 4 0 -2 -4 -8 6 8 8 -3 -4
+-8 -1 6 12 2 -6 0 2 8 6 -1 -8 -16 3 4 16 -6 0 7 6 4 -7 -5 0 14 5 0 -10 0 0 5 14 -4 -3 -7 4 6 -8 -4 0 16 4 1 -12 -8 -1 6 12 -2 -6 0 2 8 8 -1 -8 -16 3 2 16 -6 0 7 10
+12 0 -1 -12 -12 1 4 16 -2 -4 -8 6 0 8 -3 -4 14 5 2 -14 -10 0 5 0 0 -5 -7 4 10 7 -2 -6 16 2 0 -16 -8 -1 8 8 2 -6 -6 -2 12 0 -1 -8 -12 1 4 16 -6 -4 -8 6 0 -7 -3 -4 14 5 0 -14
+-2 -4 -6 2 8 8 -3 0 -16 3 2 -14 -6 -2 7 10 0 -7 0 0 10 7 0 -10 -14 2 3 14 -4 0 8 8 6 -8 -4 -2 12 4 1 -12 0 1 6 12 -2 -4 -8 2 8 8 -3 0 -16 3 2 -14 -10 -2 7 10 0 -5 0 0
+-16 1 0 16 -6 -2 -8 6 4 -7 -5 -4 14 0 0 -10 -10 0 5 14 -4 -5 -7 4 0 -8 -2 -6 16 4 1 -16 -8 -1 6 0 2 -6 -6 2 8 6 -1 -8 -16 3 0 16 -6 -2 7 6 4 -7 -5 0 14 0 0 -10 -14 0 5 14
+8 8 -3 -4 14 3 2 -14 0 0 7 10 0 -5 -7 0 10 7 -2 0 -14 2 3 -16 -8 -3 8 8 2 -6 0 -2 12 6 -1 -12 -12 1 4 16 -2 0 -8 6 4 8 -3 -4 14 5 2 -14 0 0 5 10 0 -5 -7 4 10 7 -2 0
+-6 -2 7 0 4 -7 -5 0 10 5 0 -10 -14 2 0 14 -4 -3 8 4 6 -8 -4 -2 16 0 1 -12 -12 -1 6 12 -2 -4 -6 2 0 8 -3 -8 -16 3 2 -14 -6 -2 7 0 0 -7 -5 0 10 7 0 -10 -14 2 0 14 -4 -3 8 8
+14 5 0 -14 -10 0 5 14 0 0 -7 4 6 7 -2 -6 16 4 3 -16 0 -1 6 8 2 -6 -6 2 12 6 -1 0 -16 1 4 16 -6 -2 -8 6 4 -7 0 -4 14 5 0 -10 -10 0 5 14 -4 0 -7 4 6 -8 -2 -6 16 4 1 -16
+0 -5 -5 0 0 7 -2 -10 -14 2 3 -16 -4 -3 8 0 2 -8 -4 -2 12 6 1 -12 -12 1 0 12 -2 -4 -8 6 8 8 -3 -4 14 0 2 -14 -10 0 7 10 0 -5 -7 0 0 7 -2 -6 -14 2 3 -16 -8 -3 8 0 2 -6 -4 -2
+-14 0 5 14 -4 -3 -7 4 6 -8 0 -6 16 4 1 -12 -8 -1 6 12 -2 0 -6 2 8 8 -1 -8 -16 3 2 16 0 -2 7 10 4 -7 -5 0 10 5 0 0 -14 2 5 14 -4 -3 8 4 6 -8 0 -2 16 4 1 -12 -12 -1 6 12
+10 7 -2 -6 16 0 3 -16 -8 -1 8 8 2 -6 -6 -2 0 6 -1 -8 -12 1 4 16 -6 -4 -8 0 4 -7 -3 -4 14 5 0 -14 -10 0 0 14 0 -5 -7 4 6 7 -2 -6 16 0 3 -16 -8 -1 6 8 2 -6 -6 2 0 6 -1 -8
+0 -3 8 8 6 -8 -4 -2 12 4 1 0 -12 1 6 12 -2 -4 -8 2 8 8 0 -4 -16 3 2 -14 -10 -2 7 10 0 0 -5 0 10 7 -2 -10 -14 2 3 -16 0 -3 8 8 2 -8 -4 -2 12 6 1 0 -12 1 4 12 -2 -4 -8 6
+16 4 1 -16 -8 -1 0 12 2 -6 -6 2 8 6 -1 -8 -16 0 4 16 -6 -2 7 6 4 -7 -5 0 0 5 0 -10 -14 0 5 14 -4 -3 -7 0 6 -8 -4 -6 16 4 1 -12 -8 -1 0 12 -2 -6 -6 2 8 8 -1 -8 -16 0 2 16
+2 0 -4 -2 12 6 -1 -12 -12 1 4 16 0 -4 -8 6 4 8 -3 -4 14 5 2 0 -10 0 5 10 0 -5 -7 4 10 7 0 -6 16 2 3 -16 -8 -1 8 8 2 0 -6 -2 12 6 -1 -8 -12 1 4 16 0 -4 -8 6 4 -7 -3 -4
+-12 -1 6 12 -2 -4 -6 0 8 8 -3 -8 -16 3 2 -14 -6 -2 0 10 0 -7 -5 0 10 7 0 -10 -14 0 3 14 -4 -3 8 8 6 -8 -4 -2 0 4 1 -12 -12 1 6 12 -2 -4 -8 0 8 8 -3 -4 -16 3 2 -14 -10 -2 0 10
+12 6 0 -8 -16 1 4 16 -6 -2 -8 6 4 0 -5 -4 14 5 0 -10 -10 0 5 14 0 -5 -7 4 6 -8 -2 -6 16 4 1 0 -8 -1 6 12 2 -6 -6 2 8 6 0 -8 -16 3 4 16 -6 -2 7 6 4 0 -5 0 14 5 0 -10
+-2 -4 -8 6 8 8 -3 -4 0 3 2 -14 -10 0 7 10 0 -5 -7 0 10 7 -2 -6 -14 2 3 -16 -8 -3 0 8 2 -6 -4 -2 12 6 -1 -12 -12 0 4 16 -2 -4 -8 6 4 8 -3 -4 0 5 2 -14 -10 0 5 10 0 -5 -7 0
+-16 3 2 0 -6 -2 7 10 4 -7 -5 0 10 5 0 -10 -14 2 5 14 -4 -3 8 4 6 0 -4 -2 16 4 1 -12 -12 -1 6 12 0 -4 -6 2 8 8 -3 -8 -16 3 2 0 -6 -2 7 10 0 -7 -5 0 10 7 0 -10 -14 2 3 14
+4 -7 -3 -4 14 5 0 -14 -10 0 5 14 0 -5 -7 4 6 7 -2 -6 0 4 3 -16 -8 -1 6 8 2 -6 -6 0 12 6 -1 -8 -16 1 4 16 -6 -2 0 6 4 -7 -5 -4 14 5 0 -10 -10 0 5 14 -4 -5 -7 4 6 -8 -2 -6
+-10 -2 7 10 0 -5 -5 0 10 7 -2 -10 -14 2 3 0 -4 -3 8 8 2 -8 -4 -2 12 6 0 -12 -12 1 4 12 -2 -4 -8 6 8 0 -3 -4 14 3 2 -14 -10 0 7 10 0 -5 -7 0 10 7 -2 -6 -14 2 3 0 -8 -3 8 8
+14 5 0 -10 -14 0 5 14 -4 -3 0 4 6 -8 -4 -6 16 4 1 -12 -8 0 6 12 -2 -6 -6 2 8 8 -1 -8 0 3 2 16 -6 -2 7 10 4 -7 -5 0 10 5 0 -10 -14 2 5 14 -4 -3 0 4 6 -8 -4 -2 16 4 1 -12
+0 -5 -7 4 10 0 -2 -6 16 2 3 -16 -8 -1 8 8 0 -6 -6 -2 12 6 -1 -8 -12 1 4 0 -6 -4 -8 6 4 -7 -3 -4 14 5 0 -14 -10 0 5 14 0 -5 -7 4 6 0 -2 -6 16 4 3 -16 -8 -1 6 8 0 -6 -6 2
+0 2 3 14 -4 -3 8 8 6 -8 -4 0 12 4 1 -12 -12 1 6 12 -2 -4 0 2 8 8 -3 -4 -16 3 2 -14 -10 0 7 10 0 -5 -5 0 10 7 -2 -10 0 2 3 -16 -4 -3 8 8 2 -8 -4 0 12 6 1 -12 -12 1 4 12
+6 -8 -2 -6 16 4 0 -16 -8 -1 6 12 2 -6 -6 2 8 0 -1 -8 -16 3 4 16 -6 -2 7 6 0 -7 -5 0 14 5 0 -10 -14 0 5 0 -4 -3 -7 4 6 -8 -4 -6 16 4 0 -12 -8 -1 6 12 -2 -6 -6 2 8 0 -1 14
+MATRIX_END JOB=2
+
+JOB_ID = 2
+AXI-Lite readback SHIFT = 0x04000000
+AXI-Lite readback FL = 0x00000040
+AXI-Lite readback FWBN = 0x00000002
+AXI-Lite readback WWBN = 0x00000002
+Feature accepted beats = 128
+Expected feature beats = 128
+Weight accepted beats = 128
+Expected weight beats = 128
+Result first valid cycle = 3218
+Result accepted beats = 128
+Expected result beats = 128
+Mismatch count = 0
+Protocol error count = 0
+TLAST check = PASS
+Output all zero check = PASS
+Busy observed = 1
+Done observed = 1
+Clear done observed = 1
+PASS
+JOB_2_END cycle=3460
+Job output equal element count = 1
+Golden output equal element count = 1
+Two-job stale data check: PASS
+Job 1 PASS / FAIL: PASS
+Job 2 PASS / FAIL: PASS
+DUT reset between jobs: NO
+Done/status cleared between jobs: YES
+Overall PASS / FAIL: PASS
+OVERALL PASS
+tb_icarus.sv:1074: $finish called at 34685000 (1ps)

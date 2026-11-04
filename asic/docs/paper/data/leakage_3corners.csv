@@ -1,0 +1,4 @@
+corner,std_cell_lib,sram_lib,total_leakage_mW,sram_leakage_mW,non_sram_leakage_mW_incl_fill_decap_tap,std_cell_leakage_mW_no_fill_decap_tap
+tt,tt_025C_1v80,SRAM: TT lib in all corners,2.8428,2.8362,0.0066,0.0039
+ff,ff_n40C_1v95,SRAM: TT lib in all corners,2.8487,2.8362,0.0125,0.0097
+ss,ss_100C_1v60,SRAM: TT lib in all corners,8.4154,2.8362,5.5792,5.581

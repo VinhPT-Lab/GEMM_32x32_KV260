@@ -1,0 +1,8 @@
+STA6B final ss14 RC nom: | setup cell->cell worst -6.705 (<0: 302/19486), macro worst -13.225 (<0: 2817/37181), I/O worst -4.186 (<0: 113/905) | hold cell->cell worst 1.863 (<0: 0/21429), macro worst -0.600 (<0: 324/35238), I/O worst -7.441 (<0: 607/905)
+STA6B final ss14 RC max: | setup cell->cell worst -7.086 (<0: 302/19556), macro worst -14.490 (<0: 2963/37111), I/O worst -4.546 (<0: 240/905) | hold cell->cell worst 1.832 (<0: 0/21429), macro worst -0.698 (<0: 443/35238), I/O worst -7.890 (<0: 607/905)
+FMAX ProcessingElementRow ss period 10.000 ns: reg2reg slack -1.092 ns -> fmax 90.2 MHz
+FMAX ProcessingElement ss period 10.000 ns: reg2reg slack 0.802 ns -> fmax 108.7 MHz
+FMAX GemmAxiShell ss period 10.000 ns: reg2reg slack 3.982 ns -> fmax 166.2 MHz
+FMAX GemmAxiShell ss14 period 10.000 ns: reg2reg slack 1.468 ns -> fmax 117.2 MHz
+FMAX ProcessingElementRow ss14 period 10.000 ns: reg2reg slack -6.027 ns -> fmax 62.4 MHz
+FMAX ProcessingElement ss14 period 10.000 ns: reg2reg slack -3.193 ns -> fmax 75.8 MHz

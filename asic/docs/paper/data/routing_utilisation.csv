@@ -1,0 +1,5 @@
+layer,track_pitch_um,max_pct,mean_pct,p99_pct,tiles_over_70pct
+met1,0.34,38.2,2.88,25.3,0
+met2,0.46,67.8,5.57,50.9,0
+met3,0.68,73.0,2.78,41.8,3
+met4,0.92,66.2,1.87,35.2,0

@@ -1,0 +1,55 @@
+Warning: ${OL}/designs/gemm_pe/runs/paper_pe/results/final/verilog/gl/ProcessingElement.nl.v line 681, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_0_105.
+Warning: ${OL}/designs/gemm_pe/runs/paper_pe/results/final/verilog/gl/ProcessingElement.nl.v line 684, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_0_13.
+Warning: ${OL}/designs/gemm_pe/runs/paper_pe/results/final/verilog/gl/ProcessingElement.nl.v line 714, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_10_113.
+Warning: ${OL}/designs/gemm_pe/runs/paper_pe/results/final/verilog/gl/ProcessingElement.nl.v line 1631, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_100.
+FMAX ProcessingElement ss period 10.000 ns: reg2reg slack 0.802 ns -> fmax 108.7 MHz
+Startpoint: _1021_ (rising edge-triggered flip-flop clocked by i_clk)
+Endpoint: _1041_ (rising edge-triggered flip-flop clocked by i_clk)
+Path Group: i_clk
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock i_clk (rise edge)
+   0.00    0.00   clock source latency
+   0.09    0.09 ^ i_clk (in)
+   0.36    0.45 ^ clkbuf_0_i_clk/X (sky130_fd_sc_hd__clkbuf_16)
+   0.30    0.75 ^ clkbuf_3_1__f_i_clk/X (sky130_fd_sc_hd__clkbuf_16)
+   0.00    0.75 ^ _1021_/CLK (sky130_fd_sc_hd__dfrtp_4)
+   1.15    1.90 v _1021_/Q (sky130_fd_sc_hd__dfrtp_4)
+   0.43    2.33 v _0498_/X (sky130_fd_sc_hd__clkbuf_4)
+   0.42    2.75 ^ _0560_/Y (sky130_fd_sc_hd__a22oi_1)
+   0.53    3.28 v _0562_/X (sky130_fd_sc_hd__and4bb_1)
+   0.35    3.63 ^ _0565_/Y (sky130_fd_sc_hd__nor2_1)
+   0.33    3.96 v _0566_/Y (sky130_fd_sc_hd__nand3_1)
+   0.53    4.48 v _0568_/X (sky130_fd_sc_hd__and3_1)
+   0.71    5.20 ^ _0570_/Y (sky130_fd_sc_hd__nor3b_1)
+   0.51    5.70 ^ _0572_/X (sky130_fd_sc_hd__or2_1)
+   0.72    6.42 v _0600_/X (sky130_fd_sc_hd__a2bb2o_1)
+   0.38    6.81 v _0642_/X (sky130_fd_sc_hd__a21o_1)
+   0.36    7.17 ^ _0644_/Y (sky130_fd_sc_hd__a21oi_1)
+   0.49    7.66 v _0719_/X (sky130_fd_sc_hd__and3b_1)
+   0.51    8.17 v _0751_/X (sky130_fd_sc_hd__o21a_2)
+   0.55    8.72 ^ _0837_/Y (sky130_fd_sc_hd__o311ai_4)
+   0.49    9.21 ^ _0857_/X (sky130_fd_sc_hd__a311o_1)
+   0.32    9.54 ^ _0863_/X (sky130_fd_sc_hd__o211a_1)
+   0.00    9.54 ^ _1041_/D (sky130_fd_sc_hd__dfxtp_1)
+           9.54   data arrival time
+
+  10.00   10.00   clock i_clk (rise edge)
+   0.00   10.00   clock source latency
+   0.08   10.08 ^ i_clk (in)
+   0.32   10.40 ^ clkbuf_0_i_clk/X (sky130_fd_sc_hd__clkbuf_16)
+   0.27   10.68 ^ clkbuf_3_6__f_i_clk/X (sky130_fd_sc_hd__clkbuf_16)
+   0.00   10.68 ^ _1041_/CLK (sky130_fd_sc_hd__dfxtp_1)
+  -0.25   10.43   clock uncertainty
+   0.04   10.47   clock reconvergence pessimism
+  -0.13   10.34   library setup time
+          10.34   data required time
+---------------------------------------------------------
+          10.34   data required time
+          -9.54   data arrival time
+---------------------------------------------------------
+           0.80   slack (MET)
+
+

@@ -1,0 +1,7 @@
+model,cls,n,worst_vdd_mV,worst_vdd_at,worst_vss_mV,worst_vss_at,worst_sum_same_inst_mV,sum_at,vdd_part,vss_part
+A,row macro,704,137.2,.u_processing_element_array.g_pe_row[0].u_row,153.7,.u_processing_element_array.g_pe_row[0].u_row,290.9,.u_processing_element_array.g_pe_row[0].u_row,137.2,153.7
+A,SRAM,496,4.6,ffer.u_accum_mem.g_bank[0].g_lane[24].u_macro,4.5,ffer.u_accum_mem.g_bank[0].g_lane[24].u_macro,9.0,ffer.u_accum_mem.g_bank[0].g_lane[24].u_macro,4.6,4.5
+A,top std cell,113443,5.2,hold46562,8.2,hold25305,12.4,hold25305,4.2,8.2
+B,row macro,704,120.5,u_processing_element_array.g_pe_row[25].u_row,125.0,u_processing_element_array.g_pe_row[26].u_row,245.4,u_processing_element_array.g_pe_row[25].u_row,120.5,124.9
+B,SRAM,496,76.1,re_tile_mem.g_bank[0].g_lane[6].u_macro_20017,74.3,re_tile_mem.g_bank[0].g_lane[6].u_macro_20017,150.4,re_tile_mem.g_bank[0].g_lane[6].u_macro_20017,76.1,74.3
+B,top std cell,113443,87.6,hold24927,92.8,hold24927,180.4,hold24927,87.6,92.8

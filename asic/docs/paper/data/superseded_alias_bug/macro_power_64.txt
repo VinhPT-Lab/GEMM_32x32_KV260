@@ -1,0 +1,4 @@
+row_mean_W 1.284248e-02
+axi_W 8.773809e-03
+row_min_W 1.249498e-02
+row_max_W 1.302123e-02

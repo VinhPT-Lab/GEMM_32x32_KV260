@@ -1,0 +1,68 @@
+[INFO ODB-0222] Reading LEF file: ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd__nom.tlef
+[INFO ODB-0223]     Created 14 technology layers
+[INFO ODB-0224]     Created 25 technology vias
+[INFO ODB-0226] Finished LEF file:  ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd__nom.tlef
+[INFO ODB-0222] Reading LEF file: ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef at line 2.
+
+[INFO ODB-0225]     Created 437 library cells
+[INFO ODB-0226] Finished LEF file:  ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef
+[INFO ODB-0222] Reading LEF file: ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd.lef at line 2.
+
+[INFO ODB-0225]     Created 4 library cells
+[INFO ODB-0226] Finished LEF file:  ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd.lef
+[INFO ODB-0127] Reading DEF file: ${OL}/designs/gemm_row/runs/row_v1/results/final/def/ProcessingElementRow.def
+[INFO ODB-0128] Design: ProcessingElementRow
+[INFO ODB-0130]     Created 1870 pins.
+[INFO ODB-0131]     Created 76554 components and 388982 component-terminals.
+[INFO ODB-0132]     Created 2 special nets and 294520 connections.
+[INFO ODB-0133]     Created 25521 nets and 94462 connections.
+[INFO ODB-0134] Finished DEF file: ${OL}/designs/gemm_row/runs/row_v1/results/final/def/ProcessingElementRow.def
+IRROW activity on 24581 pins over 646 cycles
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             5.53e-03   4.60e-04   2.35e-08   5.99e-03  47.2%
+Combinational          2.08e-03   4.61e-03   1.02e-07   6.70e-03  52.8%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  7.61e-03   5.07e-03   1.26e-07   1.27e-02 100.0%
+                          60.0%      40.0%       0.0%
+[INFO PSM-0001] Reading voltage source file: ${ECO_DIR}/paper/work/irrow/vccd1.vsrc.
+[INFO PSM-0002] Output voltage file is specified as: ${ECO_DIR}/paper/work/irrow/row.vccd1.ir.csv.
+[INFO PSM-0015] Reading location of VDD and VSS sources from ${ECO_DIR}/paper/work/irrow/vccd1.vsrc.
+[INFO PSM-0076] Setting metal node density to be standard cell height times 5.
+[WARNING PSM-0030] VSRC location at (443.840um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (443.840um, 68.000um).
+[WARNING PSM-0030] VSRC location at (1320.485um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (1320.485um, 68.000um).
+[WARNING PSM-0030] VSRC location at (2197.130um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (2197.130um, 68.000um).
+[WARNING PSM-0030] VSRC location at (3073.775um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (3073.775um, 68.000um).
+[INFO PSM-0031] Number of PDN nodes on net vccd1 = 6098.
+[INFO PSM-0064] Number of voltage sources = 4.
+[INFO PSM-0040] All PDN stripes on net vccd1 are connected.
+########## IR report #################
+Worstcase voltage: 1.78e+00 V
+Average IR drop  : 3.91e-03 V
+Worstcase IR drop: 1.79e-02 V
+######################################
+IRROW done vccd1
+[INFO PSM-0001] Reading voltage source file: ${ECO_DIR}/paper/work/irrow/vssd1.vsrc.
+[INFO PSM-0002] Output voltage file is specified as: ${ECO_DIR}/paper/work/irrow/row.vssd1.ir.csv.
+[INFO PSM-0015] Reading location of VDD and VSS sources from ${ECO_DIR}/paper/work/irrow/vssd1.vsrc.
+[INFO PSM-0076] Setting metal node density to be standard cell height times 5.
+[WARNING PSM-0030] VSRC location at (882.160um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (882.160um, 65.280um).
+[WARNING PSM-0030] VSRC location at (1758.805um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (1758.805um, 65.280um).
+[WARNING PSM-0030] VSRC location at (2635.450um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (2635.450um, 65.280um).
+[WARNING PSM-0030] VSRC location at (3512.095um, 66.640um) and size 1.600um, is not located on an existing power stripe node. Moving to closest node at (3512.095um, 65.280um).
+[INFO PSM-0031] Number of PDN nodes on net vssd1 = 6098.
+[INFO PSM-0064] Number of voltage sources = 4.
+[INFO PSM-0040] All PDN stripes on net vssd1 are connected.
+########## IR report #################
+Worstcase voltage: 4.18e-02 V
+Average IR drop  : 6.03e-03 V
+Worstcase IR drop: 4.18e-02 V
+######################################
+IRROW done vssd1

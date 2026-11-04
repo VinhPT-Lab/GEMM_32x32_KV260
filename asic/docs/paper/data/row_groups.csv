@@ -1,0 +1,9 @@
+group,cells,area_um2
+filler/decap,30854,124663.31
+logic,17307,125381.50
+diode,15271,38214.15
+tap,5848,7317.02
+flop/latch,2616,55745.96
+hold buffer,2574,25742.19
+buffer (resizer / I/O),1966,11171.96
+clock tree,118,2817.70

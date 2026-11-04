@@ -1,0 +1,10 @@
+flow,round,violating_pins,violating_nets,new_pins_vs_previous,nets_rerouted,nets_rerouted_pct,round_time_s,source
+full_reroute_OL1,0,1133,,,146306,100,2743,"ip_v3r reports/signoff/24-antenna_violators_pins.txt (unique pins); runtime.yaml step 23 DRT 2692 s + ARC 51 s"
+full_reroute_OL1,1,446,,,146306,100,1749,"ip_v3r 33-antenna_violators_pins.txt; runtime.yaml step 32 DRT 1701 s + ARC 48 s (round kept)"
+full_reroute_OL1,2,293,,266,146306,100,5458,"ip_v3r 45-antenna_violators_pins.txt (294 lines, 293 unique; 266 not in round 1); steps 41-43 DRT 1767+1787+1861 s (3 seeds) + ARC 43 s"
+incremental_dcf3613,0,446,437,,0,0,0,"start: ip_v3r round 1 (ARC OL1 446 pins; check_antennas dcf3613 450 pins / 437 nets)"
+incremental_dcf3613,1,37,35,,878,0.60,1021,"BAOCAO 4c lượt 1 (s4c/r1); nets rerouted vs DEF in, of 146306 routed"
+incremental_dcf3613,2,6,4,,65,0.04,1008,"BAOCAO 4c lượt 2"
+incremental_dcf3613,3,3,3,,10,0.01,993,"BAOCAO 4c lượt 3; ARC OL1 3 pins (s5/eco_r3_arc)"
+incremental_dcf3613,4,1,1,,12,0.01,1027,"BAOCAO 6a (2 gate cells resized); ARC OL1 1 pin (s5/eco_r4_arc)"
+incremental_dcf3613,5,0,0,,5,0.003,1089,"BAOCAO lần 7 (buffer before _22738_/C); ARC OL1 0"

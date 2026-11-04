@@ -1,0 +1,15 @@
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 184497, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_0_10003.
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 185180, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_0_15787.
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 186174, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_1000_10267.
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 3206176, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_100000.
+activity from vcd_8x32x544_8000_8400.act: 915978 driver pins over 400 cycles, 0 not found
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             2.21e-01   7.75e-03   9.51e-07   2.29e-01  30.7%
+Combinational          3.27e-01   1.86e-01   2.84e-03   5.16e-01  69.3%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  5.48e-01   1.94e-01   2.84e-03   7.44e-01 100.0%
+                          73.6%      26.1%       0.4%

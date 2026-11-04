@@ -1,0 +1,7 @@
+# negative control for xor_tiled.drc: same tiling, XOR of two DIFFERENT layers
+# (met1 drawing 68/20 of a vs met2 drawing 69/20 of b) and polygon counts of 68/20
+a = source($a); b = source($b)
+tiles(800.um, 800.um); tile_borders(1.um, 1.um)
+na = a.input("68/20").count
+nx = (a.input("68/20") ^ b.input("69/20")).count
+File.open($rpt_out, "w") { |f| f.puts "68/20 polygons in a (tiled count) = #{na}"; f.puts "68/20(a) ^ 69/20(b) = #{nx}" }

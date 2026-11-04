@@ -1,0 +1,11 @@
+activity from vcd_2300_3200.act: 903250 driver pins over 900 cycles, 0 not found
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             4.47e-01   2.86e-02   9.41e-07   4.75e-01  31.1%
+Combinational          6.69e-01   3.82e-01   2.84e-03   1.05e+00  68.9%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  1.12e+00   4.10e-01   2.84e-03   1.53e+00 100.0%
+                          73.0%      26.9%       0.2%

@@ -1,0 +1,10 @@
+part,job_mW,clock_only_mW,data_mW,note
+clock tree (top + row + AXI),199.61,199.61,0.0,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"flops, row",193.57,183.39,10.18,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"flops, top",52.88,44.54,8.34,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"flops, AXI",1.04,0.79,0.25,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"logic, row",52.14,42.49,9.65,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"logic, top",21.17,16.61,4.56,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"logic, AXI",0.64,0.41,0.23,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+"SRAM (lib, clock edges)",224.0,224.0,0.0,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"
+TOTAL,745.05,711.82,33.23,"64x64x64 job 2, TT, RC nom, 50 MHz; clock_only = same run with every non-clock driver toggle set to 0 (duty kept), so it is the power the clock alone causes"

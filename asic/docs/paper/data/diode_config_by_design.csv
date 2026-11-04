@@ -1,0 +1,7 @@
+design,run,role,DIODE_ON_PORTS,RUN_HEURISTIC_DIODE_INSERTION,HEURISTIC_ANTENNA_THRESHOLD,GRT_REPAIR_ANTENNAS,GRT_MAX_DIODE_INS_ITERS,GRT_ANT_ITERS,GRT_ANT_MARGIN,DIODE_PADDING,DIODE_CELL,source
+gemm_pe,paper_pe,"PE alone (paper, area/fmax)",none,0,90,1,1,15,10,2,sky130_fd_sc_hd__diode_2,~/OpenLane/designs/gemm_pe/runs/paper_pe/config.tcl
+gemm_row,row_v1,row macro (32 PEs) used in the IP,in,1,50,1,1,30,30,2,sky130_fd_sc_hd__diode_2,~/OpenLane/designs/gemm_row/runs/row_v1/config.tcl
+gemm_core,core_v11,flat core (source of the IP top level),none,0,50,1,3,30,30,2,sky130_fd_sc_hd__diode_2,~/OpenLane/designs/gemm_core/runs/core_v11/config.tcl
+gemm_ip,ip_v3r,IP top (flow run before the ECO),none,0,50,1,3,30,30,2,sky130_fd_sc_hd__diode_2,~/OpenLane/designs/gemm_ip/runs/ip_v3r/config.tcl
+gemm_ip_shell,ip_shell5,AXI shell macro,in,1,50,1,3,30,30,0,sky130_fd_sc_hd__diode_2,~/OpenLane/designs/gemm_ip_shell/runs/ip_shell5/config.tcl
+gemm_array,(no run kept),earlier array macro (not in the final IP); design config.tcl only,,1,50,,3,30,30,,,~/OpenLane/designs/gemm_array/config.tcl

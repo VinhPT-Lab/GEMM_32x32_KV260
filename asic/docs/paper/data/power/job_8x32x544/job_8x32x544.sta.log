@@ -1,0 +1,16 @@
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 184497, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_0_10003.
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 185180, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_0_15787.
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 186174, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_1000_10267.
+Warning: ${ECO_DIR}/s5/final_a5/results/final/verilog/gl/GEMM_top.nl.v line 3206176, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_100000.
+activity from job_8x32x544.compute.act: 916060 driver pins over 1801 cycles, 0 not found
+PHASEPOWER job_8x32x544.compute Total                5.541056e-01 1.987530e-01 2.842766e-03 7.557014e-01 100.0%
+activity from job_8x32x544.config.act: 916060 driver pins over 49 cycles, 0 not found
+PHASEPOWER job_8x32x544.config Total                5.535763e-01 1.982364e-01 2.842766e-03 7.546555e-01 100.0%
+activity from job_8x32x544.input_load.act: 916060 driver pins over 2723 cycles, 0 not found
+PHASEPOWER job_8x32x544.input_load Total                5.538859e-01 1.986760e-01 2.842766e-03 7.554047e-01 100.0%
+activity from job_8x32x544.job.act: 916060 driver pins over 5330 cycles, 0 not found
+PHASEPOWER job_8x32x544.job Total                5.516620e-01 1.962266e-01 2.842766e-03 7.507314e-01 100.0%
+activity from job_8x32x544.output_drain.act: 916060 driver pins over 179 cycles, 0 not found
+PHASEPOWER job_8x32x544.output_drain Total                5.540014e-01 1.997390e-01 2.842766e-03 7.565832e-01 100.0%
+activity from job_8x32x544.weight_tile.act: 916060 driver pins over 578 cycles, 0 not found
+PHASEPOWER job_8x32x544.weight_tile Total                5.531626e-01 1.978334e-01 2.842766e-03 7.538388e-01 100.0%

@@ -1,0 +1,27 @@
+# KLayout XOR of two GDS, per layer, in tiling mode (bounded memory on a large die).
+# Same layer set and order as OpenLane's scripts/klayout/xor.drc; layers in $done
+# (space separated) and $ignore are skipped. Logs "XOR_LAYER <layer> <count>".
+# -rd a= -rd b= -rd tile=<um> -rd border=<um> -rd done="..." -rd ignore="..." -rd rpt_out=
+$tile = ($tile || "800").to_f
+$border = ($border || "1").to_f
+done_l = ($done || "").split
+ign = ($ignore || "").split
+a = source($a); b = source($b)
+tiles($tile.um, $tile.um)
+tile_borders($border.um, $border.um)
+layers = {}
+[a.layout, b.layout].each { |ly| ly.layer_indices.each { |li| i = ly.get_info(li); layers[i.to_s] = i } }
+total = 0; res = []
+layers.keys.sort.each do |ln|
+  if done_l.include?(ln) || ign.include?(ln)
+    info "XOR_SKIP #{ln}"
+    next
+  end
+  t0 = Time.now
+  n = (a.input(ln) ^ b.input(ln)).count
+  total += n; res << "#{ln} #{n}"
+  info "XOR_LAYER #{ln} #{n} (#{(Time.now - t0).round(1)} s)"
+  $stdout.flush
+end
+info "XOR_TOTAL #{total} over #{res.size} layers"
+File.open($rpt_out, "w") { |f| res.each { |r| f.puts r }; f.puts "Total XOR differences (these layers) = #{total}" }

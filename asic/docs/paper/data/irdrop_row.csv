@@ -1,0 +1,3 @@
+net,nodes,worst_drop_mV,worst_at_x_um,worst_at_y_um,mean_drop_mV,row_power_mW,vsrc,condition
+vccd1,48258,17.91,1765.55,13.6,4.024,12.69,"4 sources: centre of each vccd1 met4 stripe of the row LEF (x 443.8 / 1320.5 / 2197.1 / 3073.8 um)","row_v1 alone, OpenROAD PSM 41a51eaf, TT, 50 MHz, activity of row 0 in the compute phase of the 64x64x64 job (VCD, alias fix), row SPEF"
+vssd1,48258,41.84,5.52,114.24,6.067,12.69,"4 sources: centre of each vssd1 met4 stripe (x 882.2 / 1758.8 / 2635.5 / 3512.1 um); left 882 um fed from one side","same"

@@ -1,0 +1,16 @@
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 38946, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_0_1009.
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 38947, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_0_103.
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 39035, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_0_29.
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 69800, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_100.
+activity from block_row.act: 24581 driver pins, 939 input ports over 1000 cycles, 0 not found
+clock period 20.000000 ns
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             6.38e-03   1.24e-03   2.35e-08   7.62e-03  34.4%
+Combinational          5.89e-03   8.63e-03   1.02e-07   1.45e-02  65.6%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  1.23e-02   9.86e-03   1.26e-07   2.21e-02 100.0%
+                          55.4%      44.6%       0.0%

@@ -1,0 +1,28 @@
+# Sequential equivalence PE RTL (rtl_asic/PE.v, P_DATAPATH_RESET=0 as built) vs the final
+# gate netlist of the hardened PE (gemm_pe/runs/paper_pe), with register matching by name:
+# both designs have 82 flops (16 with async reset: r_weight_shift, r_weight_value; 66
+# without: r_product 16, r_partial_sum_d1 21, o_partial_sum 21, o_feature_value 8).
+# The netlist keeps one-bit wires named "r_product[3]"; splitnets gives the RTL the same
+# names, so equiv_make pairs the registers; the 37 flops that drive output buffers are
+# paired through the output ports. Physical-only cells (diode, fill, decap, tap) removed.
+read_verilog -sv ${REPO}/rtl_asic/PE.v
+chparam -set P_DATAPATH_RESET 0 ProcessingElement
+hierarchy -top ProcessingElement
+proc; opt_clean; splitnets
+rename ProcessingElement gold
+design -stash gold
+read_liberty -ignore_miss_func ${PDK_ROOT}/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog ${ECO_DIR}/paper/work/equiv/pe_gl.v
+hierarchy -top ProcessingElement
+proc; flatten; opt_clean
+rename ProcessingElement gate
+design -stash gate
+design -copy-from gold -as gold gold
+design -copy-from gate -as gate gate
+equiv_make gold gate equiv
+hierarchy -top equiv
+async2sync
+equiv_simple -seq 5
+equiv_induct -seq 5
+equiv_status
+equiv_status -assert

@@ -1,0 +1,15 @@
+metric,value
+die_w_um,160.0800
+die_h_um,5932.3200
+die_area_mm2,0.9496
+core_bbox_area_mm2,0.8809
+std_row_area_mm2,0.8809
+macro_area_mm2,0.0000
+std_cell_area_no_fill_tap_mm2,0.1168
+std_cell_density_in_rows,0.1326
+logic_area_um2,97634.8896
+nand2_1_area_um2,3.7536
+nand2_equivalents,26011.0000
+flops,1158
+instances,102458
+masters_missing_size,

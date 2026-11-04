@@ -1,0 +1,34 @@
+step,tool,image_or_version,wall_time,peak_ram,source
+"ip_v3r baseline (synthesis to signoff, OpenLane 1.0.2)",OpenLane 1.0.2,ghcr.io/the-openroad-project/openlane@sha256:832662c878405772fdb759a11daf21c32fd50072be6b6f4305ca377b4650779a,"see ip_v3r runtime.yaml (DRT round 0: 2692 s; round 1: 1701 s; round 2: 3 seeds 5415 s)",~10.2 GB (DRT),~/OpenLane/designs/gemm_ip/runs/ip_v3r/runtime.yaml
+"route guides from DEF wires (mkguide.py)",Python 3.12,host,~1 min,<1 GB,tools/eco/mkguide.py
+"antenna ECO round (s4c_round.py), each of 3 rounds",OpenROAD dcf36133,ghcr.io/librelane/librelane@sha256:4bc9042ba177f73f275b5b39e7d372a07d3f4043f548a0ba7f640097b7205051,993-1021 s,10.26-10.28 GB,BAOCAO.md 4c
+"DRV / long-net / clock ECO round (s7_apply.py), each",OpenROAD dcf36133,same LibreLane image,~1000-1100 s,~10.2 GB,BAOCAO.md giai đoạn 7-8 (s7*/.log)
+"RCX + STA check of one layout (check_layout.sh)",OpenLane 1.0.2 OpenROAD 41a51eaf,OL1 image,~30 min,~10 GB,s7E/*.check.log.runjob
+"final OL1 signoff run (import, ARC, RCX, STA, Magic GDS+DRC, SPICE, LVS, KLayout GDS)",OpenLane 1.0.2,OL1 image,16148 s (4.5 h),10 GB container,sF/final.log
+"KLayout XOR, flat (OL1 xor.drc)",KLayout 0.28.2,OL1 image,~15 min then OOM at layer 33/42,10 GiB (killed),sF/xor2.log sF/xor2.mem
+"KLayout XOR, tiled (46 layers)",KLayout 0.28.2,OL1 image,~2.5 h,7.97 GiB,sF/xor3.rpt sF/xor3.mem
+"STA 9 corners with unconstrained/skew (sta6b)",OpenROAD 41a51eaf,OL1 image,~60 s per corner,3.3 GB,sF/f7.log
+"ip-gls 3 shapes (iverilog, unit delay)",Icarus Verilog 13.0,host,409 + 691 + 1510 s,6.8 GB,sF/gls.out sF/gls.time
+"VCD power 3 shapes (GLS window + vcd2act + OpenSTA)",Icarus 13.0 + OpenSTA 2.4.0,host + OL1 image,8.6 min + 31.4 min,7.1 GB (sim),paper/work/vcd_*.time
+"leakage 3 corners (OpenSTA)",OpenSTA 2.4.0,OL1 image,~3 min,<10 GB,paper/work/leak.log
+"PE harden (OpenLane 1.0.2 flow, gemm_pe)",OpenLane 1.0.2,OL1 image,88 s,<1 GB,paper/work/pe_harden.log
+"PE / row random-data sim + power",Icarus 13.0 + OpenSTA,host + OL1 image,22 s,0.24 GB (sim),paper/work/block.time
+"PE formal check (Yosys miter + SAT)",Yosys 0.30+48,OL1 image,~5 min,<4 GB,paper/data/pe_equiv.log
+"IR drop vccd1 + vssd1 (PSM)",OpenROAD 41a51eaf,OL1 image,~12 min,9.9 GiB,paper/work/ir/ir.log
+"KLayout screenshots",KLayout 0.28.2,OL1 image,~3 min,9.8 GiB,paper/work/kl.log
+"OpenROAD GUI images (offscreen)",OpenROAD 41a51eaf,OL1 image,~3 min,9.2 GiB,paper/work/or.log
+whole-job VCD power 64x64x64 (GLS + vcd2act_phases + OpenSTA 6 activity sets),Icarus 13.0 + OpenSTA 2.4.0,host + OL1 image,"16.4 min (sim 362 s, vcd2act 94 s)","7.1 GB (sim); VCD 541 MB, deleted",paper/work/job_64.log
+whole-job VCD power 8x32x544,Icarus 13.0 + OpenSTA 2.4.0,host + OL1 image,"~37 min (sim 655 s, vcd2act 192 s)","VCD 1252 MB, deleted",paper/work/job_8.log
+whole-job VCD power 16x992x32,Icarus 13.0 + OpenSTA 2.4.0,host + OL1 image,"~43 min (sim 1433 s, vcd2act 492 s)","VCD 2510 MB, deleted",paper/work/job_16.log
+"RTL perf, 24 shape/testbench runs (perf_rtl.py)",Icarus 13.0,host,7.8 min,<1 GB,paper/work/perf_rtl.log
+"leakage per block, 3 corners x 3 blocks (leak_blocks.sh)",OpenSTA 2.4.0,OL1 image,~7 min,<10 GB,paper/work/leak_blocks.log
+IR drop inside one row (ir_row.tcl),OpenROAD 41a51eaf PSM,OL1 image,~2 min,<2 GB,paper/work/irrow/ir_row.log
+"IR drop IP, two source models (ir_drop.tcl, A and B)",OpenROAD 41a51eaf PSM,OL1 image,~17 + 15 min,<10 GB,"paper/work/ir2/ir_A.log, ir_B.log"
+PE sequential equivalence (pe_equiv2.ys),Yosys 0.62 (LibreLane image) and Yosys 0.30+48 (OL1),both images,<1 min each,<1 GB,"paper/data/pe_equiv2_yosys062.log, pe_equiv2_yosys030.log"
+"cell maps (block_maps.py), physical cost (phys_cost.py)",Python 3.12 + matplotlib 3.9.2,host,~20 s each,<3 GB,paper/work/block_maps.log
+"core_v11 VCD power re-measured with the fixed vcd2act.py (tools/power.sh, POWER_OUT)",Icarus 13.0 + OpenSTA 2.4.0,host + OL1 image,13 min 46 s,7.0 GB (sim),paper/data/core_v11_vcd_recheck/
+"errata directed tests, 11 RTL cases (sim/run_errata.sh)",Icarus 13.0,host,14 min,<1 GB,paper/data/errata_rtl_tests.txt
+"errata GLS, 3 small cases on the final netlist (gls_errata.sh)",Icarus 13.0,host,see gls_errata.txt,~7 GB,paper/data/gls_errata.txt
+"clock-only power, 64x64x64 job (power_phases.tcl, clock-only activity)",OpenSTA 2.4.0,OL1 image,~6 min,~7 GB,paper/work/clockfloor/sta.log
+STA ss_100C_1v40 bound (sta_ss140.sh: top RC nom/max + 3 blocks),OpenROAD 41a51eaf / OpenSTA 2.4.0,OL1 image,~4 min,3.3 GB,paper/data/sta_ss140_summary.txt
+"overlap estimate (perf_overlap.py, RTL runs of new sub-job shapes)",Icarus 13.0 + Python,host,~1 min,<1 GB,paper/work/perf_overlap.log

@@ -1,0 +1,4 @@
+corner,top_std_logic_mW,top_fill_decap_tap_mW,row_x32_logic_mW,row_x32_fill_decap_tap_mW,axi_logic_mW,axi_fill_decap_tap_mW,sram_mW,total_mW,one_row_mW,cells_top,cells_row,cells_axi,sram_lib,std_lib
+tt,0.00067,0.00195,0.00315,0.00087,4e-05,6e-05,2.83616,2.84291,0.00013,3697726,76554,102458,OpenRAM TT 1.8V 25C (only corner shipped),tt_025C_1v80
+ff,0.00256,0.00229,0.00701,0.00102,0.00016,8e-05,2.83616,2.84928,0.00025,3697726,76554,102458,OpenRAM TT 1.8V 25C (only corner shipped),ff_n40C_1v95
+ss,1.0205,0.00195,4.49309,0.00085,0.06741,6e-05,2.83616,8.42003,0.14044,3697726,76554,102458,OpenRAM TT 1.8V 25C (only corner shipped),ss_100C_1v60

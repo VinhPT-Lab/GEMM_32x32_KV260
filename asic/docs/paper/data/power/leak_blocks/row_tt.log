@@ -1,0 +1,5 @@
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 38946, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_0_1009.
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 38947, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_0_103.
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 39035, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_0_29.
+Warning: ${OL}/designs/gemm_row/runs/row_v1/results/final/verilog/gl/ProcessingElementRow.nl.v line 69800, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_100.
+LEAKBLOCK row tt 76554 cells

@@ -1,0 +1,4 @@
+FMAX ProcessingElement tt period 10.000 ns: reg2reg slack 5.214 ns -> fmax 208.9 MHz
+FMAX ProcessingElement ss period 10.000 ns: reg2reg slack 0.802 ns -> fmax 108.7 MHz
+FMAX ProcessingElementRow tt period 10.000 ns: reg2reg slack 4.197 ns -> fmax 172.3 MHz
+FMAX ProcessingElementRow ss period 10.000 ns: reg2reg slack -1.092 ns -> fmax 90.2 MHz

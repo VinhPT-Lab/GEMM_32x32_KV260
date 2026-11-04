@@ -1,0 +1,13 @@
+case           shape       words              expected got      detail
+M1             1,32,32     1/32/1             WRONG    WRONG    99 FAIL lines, first: FAIL extra result beat job=1 output_index=1 cycle=364
+M1_K2          1,64,32     2/64/1             WRONG    WRONG    124 FAIL lines, first: FAIL job=1 output mismatch row=0 col=0 expected=127 actual=104 output_
+M2             2,32,32     2/32/2             PASS     PASS     OVERALL FAIL
+M2_K2          2,64,32     4/64/2             PASS     PASS     OVERALL FAIL
+F511           73,224,32   511/224/73         PASS     PASS     OVERALL PASS
+F512           256,64,32   512/64/256         HANG     HANG     feature=1/512 weight=64/64 result=0/256
+W992           2,992,32    62/992/2           PASS     PASS     OVERALL PASS
+W1024          2,512,64    32/1024/4          HANG     HANG     feature=32/32 weight=1/1024 result=0/4
+O511           511,32,32   511/32/511         PASS     PASS     OVERALL PASS
+O512           256,32,64   256/64/512         WRONG    WRONG    210 FAIL lines, first: FAIL job=1 output mismatch row=0 col=48 expected=-128 actual=127 outpu
+SPLIT128_HALF  64,128,128  256/512/256        PASS     PASS     OVERALL PASS
+ERRATA TESTS: every case behaves as documented

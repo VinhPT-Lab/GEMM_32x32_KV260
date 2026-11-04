@@ -1,0 +1,3 @@
+model,instances_no_fill_tap_diode,worst_vccd1_drop_mV,worst_vssd1_rise_mV,worst_vdd_minus_vss_loss_mV,worst_inst,x_um,y_um,median_loss_mV,p99_loss_mV,inst_loss_over_200mV
+A,114644,137.1,153.6,290.7,u_gemm_accelerator.u_buffer_feeder.u_compute_core.u_processing_element_array.g_pe_row\[0\].u_row_19994,7145.44,10463.8,2.6,8.5,399
+B,114644,87.6,93.6,180.4,hold24927,3753.44,6438.24,86.4,165.9,0

@@ -1,0 +1,14 @@
+group,cells,area_um2
+filler/decap,3021679,33347291.45
+tap,524351,656067.97
+hold buffer,47000,472321.74
+diode,37085,92801.50
+flop/latch,22109,452699.17
+buffer (resizer / I/O),19445,253229.12
+logic,19039,218622.18
+clock tree,4257,106527.17
+ECO buffer,1593,9459.07
+tie,1088,4083.92
+SRAM macro,80,22763077.92
+row macro,32,15002508.60
+AXI macro,1,949645.79

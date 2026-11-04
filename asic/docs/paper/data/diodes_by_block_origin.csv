@@ -1,0 +1,5 @@
+block,diodes,preroute_ports_heuristic,grt_repair_antennas,ant_eco_flow,eco,other,note
+top,37085,0,34652,1213,1220,0,round-1 diodes removed by the ECO: 187
+row (one),15271,15252,19,0,0,0,
+row x32,488672,488064,608,0,0,0,
+AXI shell,7648,4607,14,3027,0,0,

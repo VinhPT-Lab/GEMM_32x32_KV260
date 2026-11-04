@@ -1,0 +1,29 @@
+order,tag,step,corner,std_cell_nets_over_lib,slew_nets,cap_nets,sram_dout_cap_nets,source
+1,v3r,ip_v3r round 1 (start),tt RC nom,435,430,387,539,sta6b/v3r_tt_nom.log
+1,v3r,ip_v3r round 1 (start),ss RC max,1673,1658,1536,627,sta6b/v3r_ss_max.log
+2,eco,after antenna ECO 4c + 6a + buffer (ARC 0),tt RC nom,433,428,386,542,sta6b/eco_tt_nom.log
+2,eco,after antenna ECO 4c + 6a + buffer (ARC 0),ss RC max,1665,1649,1527,631,sta6b/eco_ss_max.log
+3,c1,DRV ECO round 1 (6c),tt RC nom,32,32,0,12,sta6b/c1_tt_nom.log
+3,c1,DRV ECO round 1 (6c),ss RC max,164,160,69,28,sta6b/c1_ss_max.log
+4,c2,DRV ECO round 2 (6c),tt RC nom,32,32,0,0,sta6b/c2_tt_nom.log
+4,c2,DRV ECO round 2 (6c),ss RC max,96,95,8,1,sta6b/c2_ss_max.log
+5,c3,DRV ECO round 3 (6c),tt RC nom,32,32,0,0,sta6b/c3_tt_nom.log
+5,c3,DRV ECO round 3 (6c),ss RC max,91,91,3,0,sta6b/c3_ss_max.log
+6,h1,hold ECO (6c),tt RC nom,32,32,0,0,sta6b/h1_tt_nom.log
+6,h1,hold ECO (6c),ss RC max,91,91,3,0,sta6b/h1_ss_max.log
+7,l1,long nets round 1 (7A),tt RC nom,4,4,0,0,sta6b/l1_tt_nom.log
+7,l1,long nets round 1 (7A),ss RC max,22,20,7,0,sta6b/l1_ss_max.log
+8,l2,long nets round 2 (7A),tt RC nom,2,2,0,0,sta6b/l2_tt_nom.log
+8,l2,long nets round 2 (7A),ss RC max,6,6,0,0,sta6b/l2_ss_max.log
+9,b1,clock round 1 (7B),tt RC nom,0,0,0,0,sta6b/b1_tt_nom.log
+9,b1,clock round 1 (7B),ss RC max,1,1,0,0,sta6b/b1_ss_max.log
+10,b2,clock round 2 SINKBUF (7B),tt RC nom,0,0,0,0,sta6b/b2_tt_nom.log
+10,b2,clock round 2 SINKBUF (7B),ss RC max,3,3,0,0,sta6b/b2_ss_max.log
+11,e1,after hold/antenna 7C-7D,tt RC nom,0,0,0,0,sta6b/e1_tt_nom.log
+11,e1,after hold/antenna 7C-7D,ss RC max,3,3,1,0,sta6b/e1_ss_max.log
+12,e3,7E repair + antenna,tt RC nom,0,0,0,0,sta6b/e3_tt_nom.log
+12,e3,7E repair + antenna,ss RC max,1,1,0,0,sta6b/e3_ss_max.log
+13,a5,E' clock repeater + antenna (final layout),tt RC nom,0,0,0,0,sta6b/a5_tt_nom.log
+13,a5,E' clock repeater + antenna (final layout),ss RC max,0,0,0,0,sta6b/a5_ss_max.log
+14,final,final OL1 run s5/final_a5,tt RC nom,0,0,0,0,sta6b/final_tt_nom.log
+14,final,final OL1 run s5/final_a5,ss RC max,0,0,0,0,sta6b/final_ss_max.log

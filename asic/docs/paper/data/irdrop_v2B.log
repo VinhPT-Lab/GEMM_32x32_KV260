@@ -1,0 +1,38 @@
+IRDROP activity: 119651 top-level driver pins set, 796409 not in the top level (inside rows / shell)
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             4.66e-02   1.76e-03   1.89e-07   4.83e-02   6.1%
+Combinational          2.71e-01   5.84e-02   4.12e-01   7.41e-01  93.9%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  3.17e-01   6.02e-02   4.12e-01   7.89e-01 100.0%
+                          40.2%       7.6%      52.2%
+[INFO PSM-0001] Reading voltage source file: ${ECO_DIR}/paper/work/ir2/edges.vccd1.vsrc.
+[INFO PSM-0002] Output voltage file is specified as: ${ECO_DIR}/paper/work/ir2/ip_B.vccd1.ir.csv.
+[INFO PSM-0015] Reading location of VDD and VSS sources from ${ECO_DIR}/paper/work/ir2/edges.vccd1.vsrc.
+[INFO PSM-0076] Setting metal node density to be standard cell height times 5.
+[INFO PSM-0031] Number of PDN nodes on net vccd1 = 861370.
+[INFO PSM-0064] Number of voltage sources = 406.
+[INFO PSM-0040] All PDN stripes on net vccd1 are connected.
+########## IR report #################
+Worstcase voltage: 1.68e+00 V
+Average IR drop  : 3.58e-02 V
+Worstcase IR drop: 1.20e-01 V
+######################################
+IRDROP done vccd1
+[INFO PSM-0001] Reading voltage source file: ${ECO_DIR}/paper/work/ir2/edges.vssd1.vsrc.
+[INFO PSM-0002] Output voltage file is specified as: ${ECO_DIR}/paper/work/ir2/ip_B.vssd1.ir.csv.
+[INFO PSM-0015] Reading location of VDD and VSS sources from ${ECO_DIR}/paper/work/ir2/edges.vssd1.vsrc.
+[INFO PSM-0076] Setting metal node density to be standard cell height times 5.
+[INFO PSM-0031] Number of PDN nodes on net vssd1 = 861943.
+[INFO PSM-0064] Number of voltage sources = 406.
+[INFO PSM-0040] All PDN stripes on net vssd1 are connected.
+########## IR report #################
+Worstcase voltage: 1.25e-01 V
+Average IR drop  : 3.53e-02 V
+Worstcase IR drop: 1.25e-01 V
+######################################
+IRDROP done vssd1
+IRDROP finished

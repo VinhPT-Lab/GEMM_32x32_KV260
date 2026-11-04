@@ -1,0 +1,15 @@
+item,value
+CPU,Intel Core i7-14700HX (28 threads)
+RAM,15 GiB + 32 GiB swap file
+OS,AlmaLinux 10.2 (kernel 6.12.0-211.56.1.el10_2.x86_64)
+Docker,29.8.2
+container limits,--memory=10g --memory-swap=40g (every tool container)
+Python (host),3.12.14; matplotlib 3.9.2 and numpy 2.5.4 in paper/.venv
+OpenLane,1.0.2 (commit ff5509f65b17bfa4068d5336495ab1718987ff69)
+OL1 image,ghcr.io/the-openroad-project/openlane@sha256:832662c878405772fdb759a11daf21c32fd50072be6b6f4305ca377b4650779a
+OL1 tools,OpenROAD 41a51eaf; Magic 8.3.413; Netgen 1.5.255; KLayout 0.28.2; Yosys 0.30+48; OpenSTA 2.4.0
+ECO image,ghcr.io/librelane/librelane@sha256:4bc9042ba177f73f275b5b39e7d372a07d3f4043f548a0ba7f640097b7205051 (LibreLane 3.0.16; OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0)
+PDK,sky130A from open_pdks 0fe599b2afb6708d281543108caf8310912f54af
+simulator,Icarus Verilog 13.0 (host)
+repository,GEMM32-ASIC-sky130 branch eco-signoff-wip; package built on commit ef4609f (the commit that adds docs/paper follows it)
+Yosys 0.62,"in the ECO image (LibreLane), also eqy and sby; used for pe_equiv2.ys"

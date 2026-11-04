@@ -1,0 +1,31 @@
+# sinh ra khi chạy flow
+__pycache__/
+*.pyc
+openlane/logs/
+openlane/state/
+openlane/LOG.md
+openlane/LOG.md.bak
+openlane/designs/*/overrides.tcl
+openlane/designs/gemm_core/resume_params.tcl
+openlane/designs/gemm_core/full_params.tcl
+sim/build_*/
+sim/core_sim_quick_*/
+runs/
+
+# floorplan và số liệu do install_into_openlane.sh / run_flow.sh sinh lại mỗi lần chạy
+openlane/designs/*/sizes.tcl
+openlane/designs/*/macro.cfg
+openlane/designs/*/pin_order.cfg
+openlane/designs/*/clk_latency.tcl
+openlane/designs/gemm_core/floorplan.txt
+openlane/designs/gemm_core/sram_antenna.lef
+
+
+# complete IP (gemm_ip_shell / gemm_ip): written by gen_ip_files.py / run_flow.sh ip-*
+openlane/designs/gemm_ip/floorplan.txt
+openlane/designs/gemm_ip/GEMM_top_ip.v
+openlane/designs/gemm_ip/GemmAxiShell_bb.v
+openlane/designs/gemm_ip/GemmAxiShell_antenna.lef
+openlane/designs/gemm_ip/shell_run.tcl
+openlane/designs/gemm_ip/resume_params.tcl
+openlane/designs/*/full_params.tcl

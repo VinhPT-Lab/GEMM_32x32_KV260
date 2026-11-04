@@ -1,0 +1,3 @@
+net,nodes,worst_drop_mV,mean_drop_mV,p99_drop_mV,p999_drop_mV,worst_pct_of_vdd,worst_instance,worst_x_um,worst_y_um
+vccd1,757074,120.46,38.088,110.49,117.96,6.69,u_gemm_accelerator.u_buffer_feeder.u_compute_core.u_processing_element_array.g_pe_row\[25\].u_row,4995.04,6575.31
+vssd1,756981,124.98,37.536,114.07,122.28,6.94,u_gemm_accelerator.u_buffer_feeder.u_compute_core.u_processing_element_array.g_pe_row\[26\].u_row,4998.34,6420.27

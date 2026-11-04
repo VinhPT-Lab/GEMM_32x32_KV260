@@ -1,0 +1,65 @@
+Run: OpenLane gemm_ip/runs/ip_v3r (IP gemm_ip, top GEMM_top)
+Log: logs/placement/8-global.log, logs/placement/10-resizer.log, logs/placement/11-detailed.log, reports/placement/12-dpl_sta.summary.rpt
+Lệnh: grep/sed trên các file trên (bash extract_pd.sh <thư mục ra>, script nằm cạnh file này), đường dẫn tuyệt đối trong máy thay bằng ~, <ip_v3> = runs/ip_v3
+
+Ghi chú: log kế thừa từ ip_v3 (ip_v3r resume ở bước route). STA ở bước này dùng SDC của ip_v3; openlane.log ghi:
+[INFO]: resume: post-CTS SDC at 10.0000 ns, CLOCK_PERIOD 20 ns - SDC rebuilt by ip_post_cts.sdc
+
+== Global placement (logs/placement/8-global.log) ==
+[INFO GPL-0006] NumInstances: 633367
+[INFO GPL-0007] NumPlaceInstances: 42236
+[INFO GPL-0008] NumFixedInstances: 558848
+[INFO GPL-0019] Util(%): 1.94
+[INFO GPL-0023] TargetDensity: 0.55
+[InitialPlace]  Iter: 1 CG residual: 0.01679798 HPWL: 186310575420
+[NesterovSolve] Iter: 1090 overflow: 0.153156 HPWL: 14571100330
+[NesterovSolve] Finished with Overflow: 0.149492
+config.tcl: set ::env(FP_CORE_UTIL) "50"
+config.tcl: set ::env(PL_TARGET_DENSITY) "0.55"
+
+== Resizer sau placement, repair_design (logs/placement/10-resizer.log) ==
+[INFO RSZ-0027] Inserted 641 input buffers.
+[INFO RSZ-0028] Inserted 334 output buffers.
+[INFO RSZ-0058] Using max wire length 4508um.
+[INFO RSZ-0034] Found 10615 slew violations.
+[INFO RSZ-0035] Found 284 fanout violations.
+[INFO RSZ-0036] Found 2175 capacitance violations.
+[INFO RSZ-0037] Found 655 long wires.
+[INFO RSZ-0038] Inserted 18357 buffers in 12337 nets.
+[INFO RSZ-0039] Resized 36413 instances.
+[INFO RSZ-0042] Inserted 768 tie sky130_fd_sc_hd__conb_1 instances.
+[INFO RSZ-0042] Inserted 320 tie sky130_fd_sc_hd__conb_1 instances.
+[INFO]: keep_rows_clear: moved 98 cells out of the channels between the row macros (91 west into the FeatureSkew strip, 7 south into the OutputDeskew band); 0 hold buffers left in place
+total displacement    1477752.2 u
+average displacement        2.4 u
+max displacement          236.1 u
+original HPWL        16185642.5 u
+legalized HPWL       16528036.1 u
+delta HPWL                    2 %
+[INFO DPL-0020] Mirrored 32518 instances
+[INFO DPL-0021] HPWL before          16528036.1 u
+[INFO DPL-0022] HPWL after           16340853.1 u
+[INFO DPL-0023] HPWL delta               -1.1 %
+Design area 40293824 u^2 53% utilization.
+
+== Detailed placement (logs/placement/11-detailed.log) ==
+[INFO]: keep_rows_clear: moved 630 cells out of the channels between the row macros (384 west into the FeatureSkew strip, 246 south into the OutputDeskew band); 0 hold buffers left in place
+total displacement       6706.9 u
+average displacement        0.0 u
+max displacement           32.2 u
+original HPWL        16323843.9 u
+legalized HPWL       16514196.6 u
+delta HPWL                    1 %
+[INFO DPL-0020] Mirrored 32652 instances
+[INFO DPL-0021] HPWL before          16514196.6 u
+[INFO DPL-0022] HPWL after           16326554.1 u
+[INFO DPL-0023] HPWL delta               -1.1 %
+errors (logs/placement/11-detailed.errors): 0 dòng
+
+== STA sau detailed placement (reports/placement/12-dpl_sta.summary.rpt) ==
+tns -839.04
+wns -2.53
+report_worst_slack -max (Setup)
+worst slack -2.53
+report_worst_slack -min (Hold)
+worst slack -3.56
