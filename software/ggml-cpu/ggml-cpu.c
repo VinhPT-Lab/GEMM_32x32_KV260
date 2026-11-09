@@ -1,23 +1,3 @@
-#ifdef GGML_USE_FPGA
-#    include <stdbool.h>
-
-typedef enum FpgaQuantType {
-    FPGA_QUANT_Q5_0 = 0,
-    FPGA_QUANT_Q8_0 = 1,
-    FPGA_QUANT_Q4_K = 2,
-} FpgaQuantType;
-
-extern bool fpga_gemm_is_ready(void);
-extern void fpga_gemm_run(const void *  A_raw,
-                          FpgaQuantType quant,
-                          const float * B_f32,
-                          float *       C,
-                          int           M,
-                          int           K_orig,
-                          int           N_orig,
-                          int           shift);
-#endif
-
 #define _CRT_SECURE_NO_DEPRECATE // Disables "unsafe" warnings on Windows
 #define _USE_MATH_DEFINES // For M_PI on MSVC
 
@@ -34,6 +14,381 @@ extern void fpga_gemm_run(const void *  A_raw,
 #include "ops.h"
 #include "ggml.h"
 #include "common.h"
+
+// ===================== FPGA GEMM HOOK CONFIG =====================
+// Paste near the top of ggml-cpu.c after the normal include section.
+// Keep only GGML_USE_FPGA as a build-time macro.
+#ifdef GGML_USE_FPGA
+#    include "FPGA_GEMM.h"
+#    include "fpga_stats.h"
+
+#    include <stdbool.h>
+#    include <inttypes.h>
+#    include <stdint.h>
+#    include <stdio.h>
+#    include <stdlib.h>
+#    include <string.h>
+#    include <math.h>
+
+static int64_t fpga_env_i64(const char * name, int64_t default_value, int64_t min_value) {
+    const char * v = getenv(name);
+    if (v == NULL || v[0] == '\0') {
+        return default_value;
+    }
+
+    char *    end = NULL;
+    long long x   = strtoll(v, &end, 10);
+    if (end == v) {
+        return default_value;
+    }
+    if (x < min_value) {
+        return min_value;
+    }
+    return (int64_t) x;
+}
+
+static bool fpga_env_nonempty(const char * name) {
+    const char * v = getenv(name);
+    return v != NULL && v[0] != '\0';
+}
+
+static bool fpga_env_flag_enabled(const char * name, bool default_value) {
+    const char * v = getenv(name);
+    if (v == NULL || v[0] == '\0') {
+        return default_value;
+    }
+
+    if (strcmp(v, "1") == 0 || strcmp(v, "true") == 0 || strcmp(v, "TRUE") == 0 ||
+        strcmp(v, "yes") == 0 || strcmp(v, "YES") == 0 || strcmp(v, "on") == 0 ||
+        strcmp(v, "ON") == 0) {
+        return true;
+    }
+
+    if (strcmp(v, "0") == 0 || strcmp(v, "false") == 0 || strcmp(v, "FALSE") == 0 ||
+        strcmp(v, "no") == 0 || strcmp(v, "NO") == 0 || strcmp(v, "off") == 0 ||
+        strcmp(v, "OFF") == 0) {
+        return false;
+    }
+
+    return default_value;
+}
+
+static void fpga_forced_abort(const char * reason, int64_t M, int64_t K, int64_t N, int type) {
+    fprintf(stderr, "[FPGA][fatal] forced full-offload rejected matmul: %s M=%" PRId64 " K=%" PRId64
+                    " N=%" PRId64 " ggml_type=%d\n",
+            reason != NULL ? reason : "unknown", M, K, N, type);
+    fpga_stats_print();
+    abort();
+}
+
+static void fpga_compare_audit_skip(const char *              stage,
+                                    FpgaFallbackReason        reason,
+                                    const struct ggml_tensor * src0,
+                                    const char *              type_name,
+                                    int64_t                   M,
+                                    int64_t                   K,
+                                    int64_t                   N) {
+    if (!fpga_stats_audit_enabled()) {
+        return;
+    }
+
+    static uint64_t s_compare_skip_logs = 0;
+    const uint64_t  log_limit = 128;
+    if (s_compare_skip_logs < log_limit) {
+        fprintf(stderr,
+                "[FPGA][COMPARE][skip] stage=%s reason=%s phase=%s logical_gemm_id=%" PRIu64
+                " tensor=%s type=%s M=%" PRId64 " K=%" PRId64 " N=%" PRId64 "\n",
+                stage != NULL ? stage : "unknown",
+                fpga_stats_fallback_reason_name(reason),
+                fpga_stats_phase_name(fpga_stats_get_phase()),
+                fpga_stats_get_current_logical_gemm_id(),
+                src0 != NULL && src0->name[0] != '\0' ? src0->name : "",
+                type_name != NULL ? type_name : "unknown", M, K, N);
+    } else if (s_compare_skip_logs == log_limit) {
+        fprintf(stderr, "[FPGA][COMPARE][skip] further skip messages suppressed\n");
+    }
+    s_compare_skip_logs++;
+}
+
+static bool fpga_ascii_equal_ignore_case(const char * a, const char * b) {
+    if (a == NULL || b == NULL) {
+        return false;
+    }
+
+    while (*a != '\0' && *b != '\0') {
+        char ca = *a;
+        char cb = *b;
+        if (ca >= 'A' && ca <= 'Z') {
+            ca = (char) (ca - 'A' + 'a');
+        }
+        if (cb >= 'A' && cb <= 'Z') {
+            cb = (char) (cb - 'A' + 'a');
+        }
+        if (ca != cb) {
+            return false;
+        }
+        ++a;
+        ++b;
+    }
+
+    return *a == '\0' && *b == '\0';
+}
+
+static size_t fpga_parse_m_list(const char * text, int64_t * values, size_t max_values) {
+    if (text == NULL || values == NULL || max_values == 0) {
+        return 0;
+    }
+
+    size_t       count = 0;
+    const char * p     = text;
+
+    while (*p != '\0') {
+        while (*p == ' ' || *p == '\t' || *p == ',') {
+            ++p;
+        }
+        if (*p == '\0') {
+            break;
+        }
+
+        char *    end = NULL;
+        long long v   = strtoll(p, &end, 10);
+        if (end != p && v > 0 && count < max_values) {
+            values[count++] = (int64_t) v;
+        }
+
+        if (end == p) {
+            while (*p != '\0' && *p != ',') {
+                ++p;
+            }
+        } else {
+            p = end;
+            while (*p != '\0' && *p != ',') {
+                ++p;
+            }
+        }
+    }
+
+    return count;
+}
+
+static bool fpga_m_list_contains(const int64_t * values, size_t count, int64_t M) {
+    for (size_t i = 0; i < count; ++i) {
+        if (values[i] == M) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool fpga_map_ggml_type_to_quant(enum ggml_type type, FpgaQuantType * quant, int64_t * qk_required) {
+    FpgaQuantType mapped = FPGA_QUANT_Q5_0;
+
+    switch (type) {
+        case GGML_TYPE_F32: mapped = FPGA_QUANT_F32; break;
+        case GGML_TYPE_F16: mapped = FPGA_QUANT_F16; break;
+        case GGML_TYPE_BF16: mapped = FPGA_QUANT_BF16; break;
+        case GGML_TYPE_Q1_0: mapped = FPGA_QUANT_Q1_0; break;
+        case GGML_TYPE_Q4_0: mapped = FPGA_QUANT_Q4_0; break;
+        case GGML_TYPE_Q4_1: mapped = FPGA_QUANT_Q4_1; break;
+        case GGML_TYPE_Q5_0: mapped = FPGA_QUANT_Q5_0; break;
+        case GGML_TYPE_Q5_1: mapped = FPGA_QUANT_Q5_1; break;
+        case GGML_TYPE_Q8_0: mapped = FPGA_QUANT_Q8_0; break;
+        case GGML_TYPE_MXFP4: mapped = FPGA_QUANT_MXFP4; break;
+        case GGML_TYPE_NVFP4: mapped = FPGA_QUANT_NVFP4; break;
+        case GGML_TYPE_Q2_K: mapped = FPGA_QUANT_Q2_K; break;
+        case GGML_TYPE_Q3_K: mapped = FPGA_QUANT_Q3_K; break;
+        case GGML_TYPE_Q4_K: mapped = FPGA_QUANT_Q4_K; break;
+        case GGML_TYPE_Q5_K: mapped = FPGA_QUANT_Q5_K; break;
+        case GGML_TYPE_Q6_K: mapped = FPGA_QUANT_Q6_K; break;
+        case GGML_TYPE_IQ2_XXS: mapped = FPGA_QUANT_IQ2_XXS; break;
+        case GGML_TYPE_IQ2_XS: mapped = FPGA_QUANT_IQ2_XS; break;
+        case GGML_TYPE_IQ3_XXS: mapped = FPGA_QUANT_IQ3_XXS; break;
+        case GGML_TYPE_IQ1_S: mapped = FPGA_QUANT_IQ1_S; break;
+        case GGML_TYPE_IQ4_NL: mapped = FPGA_QUANT_IQ4_NL; break;
+        case GGML_TYPE_IQ3_S: mapped = FPGA_QUANT_IQ3_S; break;
+        case GGML_TYPE_IQ2_S: mapped = FPGA_QUANT_IQ2_S; break;
+        case GGML_TYPE_IQ4_XS: mapped = FPGA_QUANT_IQ4_XS; break;
+        case GGML_TYPE_IQ1_M: mapped = FPGA_QUANT_IQ1_M; break;
+        case GGML_TYPE_TQ1_0: mapped = FPGA_QUANT_TQ1_0; break;
+        case GGML_TYPE_TQ2_0: mapped = FPGA_QUANT_TQ2_0; break;
+        default: return false;
+    }
+
+    const int64_t blck = ggml_blck_size(type);
+    if (blck <= 0) {
+        return false;
+    }
+
+    if (type != GGML_TYPE_F32) {
+        const struct ggml_type_traits * traits = ggml_get_type_traits(type);
+        if (traits == NULL || traits->to_float == NULL) {
+            return false;
+        }
+    }
+
+    if (quant != NULL) {
+        *quant = mapped;
+    }
+    if (qk_required != NULL) {
+        *qk_required = blck;
+    }
+
+    return true;
+}
+
+static void fpga_print_quant_support_table(void) {
+    const enum ggml_type rows[] = {
+        GGML_TYPE_F32,      GGML_TYPE_F16,    GGML_TYPE_BF16,   GGML_TYPE_Q1_0,    GGML_TYPE_Q4_0,
+        GGML_TYPE_Q4_1,     GGML_TYPE_Q5_0,   GGML_TYPE_Q5_1,   GGML_TYPE_Q8_0,    GGML_TYPE_Q8_1,
+        GGML_TYPE_MXFP4,    GGML_TYPE_NVFP4,  GGML_TYPE_Q2_K,   GGML_TYPE_Q3_K,    GGML_TYPE_Q4_K,
+        GGML_TYPE_Q5_K,     GGML_TYPE_Q6_K,   GGML_TYPE_Q8_K,   GGML_TYPE_IQ2_XXS, GGML_TYPE_IQ2_XS,
+        GGML_TYPE_IQ3_XXS,  GGML_TYPE_IQ1_S,  GGML_TYPE_IQ4_NL, GGML_TYPE_IQ3_S,   GGML_TYPE_IQ2_S,
+        GGML_TYPE_IQ4_XS,   GGML_TYPE_IQ1_M,  GGML_TYPE_TQ1_0,  GGML_TYPE_TQ2_0,
+    };
+
+    fprintf(stderr, "QUANT_SUPPORT_TABLE:\n");
+    fprintf(stderr, "type_name | fpga_supported | path | reason\n");
+    for (size_t i = 0; i < sizeof(rows) / sizeof(rows[0]); ++i) {
+        FpgaQuantType unused_quant = FPGA_QUANT_Q5_0;
+        int64_t       unused_qk    = 0;
+        const bool supported = fpga_map_ggml_type_to_quant(rows[i], &unused_quant, &unused_qk);
+        fprintf(stderr, "%s | %s | %s | %s\n",
+                ggml_type_name(rows[i]),
+                supported ? "yes" : "no",
+                supported ? "generic_dequant_to_int8_pack" : "cpu_fallback",
+                supported ? "ok" : "unsupported_quant_no_dequant");
+    }
+}
+
+static void fpga_print_m_mode_table(void) {
+    fprintf(stderr, "M_MODE_TABLE:\n");
+    fprintf(stderr, "mode | min_m | max_m | notes\n");
+    fprintf(stderr, "safe | 32 | FPGA_MAX_M or unlimited | default, avoids decode-like M<32\n");
+    fprintf(stderr, "balanced | 16 | FPGA_MAX_M or unlimited | prefill plus moderate small batches\n");
+    fprintf(stderr, "aggressive | 1 | FPGA_MAX_M or unlimited | benchmark/demo, may waste M<32 rows\n");
+    fprintf(stderr, "m5 | 5 | FPGA_MAX_M or unlimited | fixed MIN_M=5\n");
+    fprintf(stderr, "m8 | 8 | FPGA_MAX_M or unlimited | fixed MIN_M=8\n");
+    fprintf(stderr, "m10 | 10 | FPGA_MAX_M or unlimited | fixed MIN_M=10\n");
+    fprintf(stderr, "m12 | 12 | FPGA_MAX_M or unlimited | fixed MIN_M=12\n");
+    fprintf(stderr, "custom | FPGA_MIN_M | FPGA_MAX_M or unlimited | user supplied threshold/list\n");
+}
+
+struct fpga_compare_result {
+    bool     valid;
+    double   max_abs_error;
+    double   mae;
+    uint64_t mismatch_count;
+    uint64_t compared_count;
+    double   cpu_latency_ms;
+};
+
+static bool fpga_dequant_weight_row_for_compare(const struct ggml_tensor * src0, int64_t row, int64_t K, float * dst) {
+    if (src0 == NULL || dst == NULL || row < 0 || K <= 0) {
+        return false;
+    }
+
+    const size_t row_bytes = ggml_row_size(src0->type, K);
+    if (row_bytes == 0) {
+        return false;
+    }
+
+    const uint8_t * row_base = (const uint8_t *) src0->data + (size_t) row * row_bytes;
+    if (src0->type == GGML_TYPE_F32) {
+        memcpy(dst, row_base, (size_t) K * sizeof(float));
+        return true;
+    }
+
+    const struct ggml_type_traits * traits = ggml_get_type_traits(src0->type);
+    if (traits == NULL || traits->to_float == NULL) {
+        return false;
+    }
+
+    traits->to_float(row_base, dst, K);
+    return true;
+}
+
+static struct fpga_compare_result fpga_compare_against_reference(const struct ggml_tensor * src0,
+                                                                  const float *             src1_f32,
+                                                                  const float *             dst_f32,
+                                                                  int64_t                   M,
+                                                                  int64_t                   K,
+                                                                  int64_t                   N) {
+    struct fpga_compare_result result = { false, -1.0, -1.0, 0, 0, -1.0 };
+    if (!fpga_profile_compare_enabled() || src0 == NULL || src1_f32 == NULL || dst_f32 == NULL ||
+        M <= 0 || K <= 0 || N <= 0) {
+        return result;
+    }
+
+    const double tol = fpga_profile_compare_tol();
+    uint64_t max_elements = fpga_profile_compare_max_elements();
+    const uint64_t total = (uint64_t) M * (uint64_t) N;
+    if (total == 0) {
+        return result;
+    }
+    if (max_elements == 0 || max_elements > total) {
+        max_elements = total;
+    }
+    const uint64_t stride = max_elements < total ? (total + max_elements - 1) / max_elements : 1;
+
+    float * w_row = (float *) malloc((size_t) K * sizeof(float));
+    if (w_row == NULL) {
+        return result;
+    }
+
+    const int64_t t0 = ggml_time_us();
+    int64_t cached_n = -1;
+    double sum_abs_error = 0.0;
+
+    for (uint64_t s = 0; s < max_elements; ++s) {
+        uint64_t idx = s * stride;
+        if (idx >= total) {
+            idx = total - 1;
+        }
+
+        const int64_t m = (int64_t) (idx / (uint64_t) N);
+        const int64_t n = (int64_t) (idx % (uint64_t) N);
+
+        if (n != cached_n) {
+            if (!fpga_dequant_weight_row_for_compare(src0, n, K, w_row)) {
+                free(w_row);
+                return result;
+            }
+            cached_n = n;
+        }
+
+        const float * x = src1_f32 + (size_t) m * (size_t) K;
+        double ref = 0.0;
+        for (int64_t k = 0; k < K; ++k) {
+            ref += (double) x[k] * (double) w_row[k];
+        }
+
+        const double fpga = (double) dst_f32[(size_t) m * (size_t) N + (size_t) n];
+        const double err = fabs(fpga - ref);
+        if (err > result.max_abs_error) {
+            result.max_abs_error = err;
+        }
+        sum_abs_error += err;
+        if (err > tol) {
+            result.mismatch_count++;
+        }
+        result.compared_count++;
+    }
+
+    const int64_t t1 = ggml_time_us();
+    free(w_row);
+
+    if (result.compared_count > 0) {
+        result.valid = true;
+        result.mae = sum_abs_error / (double) result.compared_count;
+        result.cpu_latency_ms = (double) (t1 - t0) / 1000.0;
+    }
+
+    return result;
+}
+#endif
+// ==================================================================
+
+
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #include <malloc.h> // using malloc.h with MSC/MINGW
@@ -1262,98 +1617,681 @@ static void ggml_compute_forward_mul_mat_one_chunk(
     }
 }
 
+static void ggml_compute_forward_mul_mat_cpu(
+        const struct ggml_compute_params * params,
+              struct ggml_tensor * dst) {
+
+    const struct ggml_tensor * src0 = dst->src[0];
+    const struct ggml_tensor * src1 = dst->src[1];
+
+    GGML_TENSOR_BINARY_OP_LOCALS
+
+    const int ith = params->ith;
+    const int nth = params->nth;
+
+    enum ggml_type           const vec_dot_type         = type_traits_cpu[src0->type].vec_dot_type;
+    ggml_from_float_t        const from_float           = type_traits_cpu[vec_dot_type].from_float;
+    int64_t                  const vec_dot_num_rows     = type_traits_cpu[src0->type].nrows;
+
+    GGML_ASSERT(ne0 == ne01);
+    GGML_ASSERT(ne1 == ne11);
+    GGML_ASSERT(ne2 == ne12);
+    GGML_ASSERT(ne3 == ne13);
+
+    // we don't support permuted src0 or src1
+    GGML_ASSERT(nb00 == ggml_type_size(src0->type));
+    GGML_ASSERT(nb10 == ggml_type_size(src1->type));
+
+    // dst cannot be transposed or permuted
+    GGML_ASSERT(nb0 == sizeof(float));
+    GGML_ASSERT(nb0 <= nb1);
+    GGML_ASSERT(nb1 <= nb2);
+    GGML_ASSERT(nb2 <= nb3);
+
+#if GGML_USE_LLAMAFILE
+    const int64_t r2 = ne12 / ne02;
+    const int64_t r3 = ne13 / ne03;
+
+    const bool src1_cont = ggml_is_contiguous(src1);
+
+    if (src1_cont) {
+        for (int64_t i13 = 0; i13 < ne13; i13++)
+            for (int64_t i12 = 0; i12 < ne12; i12++)
+                if (!llamafile_sgemm(params,
+                                     ne01, ne11, ne00/ggml_blck_size(src0->type),
+                                     (const char *)src0->data + i12/r2*nb02 + i13/r3*nb03,
+                                     nb01/ggml_type_size(src0->type),
+                                     (const char *)src1->data + i12*nb12 + i13*nb13,
+                                     nb11/ggml_type_size(src1->type),
+                                     (char *)dst->data + i12*nb2 + i13*nb3,
+                                     nb1/ggml_type_size(dst->type),
+                                     src0->type,
+                                     src1->type,
+                                     dst->type))
+                    goto UseGgmlGemm1;
+        return;
+    }
+UseGgmlGemm1:;
+#endif
+
+    if (src1->type != vec_dot_type) {
+        char * wdata = params->wdata;
+
+        const size_t nbw0 = ggml_type_size(vec_dot_type);
+        const size_t nbw1 = ggml_row_size(vec_dot_type, ne10);
+        const size_t nbw2 = nbw1*ne11;
+        const size_t nbw3 = nbw2*ne12;
+
+        assert(params->wsize >= ne13*nbw3);
+        GGML_ASSERT(src1->type == GGML_TYPE_F32);
+
+    #if 0
+        for (int64_t i13 = 0; i13 < ne13; ++i13) {
+            for (int64_t i12 = 0; i12 < ne12; ++i12) {
+                for (int64_t i11 = ith; i11 < ne11; i11 += nth) {
+                    from_float((float *)((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11),
+                               (void *)               (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1),
+                                ne10);
+                }
+            }
+        }
+    #else
+        for (int64_t i13 = 0; i13 < ne13; ++i13) {
+            for (int64_t i12 = 0; i12 < ne12; ++i12) {
+                for (int64_t i11 = 0; i11 < ne11; ++i11) {
+                    size_t bs = ggml_blck_size(vec_dot_type);
+                    int64_t ne10_block_start = (ith * ne10/bs) / nth;
+                    int64_t ne10_block_end   = ((ith + 1) * ne10/bs) / nth;
+                    from_float((float *)((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11 + ne10_block_start*bs*nb10),
+                               (void *)               (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1 + ne10_block_start*nbw0),
+                               (ne10_block_end - ne10_block_start) * bs);
+                }
+            }
+        }
+    #endif
+    }
+
+    if (ith == 0) {
+        // Every thread starts at ith, so the first unprocessed chunk is nth.  This save a bit of coordination right at the start.
+        atomic_store_explicit(&params->threadpool->current_chunk, nth, memory_order_relaxed);
+    }
+
+    ggml_barrier(params->threadpool);
+
+#if GGML_USE_LLAMAFILE
+    if (src1->type != vec_dot_type) {
+        const void* wdata = (src1->type == vec_dot_type) ? src1->data : params->wdata;
+        const size_t row_size = ggml_row_size(vec_dot_type, ne10);
+
+        for (int64_t i13 = 0; i13 < ne13; i13++)
+            for (int64_t i12 = 0; i12 < ne12; i12++)
+                if (!llamafile_sgemm(params,
+                                     ne01, ne11, ne00/ggml_blck_size(src0->type),
+                                     (const char *)src0->data + i12/r2*nb02 + i13/r3*nb03,
+                                     nb01/ggml_type_size(src0->type),
+                                     (const char *)wdata + (i12*ne11 + i13*ne12*ne11)*row_size,
+                                     row_size/ggml_type_size(vec_dot_type),
+                                     (char *)dst->data + i12*nb2 + i13*nb3,
+                                     nb1/ggml_type_size(dst->type),
+                                     src0->type,
+                                     vec_dot_type,
+                                     dst->type))
+                    goto UseGgmlGemm2;
+        return;
+    }
+UseGgmlGemm2:;
+#endif
+
+    const int64_t nr0 = ne0;
+    const int64_t nr1 = ne1 * ne2 * ne3;
+
+    int chunk_size = 16;
+
+    if (nr0 == 1 || nr1 == 1) {
+        chunk_size = 64;
+    }
+
+    int64_t nchunk0 = (nr0 + chunk_size - 1) / chunk_size;
+    int64_t nchunk1 = (nr1 + chunk_size - 1) / chunk_size;
+
+    if (nchunk0 * nchunk1 < nth * 4 || ggml_is_numa()) {
+        nchunk0 = nr0 > nr1 ? nth : 1;
+        nchunk1 = nr0 > nr1 ? 1 : nth;
+    }
+
+    const int64_t dr0 = (nr0 + nchunk0 - 1) / nchunk0;
+    const int64_t dr1 = (nr1 + nchunk1 - 1) / nchunk1;
+
+    int current_chunk = ith;
+
+    while (current_chunk < nchunk0 * nchunk1) {
+        const int64_t ith0 = current_chunk % nchunk0;
+        const int64_t ith1 = current_chunk / nchunk0;
+
+        const int64_t ir0_start = dr0 * ith0;
+        const int64_t ir0_end = MIN(ir0_start + dr0, nr0);
+
+        const int64_t ir1_start = dr1 * ith1;
+        const int64_t ir1_end = MIN(ir1_start + dr1, nr1);
+
+        int64_t num_rows_per_vec_dot = vec_dot_num_rows;
+
+        if ((nr0 % 2 != 0) || (ne11 % 2 != 0) || ((ir0_end - ir0_start) % 2 != 0) || ((ir1_end - ir1_start) % 2 != 0)) {
+            num_rows_per_vec_dot = 1;
+        }
+        ggml_compute_forward_mul_mat_one_chunk(params, dst, src0->type, num_rows_per_vec_dot, ir0_start, ir0_end, ir1_start, ir1_end);
+
+        if (nth >= nchunk0 * nchunk1) {
+            break;
+        }
+
+        current_chunk = atomic_fetch_add_explicit(&params->threadpool->current_chunk, 1, memory_order_relaxed);
+    }
+}
+
 void ggml_compute_forward_mul_mat(
         const struct ggml_compute_params * params,
               struct ggml_tensor * dst) {
 
-    const struct ggml_tensor * src0 = dst->src[0]; //weight
-    const struct ggml_tensor * src1 = dst->src[1]; //Activation
+    const struct ggml_tensor * src0 = dst->src[0];
+    const struct ggml_tensor * src1 = dst->src[1];
 
     const int32_t hint = ggml_get_op_params_i32(dst, 1);
     if (hint == GGML_HINT_SRC0_IS_HADAMARD && !params->use_ref) {
         ggml_compute_forward_fwht(params, dst);
         return;
     }
-    
 
-    const int ith = params->ith; //thread index (0,1,2...)
-    const int nth = params->nth; // tổng số thread
-    GGML_TENSOR_BINARY_OP_LOCALS // macro expand ra ne00,ne01,ne02,ne03,ne10,ne11...
+    GGML_TENSOR_BINARY_OP_LOCALS
 
-//==============================================================)))
-// FPGA GEMM HOOK
+    const int ith = params->ith;
+    const int nth = params->nth;
+// ===================== FPGA GEMM HOOK - KV260 K=896 ONLY =====================
+// Paste inside ggml_compute_forward_mul_mat(), after:
+//   GGML_TENSOR_BINARY_OP_LOCALS
+//   const int ith = params->ith;
+//   const int nth = params->nth;
+// and before the original CPU implementation begins.
+//
+// Required include in ggml-cpu.c build path:
+//   #include "FPGA_GEMM.h"
+//   #include "fpga_stats.h"
+//
+// Stable policy for current RTL:
+//   - Offload Q5_0/Q6_K/Q8_0 weights through software INT8 tile packing.
+//   - Offload K == 896 by default; K tiling is experimental and env-gated.
+//   - Skip huge output matrices, e.g. token_embd/logits N=151936.
+//   - If FPGA runtime fails, fall through to original ggml CPU path.
 #ifdef GGML_USE_FPGA
     {
-        // Only run during the real compute phase. INIT/FINALIZE must keep ggml behavior unchanged.
-        if (!params->use_ref) {
-            FpgaQuantType fpga_quant;
-            int64_t       qk_required         = 0;
-            bool          fpga_supported_type = false;
+        static bool fpga_ready_once = false;
+        static bool fpga_ready_init = false;
+        static bool fpga_policy_init = false;
+        static char fpga_policy_m_mode[16] = "safe";
+        static int64_t fpga_policy_min_m = 32;
+        static int64_t fpga_policy_max_m = INT64_MAX;
+        static int64_t fpga_policy_min_macs = 0;
+        static int64_t fpga_policy_max_n = 4864;
+        static int64_t fpga_policy_m_list[64];
+        static size_t fpga_policy_m_list_count = 0;
+        static bool fpga_policy_m_list_enabled = false;
+        static char fpga_policy_m_list_text[256] = "none";
+        static bool fpga_force_full_offload = false;
+        static bool fpga_experimental_k_tiling = false;
+        static bool fpga_small_m_pad32 = false;
 
-            if (src0->type == GGML_TYPE_Q5_0) {
-                fpga_quant          = FPGA_QUANT_Q5_0;
-                qk_required         = 32;
-                fpga_supported_type = true;
-            } else if (src0->type == GGML_TYPE_Q8_0) {
-                fpga_quant          = FPGA_QUANT_Q8_0;
-                qk_required         = 32;
-                fpga_supported_type = true;
-            } else if (src0->type == GGML_TYPE_Q4_K) {
-                fpga_quant          = FPGA_QUANT_Q4_K;
-                qk_required         = 256;
-                fpga_supported_type = true;
+        const int64_t M = ne11;
+        const int64_t K = ne00;
+        const int64_t N = ne01;
+        const FpgaRuntimeMode fpga_runtime_mode = fpga_stats_get_runtime_mode();
+        const bool fpga_compare_mode = fpga_runtime_mode == FPGA_RUNTIME_MODE_COMPARE;
+        const bool fpga_inclusive_mode = fpga_runtime_mode == FPGA_RUNTIME_MODE_INCLUSIVE;
+        const bool fpga_compare_flag_requested = fpga_env_flag_enabled("FPGA_COMPARE", false) ||
+                                                 fpga_env_flag_enabled("FPGA_PROFILE_COMPARE", false);
+
+        if (fpga_runtime_mode == FPGA_RUNTIME_MODE_CPU_ONLY) {
+            if (ith == 0) {
+                fpga_stats_count_mul_mat(M, K, N);
+                fpga_stats_record_cpu_only_gemm(M, K, N);
+                if (fpga_compare_flag_requested) {
+                    fpga_compare_audit_skip("runtime_mode_cpu_only", FPGA_FB_USE_REF,
+                                            src0, ggml_type_name(src0->type), M, K, N);
+                }
+            }
+            ggml_compute_forward_mul_mat_cpu(params, dst);
+            return;
+        }
+
+        if (ith == 0 && !fpga_ready_init) {
+            fpga_ready_once = fpga_gemm_is_ready();
+            fpga_ready_init = true;
+        }
+
+        if (ith == 0 && !fpga_policy_init) {
+            fpga_force_full_offload = fpga_env_flag_enabled("FPGA_FORCE_FULL_OFFLOAD", false);
+            fpga_experimental_k_tiling = fpga_env_flag_enabled("FPGA_EXPERIMENTAL_K_TILING", false);
+            fpga_small_m_pad32 = fpga_env_flag_enabled("FPGA_SMALL_M_PAD32", fpga_inclusive_mode);
+
+            const char * m_mode_env = getenv("FPGA_M_MODE");
+            const bool   m_mode_set = m_mode_env != NULL && m_mode_env[0] != '\0';
+
+            if (!m_mode_set && fpga_env_nonempty("FPGA_MIN_M")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "custom");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "balanced")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "balanced");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "aggressive")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "aggressive");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "m5")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "m5");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "m8")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "m8");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "m10")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "m10");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "m12")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "m12");
+            } else if (m_mode_set && fpga_ascii_equal_ignore_case(m_mode_env, "custom")) {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "custom");
+            } else {
+                snprintf(fpga_policy_m_mode, sizeof(fpga_policy_m_mode), "%s", "safe");
             }
 
-            const int64_t M = ne11;  // activation rows / number of tokens
-            const int64_t K = ne00;  // inner dimension
-            const int64_t N = ne01;  // output columns / weight rows
+            if (strcmp(fpga_policy_m_mode, "balanced") == 0) {
+                fpga_policy_min_m = 16;
+            } else if (strcmp(fpga_policy_m_mode, "aggressive") == 0) {
+                fpga_policy_min_m = 1;
+            } else if (strcmp(fpga_policy_m_mode, "m5") == 0) {
+                fpga_policy_min_m = 5;
+            } else if (strcmp(fpga_policy_m_mode, "m8") == 0) {
+                fpga_policy_min_m = 8;
+            } else if (strcmp(fpga_policy_m_mode, "m10") == 0) {
+                fpga_policy_min_m = 10;
+            } else if (strcmp(fpga_policy_m_mode, "m12") == 0) {
+                fpga_policy_min_m = 12;
+            } else if (strcmp(fpga_policy_m_mode, "custom") == 0) {
+                fpga_policy_min_m = fpga_env_i64("FPGA_MIN_M", 32, 1);
+            } else {
+                fpga_policy_min_m = 32;
+            }
 
-            const int64_t k_blocks = (K + 31) / 32;
-            const int64_t n_blocks = (N + 31) / 32;
+            if (fpga_inclusive_mode) {
+                fpga_policy_min_m = 1;
+                fpga_policy_min_macs = 0;
+                fpga_small_m_pad32 = true;
+            }
 
-            // Current RTL limits from register widths and default buffer depths.
-            // row_count is 9 bits; k/n block counts are 5 bits; buffers are depth 2400 words.
-            const bool rtl_shape_ok = M >= 1 && M <= 511 && k_blocks >= 1 && k_blocks <= 31 && n_blocks >= 1 &&
-                                      n_blocks <= 31 && (M * k_blocks) <= 2400 && (k_blocks * 32 * n_blocks) <= 2400 &&
-                                      (M * n_blocks) <= 2400;
+            fpga_policy_max_m = fpga_env_i64("FPGA_MAX_M", INT64_MAX, 1);
+            fpga_policy_min_macs = fpga_inclusive_mode ? 0 : fpga_env_i64("FPGA_MIN_MACS", 0, 0);
+            fpga_policy_max_n = fpga_env_i64("FPGA_MAX_N", 4864, 1);
 
-            // The FPGA_GEMM.cpp code assumes contiguous ggml memory:
-            //   src0: dequantized flat order W[n*K + k]
-            //   src1: F32 flat order B[m*K + k]
-            //   dst : F32 flat order C[m*N + n]
+            const char * m_list_env = getenv("FPGA_M_LIST");
+            if (m_list_env != NULL && m_list_env[0] != '\0') {
+                snprintf(fpga_policy_m_list_text, sizeof(fpga_policy_m_list_text), "%s", m_list_env);
+                fpga_policy_m_list_count =
+                    fpga_parse_m_list(m_list_env, fpga_policy_m_list, sizeof(fpga_policy_m_list) / sizeof(fpga_policy_m_list[0]));
+                fpga_policy_m_list_enabled = fpga_policy_m_list_count > 0;
+            }
+
+            if (fpga_stats_audit_verbose()) {
+                fprintf(stderr,
+                        "[FPGA][policy] FPGA_MODE=%s M_MODE=%s MIN_M=%" PRId64 " MAX_M=%" PRId64
+                        " MIN_MACS=%" PRId64 " MAX_N=%" PRId64 " M_LIST=%s FORCE_FULL=%d K_TILING=%d"
+                        " SMALL_M_PAD32=%d\n",
+                        fpga_stats_runtime_mode_name(fpga_runtime_mode), fpga_policy_m_mode, fpga_policy_min_m,
+                        fpga_policy_max_m, fpga_policy_min_macs, fpga_policy_max_n,
+                        fpga_policy_m_list_enabled ? fpga_policy_m_list_text : "none",
+                        fpga_force_full_offload ? 1 : 0, fpga_experimental_k_tiling ? 1 : 0,
+                        fpga_small_m_pad32 ? 1 : 0);
+                fpga_print_m_mode_table();
+                fpga_print_quant_support_table();
+            }
+            fpga_policy_init = true;
+        }
+
+        if (nth > 1) {
+            ggml_barrier(params->threadpool);
+        }
+
+        const bool ready = fpga_ready_once;
+
+        const int64_t fpga_m_tile     = 64;
+        const int64_t fpga_k_required = 896;
+
+        FpgaQuantType fpga_quant          = FPGA_QUANT_Q5_0;
+        int64_t       qk_required         = 0;
+        bool          fpga_supported_type = fpga_map_ggml_type_to_quant(src0->type, &fpga_quant, &qk_required);
+        const bool    fpga_numerical_compare_requested = fpga_compare_mode || fpga_compare_flag_requested;
+
+        if (ith == 0) {
+            fpga_stats_count_mul_mat(M, K, N);
+            fpga_stats_count_quant_type(fpga_supported_type, fpga_quant);
+            fpga_stats_count_shape(M, K, N);
+        }
+
+        if (!params->use_ref) {
             const bool src0_contig = ggml_is_contiguous(src0);
+
             const bool src1_contig = src1->type == GGML_TYPE_F32 && src1->nb[0] == sizeof(float) &&
                                      src1->nb[1] == (size_t) (ne10 * (int64_t) sizeof(float));
-            const bool dst_contig  = dst->type == GGML_TYPE_F32 && dst->nb[0] == sizeof(float) &&
-                                     dst->nb[1] == (size_t) (ne0 * (int64_t) sizeof(float));
 
-            const bool fpga_shape_ok = ne10 == ne00 &&  // src1 K must match src0 K
-                                       ne0 == ne01 &&   // dst N
-                                       ne1 == ne11 &&   // dst M
-                                       ne02 == 1 && ne03 == 1 && ne12 == 1 && ne13 == 1 && ne2 == 1 && ne3 == 1;
+            const bool dst_contig = dst->type == GGML_TYPE_F32 && dst->nb[0] == sizeof(float) &&
+                                    dst->nb[1] == (size_t) (ne0 * (int64_t) sizeof(float));
 
-            // Quantized rows must be block-aligned by K, not by K*N.
-            const bool quant_row_aligned = fpga_supported_type && ((K % qk_required) == 0);
+            const bool fpga_shape_ok = ne10 == ne00 && ne0 == ne01 && ne1 == ne11 && ne02 == 1 && ne03 == 1 &&
+                                       ne12 == 1 && ne13 == 1 && ne2 == 1 && ne3 == 1;
 
-            if (fpga_gemm_is_ready() && fpga_supported_type && fpga_shape_ok && rtl_shape_ok && quant_row_aligned &&
-                src0_contig && src1_contig && dst_contig) {
+            const bool quant_row_aligned = fpga_supported_type && qk_required > 0 && ((K % qk_required) == 0);
+
+            const bool layout_ok = src0_contig && src1_contig && dst_contig;
+
+            // Chinh sach FPGA: mac dinh an toan, full-offload chi bat khi env yeu cau.
+            const bool k_policy_ok = K == fpga_k_required ||
+                                     (fpga_experimental_k_tiling && K > 0 && (K % 32) == 0);
+            const int64_t k_blocks = fpga_k_required / 32;  // 896/32 = 28
+
+            const double  fpga_macs        = (double) M * (double) K * (double) N;
+            const bool    min_m_ok         = M >= fpga_policy_min_m;
+            const bool    max_m_ok         = M <= fpga_policy_max_m;
+            const bool    m_range_ok       = min_m_ok && max_m_ok;
+            const bool    m_list_ok        = !fpga_policy_m_list_enabled ||
+                                      fpga_m_list_contains(fpga_policy_m_list, fpga_policy_m_list_count, M);
+            const bool    m_policy_ok      = (fpga_inclusive_mode || fpga_force_full_offload) ? true :
+                                             (fpga_policy_m_list_enabled ? m_list_ok : m_range_ok);
+            const bool    small_m_ok       = M >= 32 || fpga_small_m_pad32;
+            const bool    min_macs_ok      = fpga_inclusive_mode || fpga_policy_min_macs <= 0 ||
+                                             fpga_macs >= (double) fpga_policy_min_macs;
+            const bool    max_n_ok         = N <= fpga_policy_max_n;
+            const bool    scope_ok         = k_policy_ok && max_n_ok;
+
+            const bool rtl_tile_shape_ok = fpga_m_tile >= 1 && fpga_m_tile <= 511 && k_blocks >= 1 && k_blocks <= 31 &&
+                                           (fpga_m_tile * k_blocks) <= 2400;
+
+            const bool rtl_shape_ok = M >= 1 && N >= 1 && rtl_tile_shape_ok;
+
+            const bool can_offload = ready && fpga_supported_type && fpga_shape_ok && rtl_shape_ok &&
+                                     quant_row_aligned && layout_ok && scope_ok && m_policy_ok && small_m_ok &&
+                                     (fpga_force_full_offload || min_macs_ok);
+
+            if (can_offload) {
                 if (ith == 0) {
-                    fpga_gemm_run(src0->data,                  // ggml weight src0, logical [K,N], stored W[n*K+k]
-                                  fpga_quant,
-                                  (const float *) src1->data,  // activation, logical [K,M], passed as B[m*K+k]
-                                  (float *) dst->data,         // output dst, C[m*N+n]
-                                  (int) M, (int) K, (int) N,
-                                  0);                          // 0 = auto shift in FPGA_GEMM.cpp
+                    fpga_stats_record_policy_eligible(M, K, N);
                 }
+
+                double fpga_compare_cpu_latency_ms = -1.0;
+                if (fpga_numerical_compare_requested) {
+                    const int64_t cpu_t0 = ggml_time_us();
+                    ggml_compute_forward_mul_mat_cpu(params, dst);
+                    const int64_t cpu_t1 = ggml_time_us();
+                    fpga_compare_cpu_latency_ms = (double) (cpu_t1 - cpu_t0) / 1000.0;
+
+                    if (nth > 1) {
+                        ggml_barrier(params->threadpool);
+                    }
+                }
+
+                // Shared only inside the current ggml threaded op. llama.cpp executes
+                // graph ops serially here, so this is safe for the KV260 path.
+                static int s_fpga_last_run_ok = 0;
+
+                if (ith == 0) {
+                    bool run_ok = true;
+
+                    const float * src1_f32 = (const float *) src1->data;
+                    float *       dst_f32  = (float *) dst->data;
+                    const size_t  logical_output_bytes = (size_t) M * (size_t) N * sizeof(float);
+                    float *       cpu_ref_f32 = NULL;
+
+                    if (fpga_numerical_compare_requested) {
+                        cpu_ref_f32 = (float *) malloc(logical_output_bytes);
+                        if (cpu_ref_f32 != NULL) {
+                            memcpy(cpu_ref_f32, dst_f32, logical_output_bytes);
+                        } else if (fpga_compare_mode) {
+                            run_ok = false;
+                        }
+                    }
+
+                    const uint64_t cache_hit_before  = fpga_stats_get_weight_cache_hit_count();
+                    const uint64_t cache_miss_before = fpga_stats_get_weight_cache_miss_count();
+                    const uint64_t dma_err_before    = fpga_stats_get_dma_runtime_error_count();
+                    const uint64_t dma_to_before     = fpga_stats_get_dma_runtime_timeout_count();
+                    const uint64_t tile_before       = fpga_stats_get_tile_count();
+                    const uint64_t shift_hit_before  = fpga_stats_get_shift_table_hit_count();
+                    const uint64_t shift_miss_before = fpga_stats_get_shift_table_miss_count();
+                    const uint64_t k_sat_before      = fpga_stats_get_k_tiling_saturation_count();
+                    const uint64_t k_sat_total_before = fpga_stats_get_k_tiling_total_output_count();
+                    const uint64_t job_before        = fpga_stats_get_submitted_hardware_job_count();
+                    const int64_t  fpga_t0           = ggml_time_us();
+
+                    for (int64_t m0 = 0; run_ok && m0 < M; m0 += fpga_m_tile) {
+                        const int64_t cur_M = (M - m0) < fpga_m_tile ? (M - m0) : fpga_m_tile;
+
+                        fpga_gemm_set_tensor_context(src0->name);
+                        if (!fpga_gemm_try_run(src0->data, fpga_quant, src1_f32 + m0 * K, dst_f32 + m0 * N, (int) cur_M,
+                                               (int) K, (int) N, 0)) {
+                            run_ok = false;
+                            break;
+                        }
+                    }
+
+                    const int64_t  fpga_t1          = ggml_time_us();
+                    const double   fpga_latency_ms  = (double) (fpga_t1 - fpga_t0) / 1000.0;
+                    const uint64_t cache_hit_delta  = fpga_stats_get_weight_cache_hit_count() - cache_hit_before;
+                    const uint64_t cache_miss_delta = fpga_stats_get_weight_cache_miss_count() - cache_miss_before;
+                    const uint64_t dma_err_delta    = fpga_stats_get_dma_runtime_error_count() - dma_err_before;
+                    const uint64_t dma_to_delta     = fpga_stats_get_dma_runtime_timeout_count() - dma_to_before;
+                    const uint64_t tile_delta       = fpga_stats_get_tile_count() - tile_before;
+                    const uint64_t shift_hit_delta  = fpga_stats_get_shift_table_hit_count() - shift_hit_before;
+                    const uint64_t shift_miss_delta = fpga_stats_get_shift_table_miss_count() - shift_miss_before;
+                    const uint64_t k_sat_delta      = fpga_stats_get_k_tiling_saturation_count() - k_sat_before;
+                    const uint64_t k_sat_total_delta =
+                        fpga_stats_get_k_tiling_total_output_count() - k_sat_total_before;
+                    const uint64_t job_delta        = fpga_stats_get_submitted_hardware_job_count() - job_before;
+
+                    s_fpga_last_run_ok = run_ok ? 1 : 0;
+
+                    if (run_ok) {
+                        const uint64_t fpga_m_tiles = (uint64_t) ((M + fpga_m_tile - 1) / fpga_m_tile);
+                        const uint64_t fpga_n_tiles = (uint64_t) ((N + 63) / 64);
+                        const uint64_t fpga_k_tiles = (uint64_t) ((K + 895) / 896);
+                        struct fpga_compare_result cmp = { false, -1.0, -1.0, 0, 0, -1.0 };
+                        if (fpga_numerical_compare_requested) {
+                            if (cpu_ref_f32 != NULL) {
+                                double sum_diff_squared = 0.0;
+                                double sum_cpu_squared = 0.0;
+                                bool zero_cpu_nonzero_diff = false;
+                                const double relative_l2 =
+                                    L2_compare_func(cpu_ref_f32, dst_f32, (uint64_t) M * (uint64_t) N,
+                                                    &sum_diff_squared, &sum_cpu_squared, &zero_cpu_nonzero_diff);
+                                const bool l2_valid = relative_l2 >= 0.0;
+                                fpga_stats_record_numerical_l2(
+                                    fpga_stats_get_current_logical_gemm_id(), src0->name, ggml_type_name(src0->type),
+                                    M, K, N, job_delta, sum_diff_squared, sum_cpu_squared, relative_l2,
+                                    zero_cpu_nonzero_diff, l2_valid);
+                                if (fpga_compare_mode) {
+                                    memcpy(dst_f32, cpu_ref_f32, logical_output_bytes);
+                                }
+                            } else {
+                                fpga_compare_audit_skip("allocation_failure", FPGA_FB_INTERNAL_ERROR,
+                                                        src0, ggml_type_name(src0->type), M, K, N);
+                            }
+                        } else {
+                            cmp = fpga_compare_against_reference(src0, src1_f32, dst_f32, M, K, N);
+                        }
+                        fpga_stats_record_offload_success(M, K, N, job_delta);
+                        fpga_stats_count_offload(fpga_quant, M, K, N);
+                        fpga_stats_count_shape_offload(M, K, N, fpga_m_tiles * fpga_n_tiles * fpga_k_tiles);
+                        fpga_stats_record_matmul_profile(src0->name, src0->name, src1->name, ggml_type_name(src0->type),
+                                                         (int) src0->type, M, K, N, true, FPGA_FB_OTHER, tile_delta,
+                                                         fpga_compare_cpu_latency_ms >= 0.0 ? fpga_compare_cpu_latency_ms :
+                                                                                              (cmp.valid ? cmp.cpu_latency_ms : -1.0),
+                                                         fpga_latency_ms,
+                                                         cache_hit_delta, cache_miss_delta, dma_err_delta, dma_to_delta,
+                                                         cmp.valid ? cmp.max_abs_error : -1.0,
+                                                         cmp.valid ? cmp.mae : -1.0,
+                                                         cmp.valid ? cmp.mismatch_count : 0,
+                                                         cmp.valid ? cmp.compared_count : 0);
+                        if (K != fpga_k_required) {
+                            if (!fpga_numerical_compare_requested && fpga_profile_compare_enabled() && !cmp.valid) {
+                                fprintf(stderr, "[FPGA][K_TILE] compare requested but CPU reference unavailable; "
+                                                "validation metrics are NA\n");
+                            }
+                            fpga_stats_record_k_tiling_validation(
+                                src0->name, ggml_type_name(src0->type), M, K, N,
+                                (uint64_t) ((K + fpga_k_required - 1) / fpga_k_required), tile_delta,
+                                fpga_gemm_current_shift_mode(), shift_hit_delta, shift_miss_delta,
+                                cmp.valid ? cmp.max_abs_error : -1.0, cmp.valid ? cmp.mae : -1.0,
+                                cmp.valid ? cmp.mismatch_count : 0, cmp.valid ? cmp.compared_count : 0,
+                                k_sat_delta, k_sat_total_delta, true, FPGA_FB_OTHER);
+                        }
+                    } else {
+                        const FpgaFallbackReason runtime_reason =
+                            fpga_numerical_compare_requested && cpu_ref_f32 == NULL ?
+                                FPGA_FB_INTERNAL_ERROR : fpga_stats_get_last_runtime_fallback_reason();
+                        fpga_stats_record_runtime_failure(runtime_reason, M, K, N);
+                        fpga_stats_count_fallback(runtime_reason, M, K, N, (int) src0->type);
+                        fpga_stats_count_shape_fallback(M, K, N);
+                        if (fpga_numerical_compare_requested) {
+                            fpga_stats_record_numerical_fallback(
+                                fpga_stats_get_current_logical_gemm_id(), src0->name, ggml_type_name(src0->type),
+                                M, K, N, runtime_reason);
+                            fpga_compare_audit_skip(cpu_ref_f32 == NULL ? "allocation_failure" : "runtime_failure",
+                                                    runtime_reason, src0, ggml_type_name(src0->type), M, K, N);
+                        }
+                        fpga_stats_record_matmul_profile(src0->name, src0->name, src1->name, ggml_type_name(src0->type),
+                                                         (int) src0->type, M, K, N, false, runtime_reason, tile_delta,
+                                                         fpga_compare_cpu_latency_ms, -1.0, cache_hit_delta,
+                                                         cache_miss_delta, dma_err_delta, dma_to_delta, -1.0, -1.0, 0, 0);
+                        if (K != fpga_k_required) {
+                            fpga_stats_record_k_tiling_validation(
+                                src0->name, ggml_type_name(src0->type), M, K, N,
+                                (uint64_t) ((K + fpga_k_required - 1) / fpga_k_required), tile_delta,
+                                fpga_gemm_current_shift_mode(), shift_hit_delta, shift_miss_delta,
+                                -1.0, -1.0, 0, 0, k_sat_delta, k_sat_total_delta, false, runtime_reason);
+                        }
+                        if (fpga_force_full_offload) {
+                            fpga_forced_abort("runtime failed", M, K, N, (int) src0->type);
+                        }
+                    }
+                    free(cpu_ref_f32);
+                }
+
                 if (nth > 1) {
                     ggml_barrier(params->threadpool);
                 }
-                return;
+
+                if (s_fpga_last_run_ok) {
+                    return;
+                }
+
+                // FPGA tried but failed. Do NOT return. Fall through to the
+                // original CPU implementation so tokens are not garbage.
+            } else {
+                if (ith == 0) {
+                    FpgaFallbackReason reason = FPGA_FB_OTHER;
+
+                    if (!ready) {
+                        reason = FPGA_FB_NOT_READY;
+                    } else if (!fpga_supported_type) {
+                        reason = FPGA_FB_UNSUPPORTED_TYPE;
+                    } else if (!fpga_shape_ok) {
+                        reason = FPGA_FB_GGML_SHAPE;
+                    } else if (!rtl_shape_ok) {
+                        reason = FPGA_FB_RTL_SHAPE;
+                    } else if (!quant_row_aligned) {
+                        reason = FPGA_FB_QUANT_ALIGN;
+                    } else if (!layout_ok) {
+                        reason = FPGA_FB_LAYOUT;
+                    } else if (!small_m_ok || (!fpga_policy_m_list_enabled && !min_m_ok)) {
+                        reason = FPGA_FB_SMALL_M;
+                    } else if (!max_n_ok) {
+                        reason = FPGA_FB_MAX_N;
+                    } else if (!scope_ok || !m_policy_ok || (!fpga_force_full_offload && !min_macs_ok)) {
+                        reason = FPGA_FB_SCOPE_POLICY;
+                    }
+
+                    const bool policy_counter_ok = ready && fpga_supported_type && fpga_shape_ok && rtl_shape_ok &&
+                                                   quant_row_aligned && layout_ok && k_policy_ok;
+                    if (policy_counter_ok) {
+                        if (fpga_policy_m_list_enabled && !m_list_ok) {
+                            fpga_stats_count_m_list_fallback();
+                        } else if (!m_range_ok) {
+                            fpga_stats_count_m_range_fallback();
+                        }
+                        if (!fpga_policy_m_list_enabled && !min_m_ok) {
+                            fpga_stats_count_small_m_fallback();
+                        }
+                        if (!min_macs_ok) {
+                            fpga_stats_count_min_macs_fallback();
+                        }
+                        if (!max_n_ok) {
+                            fpga_stats_count_max_n_fallback();
+                        }
+                    }
+
+                    fpga_stats_count_fallback(reason, M, K, N, (int) src0->type);
+                    fpga_stats_record_policy_rejection(reason, M, K, N);
+                    fpga_stats_count_shape_fallback(M, K, N);
+                    if (fpga_numerical_compare_requested) {
+                        fpga_stats_record_numerical_fallback(
+                            fpga_stats_get_current_logical_gemm_id(), src0->name, ggml_type_name(src0->type),
+                            M, K, N, reason);
+                        fpga_compare_audit_skip("policy_rejection", reason, src0, ggml_type_name(src0->type),
+                                                M, K, N);
+                    }
+                    fpga_stats_record_matmul_profile(src0->name, src0->name, src1->name, ggml_type_name(src0->type),
+                                                     (int) src0->type, M, K, N, false, reason, 0, -1.0, -1.0, 0, 0,
+                                                     0, 0, -1.0, -1.0, 0, 0);
+                    if (fpga_force_full_offload) {
+                        if (!ready) {
+                            fpga_forced_abort("backend not ready", M, K, N, (int) src0->type);
+                        } else if (!fpga_supported_type) {
+                            fpga_forced_abort("unsupported quant type", M, K, N, (int) src0->type);
+                        } else if (!fpga_shape_ok) {
+                            fpga_forced_abort("unsupported ggml shape", M, K, N, (int) src0->type);
+                        } else if (!rtl_shape_ok) {
+                            fpga_forced_abort("RTL shape policy failed", M, K, N, (int) src0->type);
+                        } else if (!quant_row_aligned) {
+                            fpga_forced_abort("quant row alignment failed", M, K, N, (int) src0->type);
+                        } else if (!layout_ok) {
+                            fpga_forced_abort("layout not contiguous", M, K, N, (int) src0->type);
+                        } else if (!small_m_ok) {
+                            fpga_forced_abort("small-M pad32 disabled", M, K, N, (int) src0->type);
+                        } else if (!scope_ok) {
+                            fpga_forced_abort("K/N tiling policy failed", M, K, N, (int) src0->type);
+                        } else {
+                            fpga_forced_abort("policy rejected shape", M, K, N, (int) src0->type);
+                        }
+                    }
+                }
+            }
+        } else {
+            if (ith == 0) {
+                fpga_stats_count_fallback(FPGA_FB_USE_REF, M, K, N, (int) src0->type);
+                fpga_stats_record_policy_rejection(FPGA_FB_USE_REF, M, K, N);
+                fpga_stats_count_shape_fallback(M, K, N);
+                if (fpga_numerical_compare_requested) {
+                    fpga_stats_record_numerical_fallback(
+                        fpga_stats_get_current_logical_gemm_id(), src0->name, ggml_type_name(src0->type),
+                        M, K, N, FPGA_FB_USE_REF);
+                    fpga_compare_audit_skip("use_ref", FPGA_FB_USE_REF, src0, ggml_type_name(src0->type),
+                                            M, K, N);
+                }
+                fpga_stats_record_matmul_profile(src0->name, src0->name, src1->name, ggml_type_name(src0->type),
+                                                 (int) src0->type, M, K, N, false, FPGA_FB_USE_REF, 0, -1.0, -1.0,
+                                                 0, 0, 0, 0, -1.0, -1.0, 0, 0);
+                if (fpga_force_full_offload) {
+                    fpga_forced_abort("use_ref path requested", M, K, N, (int) src0->type);
+                }
             }
         }
     }
 #endif
-    // ═════════════════========================================((((
+    // ==============================================================================
+
+
+
+    ggml_compute_forward_mul_mat_cpu(params, dst);
+    return;
+
 
     enum ggml_type           const vec_dot_type         = type_traits_cpu[src0->type].vec_dot_type;
     ggml_from_float_t        const from_float           = type_traits_cpu[vec_dot_type].from_float;
